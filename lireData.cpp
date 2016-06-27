@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     ResultSet *res;
 
     driver = get_driver_instance();
-    connection = driver -> connect("localhost", "root", "toto");
+    connection = driver -> connect("localhost", "root", "jelbroet");
 
     stmt = connection->createStatement();
 

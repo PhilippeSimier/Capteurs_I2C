@@ -19,7 +19,7 @@ using namespace std;
 int main()
 {
    float temperature,tlow,thigh;
-   Ds1631 capteur1(0x48);
+   Ds1631 capteur1(0x4F);
 
    cout << "Content-type: application/json" << endl << endl;
    cout << "{" << endl;
