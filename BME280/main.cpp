@@ -1,3 +1,7 @@
+/************************************************************************************
+*   Programme exemple mise en oeuvre du bme280
+*   Compilation : g++ main.cpp bm280.cpp -l wiringPi -o bme280
+************************************************************************************/
 #include <iostream>
 #include "bm280.h"
 
