@@ -7,7 +7,7 @@
   Prérequis : sudo apt-get install libmysqlcppconn-dev
   Compilation :
       g++ saveTemp2.cpp Ds1631.cpp -o saveTemp -lmysqlcppconn -lwiringPi
-  Execution : Pour executer périodiquement toutes les 10 minutes
+  Execution : Pour executer pÃ©riodiquement toutes les 10 minutes
               Ajouter avec crontab
 *************************************************************************/
   //  */10 * * * * /home/pi/cplus/saveTemp

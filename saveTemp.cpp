@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------------
 *  compilation :
 *   g++ saveTemp.cpp Ds1631.cpp -o saveTemp -l wiringPi `mysql_config --cflags --libs`
-*
+*   ou make avec le makefile proposé
 *-----------------------------------------------------------------------------------*/
 #include <iostream>
 #include <iomanip>
