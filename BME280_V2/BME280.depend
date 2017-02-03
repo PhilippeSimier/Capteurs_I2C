@@ -1,0 +1,42 @@
+# depslib dependency file v1.0
+1486046975 source:/home/pi/BM280/BME280/main.cpp
+	<iostream>
+	"bm280.h"
+
+1486046946 source:/home/pi/BM280/BME280/bm280.cpp
+	"bm280.h"
+
+1486046908 /home/pi/BM280/BME280/bm280.h
+	<iostream>
+	<iomanip>
+	"wiringPiI2C.h"
+	<stdint.h>
+	<math.h>
+
+1486127719 source:/home/pi/BM280_V2/BME280/main.cpp
+	<iostream>
+	"bm280.h"
+
+1486127909 /home/pi/BM280_V2/BME280/bm280.h
+	<iostream>
+	<iomanip>
+	"i2c.h"
+	<stdint.h>
+	<math.h>
+
+1486120747 /home/pi/BM280_V2/BME280/i2c.h
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<fcntl.h>
+	<sys/ioctl.h>
+	<asm/ioctl.h>
+	<iostream>
+
+1486127440 source:/home/pi/BM280_V2/BME280/bm280.cpp
+	"bm280.h"
+	"i2c.h"
+
+1486120197 source:/home/pi/BM280_V2/BME280/i2c.cpp
+	"i2c.h"
+
