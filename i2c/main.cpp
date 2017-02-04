@@ -14,20 +14,16 @@ int main()
 {
     i2c Ds1620(0x4F);  // création d'un objet DS1620 à l'adresse 4F
 
-    short valeur, data, msb, lsb;
+    short valeur, data;
     char etat;
 
     Ds1620.Write(0x51);  // demarrage de la conversion
     do{
-	etat = Ds1620.ReadReg8(0xAC);
-        etat = etat & 0x80;
-//        sleep(1);
-    } while (etat != 0x80);
+	etat = Ds1620.ReadReg8(0xAC) & 0x80;
+    } while (etat != 0x80);  // attente fin de conversion
 
     valeur = Ds1620.ReadReg16(0xAA);
-    msb = (valeur & 0x00FF) << 8;
-    lsb = (valeur & 0xFF00) >> 8;
-    data = msb | lsb;
+    data = ((valeur & 0x00FF) << 8) | ((valeur & 0xFF00) >> 8);  // permutation des octets
     cout << (float)data/256 << endl;
 
     return 0;
