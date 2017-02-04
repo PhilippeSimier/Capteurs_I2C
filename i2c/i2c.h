@@ -3,6 +3,7 @@
 
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
@@ -33,19 +34,20 @@
 
 // SMBus messages
 
-#define I2C_SMBUS_BLOCK_MAX	32	/* As specified in SMBus standard */
+#define I2C_SMBUS_BLOCK_MAX	32	/* taille maxi d'un bloc de données */
 #define I2C_SMBUS_I2C_BLOCK_MAX	32	/* Not specified but we use same structure */
 
-// Structures used in the ioctl() calls
+// Structures utilisées par les appels ioctl()
 
 using namespace std;
 
+// La donnée peut être soit un Octet, soit un Mot ou un tableau d'octet
 union i2c_smbus_data
 {
   uint8_t  byte ;
   uint16_t word ;
   uint8_t  block [I2C_SMBUS_BLOCK_MAX + 2] ;	// block [0] is used for length + one more for PEC
-} ;
+};
 
 struct i2c_smbus_ioctl_data
 {
@@ -53,7 +55,7 @@ struct i2c_smbus_ioctl_data
   uint8_t command ;
   int size ;
   union i2c_smbus_data *data ;
-} ;
+};
 
 
 
@@ -72,15 +74,14 @@ class i2c
 
             unsigned char Write (int data);
             unsigned char WriteReg8 (int reg, int value);
-            unsigned short WriteReg16 (int fd, int reg, int value);
+            unsigned short WriteReg16 (int reg, int value);
 
 
 
     private:
 
             int fd;
-            void SetupInterface (const char *device, int devId);
-            inline int i2c_smbus_access (int fd, char rw, uint8_t command, int size, union i2c_smbus_data *data);
+            inline int i2c_smbus_access (char rw, uint8_t command, int size, union i2c_smbus_data *data);
 
 };
 

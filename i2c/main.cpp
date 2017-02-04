@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-    i2c Ds1620(0x4F);  // création d'un objet DS1620
+    i2c Ds1620(0x4F);  // création d'un objet DS1620 à l'adresse 4F
 
     short valeur, data, msb, lsb;
     char etat;
