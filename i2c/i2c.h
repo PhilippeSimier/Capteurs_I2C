@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <errno.h>
 #include <string.h>
 #include <fcntl.h>
@@ -14,16 +15,18 @@
 
 // I2C definitions
 
-#define I2C_SLAVE	0x0703
-#define I2C_SMBUS	0x0720	/* SMBus-level access */
+#define I2C_SLAVE	0x0703  /* Use this slave address */
+#define I2C_ACK_TEST	0x0710	/* Voir si un esclave est à une adresse spécifique */
+#define I2C_SMBUS	0x0720	/* SMBus transfer */
+
 
 #define I2C_SMBUS_READ	1
 #define I2C_SMBUS_WRITE	0
 
 // SMBus transaction types
 
-#define I2C_SMBUS_QUICK		    0
-#define I2C_SMBUS_BYTE		    1
+#define I2C_SMBUS_QUICK		    0  // This sends a single bit to the device, at the place of the Rd/Wr bit.
+#define I2C_SMBUS_BYTE		    1  // 
 #define I2C_SMBUS_BYTE_DATA	    2
 #define I2C_SMBUS_WORD_DATA	    3
 #define I2C_SMBUS_PROC_CALL	    4
@@ -64,9 +67,10 @@ class i2c
 
     public:
 
-
             // le constructeur
-            i2c(int adresseI2C);
+	    i2c(int adresseI2C, int idBusI2C=1);
+            //idBusI2C = 0 pour les raspberry version 1
+            //idBusI2C = 1 pour les raspberry version 2 et 3
 
             unsigned char Read ();
             unsigned char ReadReg8 (int reg);

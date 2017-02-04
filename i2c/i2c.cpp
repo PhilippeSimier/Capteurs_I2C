@@ -5,9 +5,10 @@
 #include "i2c.h"
 
     // Le constructeur
-    i2c::i2c(int adresseI2C){
-
-        if ((fd = open ("/dev/i2c-1", O_RDWR)) < 0){
+    i2c::i2c(int adresseI2C, int idBusI2C){
+        char filename[20];
+        snprintf(filename, 19, "/dev/i2c-%d", idBusI2C);
+        if ((fd = open (filename, O_RDWR)) < 0){
             cout << "Erreur d'ouverture du bus I2C" << endl;
             exit(1);
         }
@@ -48,7 +49,6 @@
             return -1 ;
         else
             return data.byte & 0xFF ;
-
     }
 
     unsigned short i2c::ReadReg16 (int reg){
@@ -70,8 +70,8 @@
 
         data.byte = value ;
         return i2c_smbus_access (I2C_SMBUS_WRITE, reg, I2C_SMBUS_BYTE_DATA, &data) ;
-
     }
+
 
     unsigned short i2c::WriteReg16 (int reg, int value){
         union i2c_smbus_data data ;

@@ -1,0 +1,5 @@
+exemple de code ioctl() i2c
+
+https://chromium.googlesource.com/chromiumos/platform/mosys/+/da404eeab4fd33987f421fe97871f3d778477525/include/intf/linux-i2c-dev.h
+
+http://www.astro.umd.edu/~mpound/cobra/i2c-dev_8h_source.html
