@@ -1,6 +1,6 @@
 /***************************************************************************
 *   Class i2c pour le raspberry pi
-*   I2C (pronounce: I squared C) is a protocol developed by Philips. It is a 
+*   I2C (pronounce: I squared C) is a protocol developed by Philips. It is a
 *   slow two-wire protocol (variable speed, up to 400 kHz), with a high speed
 *   extension (3.4 MHz).  It provides an inexpensive bus for connecting many
 *   types of devices with infrequent or low bandwidth communications needs.
@@ -76,7 +76,6 @@
         return i2c_smbus_access (I2C_SMBUS_WRITE, reg, I2C_SMBUS_BYTE_DATA, &data) ;
     }
 
-
     unsigned short i2c::WriteReg16 (int reg, int value){
         union i2c_smbus_data data ;
 
@@ -85,8 +84,33 @@
 
     }
 
+    int i2c::WriteBlockData (int reg, int length, int *values){
+	union i2c_smbus_data data ;
+        int i;
+        if (length > 32)
+	    length = 32;
+        for (i = 1; i <= length; i++)
+	    data.block[i] = values[i-1];
+	data.block[0] = length;
+        return i2c_smbus_access (I2C_SMBUS_WRITE, reg, I2C_SMBUS_I2C_BLOCK_BROKEN , &data) ;
+    }
 
+    int i2c::ReadBlockData (int reg, int length, int *values){
+         union i2c_smbus_data data;
+         int i;
 
-
+         if (length > 32)
+                 length = 32;
+         data.block[0] = length;
+         if (i2c_smbus_access(I2C_SMBUS_READ, reg, length == 32 ? I2C_SMBUS_I2C_BLOCK_BROKEN :
+                               I2C_SMBUS_I2C_BLOCK_DATA,&data))
+                 return -1;
+         else {
+                 for (i = 1; i <= data.block[0]; i++)
+                         values[i-1] = data.block[i];
+                 return data.block[0];
+         }
+ }
+ // retourne le nombre d'octets lu
 
 

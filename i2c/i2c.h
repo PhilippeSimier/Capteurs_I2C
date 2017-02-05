@@ -77,11 +77,12 @@ class i2c
             unsigned char Read ();
             unsigned char ReadReg8 (int reg);
             unsigned short ReadReg16 (int reg);
+            int ReadBlockData (int reg, int length, int *values);
 
             unsigned char Write (int data);
             unsigned char WriteReg8 (int reg, int value);
             unsigned short WriteReg16 (int reg, int value);
-
+	    int WriteBlockData (int reg, int length, int *data);
 
 
     private:
