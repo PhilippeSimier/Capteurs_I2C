@@ -1,6 +1,10 @@
 /***************************************************************************
 *   Class i2c pour le raspberry pi
-*
+*   I2C (pronounce: I squared C) is a protocol developed by Philips. It is a 
+*   slow two-wire protocol (variable speed, up to 400 kHz), with a high speed
+*   extension (3.4 MHz).  It provides an inexpensive bus for connecting many
+*   types of devices with infrequent or low bandwidth communications needs.
+*   I2C is widely used with embedded systems.
 ***************************************************************************/
 #include "i2c.h"
 
