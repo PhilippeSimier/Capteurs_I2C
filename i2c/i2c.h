@@ -26,12 +26,12 @@
 // SMBus transaction types
 
 #define I2C_SMBUS_QUICK		    0  // This sends a single bit to the device, at the place of the Rd/Wr bit.
-#define I2C_SMBUS_BYTE		    1  // 
-#define I2C_SMBUS_BYTE_DATA	    2
-#define I2C_SMBUS_WORD_DATA	    3
+#define I2C_SMBUS_BYTE		    1  // Handles the SMBus read_byte and write_byte commands
+#define I2C_SMBUS_BYTE_DATA	    2  // Handles the SMBus read_byte_data and write_byte_data commands
+#define I2C_SMBUS_WORD_DATA	    3  // Handles the SMBus read_word_data and write_word_data commands
 #define I2C_SMBUS_PROC_CALL	    4
-#define I2C_SMBUS_BLOCK_DATA	    5
-#define I2C_SMBUS_I2C_BLOCK_BROKEN  6
+#define I2C_SMBUS_BLOCK_DATA	    5  // Handles the SMBus read_block_data and write_block_data commands
+#define I2C_SMBUS_I2C_BLOCK_BROKEN  6  // 
 #define I2C_SMBUS_BLOCK_PROC_CALL   7		/* SMBus 2.0 */
 #define I2C_SMBUS_I2C_BLOCK_DATA    8
 
