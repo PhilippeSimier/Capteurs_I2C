@@ -9,6 +9,8 @@
 #include <sys/ioctl.h>
 #include <asm/ioctl.h>
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 // I2C definitions
@@ -64,15 +66,17 @@ class i2c
 
 
             // le constructeur
-            i2c(int adresseI2C);
+            i2c(int adresseI2C, int idBusI2C=1);  // par défaut raspberry pi 2 et 3
 
             unsigned char Read ();
             unsigned char ReadReg8 (int reg);
             unsigned short ReadReg16 (int reg);
+            int ReadBlockData (int reg, int length, int *values);
 
             unsigned char Write (int data);
             unsigned char WriteReg8 (int reg, int value);
             unsigned short WriteReg16 (int reg, int value);
+            int WriteBlockData (int reg, int length, int *values);
 
 
 
@@ -80,7 +84,7 @@ class i2c
             //int adresseI2C;
             int fd;
             void SetupInterface (const char *device, int devId);
-            inline int i2c_smbus_access (int fd, char rw, uint8_t command, int size, union i2c_smbus_data *data);
+            inline int i2c_smbus_access ( char rw, uint8_t command, int size, union i2c_smbus_data *data);
 
 };
 
