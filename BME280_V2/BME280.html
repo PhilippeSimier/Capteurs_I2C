@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quelle température fait-il ?</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Internet des Objets Thermostat">
+	<meta name="author" content="Philippe Simier ">
+
+        <script src="../js/jquery.js" type="text/javascript"></script>
+	<script id="code">
+		
+			function affiche( data ) {               // fonction pour afficher les données reçues
+				console.log(data);                   // affichage de data dans la console
+				$('#temperature').text(data.TemperatureC); 
+				$('#pression').text(data.Pression);
+				$('#humidite').text(data.Humidite);
+			}	
+		
+			function requete_ajax(){
+				// requete Ajax méthode getJSON 
+				$.getJSON(
+					"/api/bme280Json", // Le fichier cible côté serveur. data au format Json
+					affiche 
+				);
+			}
+			
+			$(document).ready(function(){
+				setInterval(requete_ajax, 5000);  // appel de la fonction affiche_temperature toutes les 5 secondes
+			});
+		</script>
+    
+  </head>
+  <body>
+  	<h2> Temperature </h2>
+	<p><span class="style1" id="temperature"></span></p>
+        <h2> Pression </h2>
+        <p><span class="style1" id="pression"></span></p>
+        <h2> Humidité </h2>
+        <p><span class="style1" id="humidite"></span></p>
+
+
+  </body>
