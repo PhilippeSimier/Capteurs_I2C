@@ -1,7 +1,7 @@
-/************************************************************************************
-*   Programme exemple mise en oeuvre du bme280
-*   Compilation : g++ main.cpp bm280.cpp -l wiringPi -o bme280
-************************************************************************************/
+/*******************************************************************************************
+*   Compilation :  g++ main.cpp i2c.cpp  bm280.cpp -o bm280
+*******************************************************************************************/
+
 #include <iostream>
 #include "bm280.h"
 
@@ -14,11 +14,12 @@ int main()
 
     cout << "Capteur BME 280" << endl;
 
-    cout << " Température (C)  : " << capteur.obtenirTemperatureEnC() << " °C"<< endl;
-    cout << " Température (F)  : " << capteur.obtenirTemperatureEnF() << " °F"<< endl;
-    cout << " Pression         : " << capteur.obtenirPression() << " hPa"<< endl;
-    cout << " Humidité         : " << capteur.obtenirHumidite() << " %"<< endl;
+    cout << " Température (C)  : " << fixed << setprecision (1) << capteur.obtenirTemperatureEnC() << " °C"<< endl;
+    cout << " Température (F)  : " << fixed << setprecision (1) << capteur.obtenirTemperatureEnF() << " °F"<< endl;
+    cout << " Pression         : " << fixed << setprecision (1) << capteur.obtenirPression() << " hPa"<< endl;
+    cout << " Humidité         : " << fixed << setprecision (1) << capteur.obtenirHumidite() << " %"<< endl;
     cout << " Altitude (metre) : " << capteur.obtenirAltitudeEnMetres() << " m"<< endl;
     cout << " Altitude (feet)  : " << capteur.obtenirAltitudeEnPieds() << "\"" << endl;
+    capteur.version();
     return 0;
 }

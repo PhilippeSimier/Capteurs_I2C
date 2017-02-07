@@ -1,59 +1,66 @@
 #include "bm280.h"
+#include "i2c.h"
 
 using namespace std;
 
 
 bm280::bm280(int i2cAddress)  	// Le constructeur
 {
-    fd = wiringPiI2CSetup(i2cAddress);
-    if(fd < 0) {
-       cout << "Device not found" << endl;
-    }
+  deviceI2C = new i2c(i2cAddress);
+
 
   readCalibrationData();
+  deviceI2C->WriteReg8(0xf2, 0x01); // humidity oversampling x 1
 
-  wiringPiI2CWriteReg8(fd, 0xf2, 0x01);   // humidity oversampling x 1
-  wiringPiI2CWriteReg8(fd, 0xf4, 0x25);   // pressure and temperature oversampling x 1, mode normal
+  deviceI2C->WriteReg8(0xf4, 0x25);   // pressure and temperature oversampling x 1, mode normal
 
 
+}
+
+bm280::~bm280()
+{
+   if (deviceI2C != NULL)
+        delete deviceI2C;
 }
 
 void bm280::readCalibrationData() {
-  cal.dig_T1 = (uint16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_T1);
-  cal.dig_T2 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_T2);
-  cal.dig_T3 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_T3);
+  cal.dig_T1 = (uint16_t)deviceI2C->ReadReg16(DIG_T1);
+  cal.dig_T2 = (int16_t)deviceI2C->ReadReg16(DIG_T2);
+  cal.dig_T3 = (int16_t)deviceI2C->ReadReg16(DIG_T3);
 
-  cal.dig_P1 = (uint16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P1);
-  cal.dig_P2 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P2);
-  cal.dig_P3 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P3);
-  cal.dig_P4 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P4);
-  cal.dig_P5 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P5);
-  cal.dig_P6 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P6);
-  cal.dig_P7 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P7);
-  cal.dig_P8 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P8);
-  cal.dig_P9 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_P9);
+  cal.dig_P1 = (uint16_t)deviceI2C->ReadReg16(DIG_P1);
+  cal.dig_P2 = (int16_t)deviceI2C->ReadReg16(DIG_P2);
+  cal.dig_P3 = (int16_t)deviceI2C->ReadReg16(DIG_P3);
+  cal.dig_P4 = (int16_t)deviceI2C->ReadReg16(DIG_P4);
+  cal.dig_P5 = (int16_t)deviceI2C->ReadReg16(DIG_P5);
+  cal.dig_P6 = (int16_t)deviceI2C->ReadReg16(DIG_P6);
+  cal.dig_P7 = (int16_t)deviceI2C->ReadReg16(DIG_P7);
+  cal.dig_P8 = (int16_t)deviceI2C->ReadReg16(DIG_P8);
+  cal.dig_P9 = (int16_t)deviceI2C->ReadReg16(DIG_P9);
 
-  cal.dig_H1 = (uint8_t)wiringPiI2CReadReg8(fd, BME280_REGISTER_DIG_H1);
-  cal.dig_H2 = (int16_t)wiringPiI2CReadReg16(fd, BME280_REGISTER_DIG_H2);
-  cal.dig_H3 = (uint8_t)wiringPiI2CReadReg8(fd, BME280_REGISTER_DIG_H3);
-  cal.dig_H4 = (wiringPiI2CReadReg8(fd, BME280_REGISTER_DIG_H4) << 4) | (wiringPiI2CReadReg8(fd, BME280_REGISTER_DIG_H4+1) & 0xF);
-  cal.dig_H5 = (wiringPiI2CReadReg8(fd, BME280_REGISTER_DIG_H5+1) << 4) | (wiringPiI2CReadReg8(fd, BME280_REGISTER_DIG_H5) >> 4);
-  cal.dig_H6 = (int8_t)wiringPiI2CReadReg8(fd, BME280_REGISTER_DIG_H6);
+  cal.dig_H1 = (uint8_t)deviceI2C->ReadReg8(DIG_H1);
+  cal.dig_H2 = (int16_t)deviceI2C->ReadReg16(DIG_H2);
+  cal.dig_H3 = (uint8_t)deviceI2C->ReadReg8(DIG_H3);
+  cal.dig_H4 = (deviceI2C->ReadReg8(DIG_H4) << 4) | (deviceI2C->ReadReg8(DIG_H4+1) & 0xF);
+  cal.dig_H5 = (deviceI2C->ReadReg8(DIG_H5+1) << 4) | (deviceI2C->ReadReg8(DIG_H5) >> 4);
+  cal.dig_H6 = (int8_t)deviceI2C->ReadReg8(DIG_H6);
 }
 
 void bm280::getRawData() {
-  wiringPiI2CWrite(fd, 0xf7);
 
-  raw.pmsb = wiringPiI2CRead(fd);
-  raw.plsb = wiringPiI2CRead(fd);
-  raw.pxsb = wiringPiI2CRead(fd);
+  deviceI2C->Write(0xf7);
 
-  raw.tmsb = wiringPiI2CRead(fd);
-  raw.tlsb = wiringPiI2CRead(fd);
-  raw.txsb = wiringPiI2CRead(fd);
 
-  raw.hmsb = wiringPiI2CRead(fd);
-  raw.hlsb = wiringPiI2CRead(fd);
+  raw.pmsb = deviceI2C->Read();
+  raw.plsb = deviceI2C->Read();
+  raw.pxsb = deviceI2C->Read();
+
+  raw.tmsb = deviceI2C->Read();
+  raw.tlsb = deviceI2C->Read();
+  raw.txsb = deviceI2C->Read();
+
+  raw.hmsb = deviceI2C->Read();
+  raw.hlsb = deviceI2C->Read();
 
   raw.temperature = 0;
   raw.temperature = (raw.temperature | raw.tmsb) << 8;
@@ -166,5 +173,12 @@ float bm280::obtenirAltitudeEnMetres(){
 float bm280::obtenirAltitudeEnPieds(){
     float metre =  obtenirAltitudeEnMetres();
     return metre * 3.28084;
+
+}
+
+// retourne la version de la classe
+void  bm280::version(){
+
+    cout << "\nBME280 PS Touchard Version 1.2\n" << endl;
 
 }

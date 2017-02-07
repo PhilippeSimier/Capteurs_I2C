@@ -32,6 +32,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add library="wiringPi" />
+		</Linker>
+		<Unit filename="bm280.cpp" />
+		<Unit filename="bm280.h" />
+		<Unit filename="i2c.cpp" />
+		<Unit filename="i2c.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

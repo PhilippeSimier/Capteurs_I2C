@@ -3,8 +3,8 @@
 *   sujet : envoie des valeurs du capteur BME280 au format JSON
 *           Les différentes valeures sont envoyées sur la sortie standard
 *   Auteur : Philippe SIMIER (SNIR Touchard le Mans)
-*   Date   : 31 Janvier 2017
-*   Compilation : g++ bme280Json.cpp bm280.cpp -l wiringPi -o bme280Json
+*   Date   : 6 Février 2017
+*   Compilation : g++ bme280Json.cpp bm280.cpp i2c.cpp -o bme280Json
 *                 chmod +s bme280Json
 *                 mv bme280Json /usr/lib/cgi-bin/bme280Json
 ************************************************************************************/

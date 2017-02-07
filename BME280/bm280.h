@@ -3,42 +3,43 @@
 
 #include <iostream>
 #include <iomanip>
-#include "wiringPiI2C.h"
+#include "i2c.h"
 #include <stdint.h>       // pour les types uint8_t etc
 #include <math.h>
+
 
 #define ADRESSE_I2C_DEFAUT              0x77
 //Register names:
 
-#define BME280_REGISTER_DIG_T1        0x88
-#define BME280_REGISTER_DIG_T2        0x8A
-#define BME280_REGISTER_DIG_T3        0x8C
-#define BME280_REGISTER_DIG_P1        0x8E
-#define BME280_REGISTER_DIG_P2        0x90
-#define BME280_REGISTER_DIG_P3        0x92
-#define BME280_REGISTER_DIG_P4        0x94
-#define BME280_REGISTER_DIG_P5        0x96
-#define BME280_REGISTER_DIG_P6        0x98
-#define BME280_REGISTER_DIG_P7        0x9A
-#define BME280_REGISTER_DIG_P8        0x9C
-#define BME280_REGISTER_DIG_P9        0x9E
-#define BME280_REGISTER_DIG_H1        0xA1
-#define BME280_REGISTER_DIG_H2        0xE1
-#define BME280_REGISTER_DIG_H3        0xE3
-#define BME280_REGISTER_DIG_H4        0xE4
-#define BME280_REGISTER_DIG_H5        0xE5
-#define BME280_REGISTER_DIG_H6        0xE7
-#define BME280_REGISTER_CHIPID        0xD0
-#define BME280_REGISTER_VERSION       0xD1
-#define BME280_REGISTER_SOFTRESET     0xE0
+#define DIG_T1        0x88
+#define DIG_T2        0x8A
+#define DIG_T3        0x8C
+#define DIG_P1        0x8E
+#define DIG_P2        0x90
+#define DIG_P3        0x92
+#define DIG_P4        0x94
+#define DIG_P5        0x96
+#define DIG_P6        0x98
+#define DIG_P7        0x9A
+#define DIG_P8        0x9C
+#define DIG_P9        0x9E
+#define DIG_H1        0xA1
+#define DIG_H2        0xE1
+#define DIG_H3        0xE3
+#define DIG_H4        0xE4
+#define DIG_H5        0xE5
+#define DIG_H6        0xE7
+#define CHIPID        0xD0
+#define VERSION       0xD1
+#define SOFTRESET     0xE0
 #define BME280_RESET                  0xB6
-#define BME280_REGISTER_CAL26         0xE1
-#define BME280_REGISTER_CONTROLHUMID  0xF2
-#define BME280_REGISTER_CONTROL       0xF4
-#define BME280_REGISTER_CONFIG        0xF5
-#define BME280_REGISTER_PRESSUREDATA  0xF7
-#define BME280_REGISTER_TEMPDATA      0xFA
-#define BME280_REGISTER_HUMIDDATA     0xFD
+#define CAL26         0xE1
+#define CONTROLHUMID  0xF2
+#define CONTROL       0xF4
+#define CONFIG        0xF5
+#define PRESSUREDATA  0xF7
+#define TEMPDATA      0xFA
+#define HUMIDDATA     0xFD
 
 #define MEAN_SEA_LEVEL_PRESSURE         1013
 
@@ -97,6 +98,8 @@ class bm280
 public:
     // le constructeur
     bm280(int i2cAddress=ADRESSE_I2C_DEFAUT);
+    // le destructeur
+    ~bm280();
 
     // méthodes pour lire la température le pression et l'humidité
 
@@ -110,11 +113,14 @@ public:
     float obtenirAltitudeEnMetres();
     float obtenirAltitudeEnPieds();
 
+    // methode pour obtenir la version
+    void  version();
+
 
 private:
 
 
-    int fd;                          // file descriptor
+    i2c *deviceI2C;                   // file descriptor
     bme280_calib_data cal;           // calibration
     bme280_raw_data raw;             // les registres
     void readCalibrationData();
