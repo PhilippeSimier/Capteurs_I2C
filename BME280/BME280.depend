@@ -40,3 +40,32 @@
 1486120197 source:/home/pi/BM280_V2/BME280/i2c.cpp
 	"i2c.h"
 
+1486455836 source:/home/pi/Capteurs_I2C/BME280/bm280.cpp
+	"bm280.h"
+	"i2c.h"
+
+1486455836 /home/pi/Capteurs_I2C/BME280/bm280.h
+	<iostream>
+	<iomanip>
+	"i2c.h"
+	<stdint.h>
+	<math.h>
+
+1486455836 /home/pi/Capteurs_I2C/BME280/i2c.h
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<fcntl.h>
+	<sys/ioctl.h>
+	<asm/ioctl.h>
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+
+1486455836 source:/home/pi/Capteurs_I2C/BME280/i2c.cpp
+	"i2c.h"
+
+1486455836 source:/home/pi/Capteurs_I2C/BME280/main.cpp
+	<iostream>
+	"bm280.h"
+
