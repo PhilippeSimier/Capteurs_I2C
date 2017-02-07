@@ -1,3 +1,4 @@
+
 /*************************************************************************
   Sujet	: Programme pour enregistrer la valeur de la temperature
           dans la table temperature de la base de données MySQL Valeurs
@@ -6,7 +7,7 @@
   Date   	: Juin 2016
   Prérequis : sudo apt-get install libmysqlcppconn-dev
   Compilation :
-      g++ saveTemp2.cpp Ds1631.cpp -o saveTemp -lmysqlcppconn -lwiringPi
+      g++ saveTemp2.cpp Ds1631.cpp i2c.cpp -o saveTemp -lmysqlcppconn
   Execution : Pour executer pÃ©riodiquement toutes les 10 minutes
               Ajouter avec crontab
 *************************************************************************/
@@ -30,7 +31,7 @@ int main(int argc, char* argv[]) {
     Ds1631 capteur1(0x4F);
 
     driver = get_driver_instance();
-    connection = driver -> connect("localhost", "root", "jelbroet");
+    connection = driver -> connect("localhost", "root", "toto");
 
     stmt = connection->createStatement();
 

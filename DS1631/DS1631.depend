@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1486455836 source:/home/pi/Capteurs_I2C/DS1631/i2c.cpp
+	"i2c.h"
+
+1486455836 /home/pi/Capteurs_I2C/DS1631/i2c.h
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<fcntl.h>
+	<sys/ioctl.h>
+	<asm/ioctl.h>
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+
+1486464342 source:/home/pi/Capteurs_I2C/DS1631/main.cpp
+	"Ds1631.h"
+	"i2c.h"
+
+1486464163 /home/pi/Capteurs_I2C/DS1631/Ds1631.h
+	<iostream>
+	<iomanip>
+	"i2c.h"
+
+1486464313 source:/home/pi/Capteurs_I2C/DS1631/Ds1631.cpp
+	"Ds1631.h"
+	"i2c.h"
+

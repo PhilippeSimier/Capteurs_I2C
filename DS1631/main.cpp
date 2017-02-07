@@ -13,12 +13,13 @@
 
 #include "Ds1631.h"
 
+
 using namespace std;
 
 int main()
 {
-   float temperature,tlow,thigh;
-   Ds1631 capteur1(0x4F);
+   float  tlow,thigh;
+   Ds1631 capteur1(0x48);
 
    cout << "Content-type: application/json" << endl << endl;
    cout << "{" << endl;

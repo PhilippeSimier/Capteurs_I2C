@@ -3,8 +3,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include "wiringPi.h"
-#include "wiringPiI2C.h"
+#include "i2c.h"
 
 
 class Ds1631
@@ -23,10 +22,10 @@ class Ds1631
     private:
 
     int m_adresse;                                  // adresse i2c du 1631
-    int m_fd;                                       // file descriptor
+    i2c *deviceI2C;                                 // pointeur sur un objet i2c
     int m_config;                                   // la valeur du registre de configuration
 
-    float lireRegistre(char code);                  // fonction pour lire un registre
+    float lireRegistre(int code);                  // fonction pour lire un registre
     void  ecrireRegistre(char code, float valeur);  // fonction pour écrire un registre
 };
 

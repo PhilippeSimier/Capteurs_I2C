@@ -3,16 +3,15 @@
           : Les valeurs sont reçues sur l'entree standard
           : Via un formulaire par la  methode POST
   Autheur : SIMIER Philippe
-  Date    : Mai 2016
+  Date    : Février 2017
 
-  Compilation : g++ thermostat.cpp Ds1631.cpp -l wiringPI -o thermostat
+  Compilation : g++ thermostat.cpp Ds1631.cpp i2c.cpp -o thermostat
   puis          chmod +s thermostat
                 mv thermostat /usr/lib/cgi-bin/thermostat
 
 *************************************************************************/
 
-#include<cstdlib>
-#include <iostream>
+
 using namespace std;
 
 #include "Ds1631.h"
