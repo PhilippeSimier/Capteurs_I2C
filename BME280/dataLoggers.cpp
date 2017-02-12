@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 
     // insertion d'une mesure de température, pression & humidité dans la table dataBme280
     ostringstream sql;
-    sql << "INSERT INTO dataBme280(date, temperature, pression, humidite) VALUES (CURRENT_TIMESTAMP," << fixed << setprecision (2) << capteur.obtenirTemperatureEnC()<< "," <<  fixed << setprecision (2) << capteur.obtenirPression() << "," <<  fixed << setprecision (2) << capteur.obtenirHumidite()  << ")";
+    sql << "INSERT INTO dataBme280(date, temperature, pression, humidite) VALUES (CURRENT_TIMESTAMP," << fixed << setprecision (2) << capteur.obtenirTemperatureEnC()<< "," <<  fixed << setprecision (2) << capteur.obtenirPression0() << "," <<  fixed << setprecision (2) << capteur.obtenirHumidite()  << ")";
     stmt->execute(sql.str());
 
     delete stmt;
