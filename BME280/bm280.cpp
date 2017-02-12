@@ -13,7 +13,7 @@ bm280::bm280(int i2cAddress)  	// Le constructeur
   deviceI2C->WriteReg8(0xf2, 0x01); // humidity oversampling x 1
 
   deviceI2C->WriteReg8(0xf4, 0x25);   // pressure and temperature oversampling x 1, mode normal
-
+  h = -78.0;  // différence d'altitude avec le niveau de la mer
 
 }
 
@@ -158,27 +158,24 @@ float bm280::obtenirHumidite()
   return  h / 1024.0;
 }
 
-// retourne l'altitude en métres
+// retourne la pression avec réduction au niveau de la mer
+// Selon l'atmosphère standard internationale (ISA) ou atmosphère normalisée
+// (appelée aussi QNH en aviation) qui ne tient pas compte de la température réelle.
 
-float bm280::obtenirAltitudeEnMetres(){
-    //  Equation obtenue à partir du datasheet BMP180 (page 16):
-    //  http://www.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
-    //  http://forums.adafruit.com/viewtopic.php?f=22&t=58064
-    float pression =  obtenirPression();
-    return 44330.0 * (1.0 - pow(pression / MEAN_SEA_LEVEL_PRESSURE, 0.190294957));
+float bm280::obtenirPression0(){
+    float P = obtenirPression();
+    return P * ( pow(1.0 -(0.0065 * h/(273.15+15)), 5.255));
 }
 
-// retourne l'altitude en pieds
-
-float bm280::obtenirAltitudeEnPieds(){
-    float metre =  obtenirAltitudeEnMetres();
-    return metre * 3.28084;
-
+// h = différence d'altitude du capteur avec P (mètres), 
+// négatif pour les élévations, positif pour les dépressions (la Mer Morte par exemple)
+void bm280::donnerAltitude(float altitude){
+	this->h = altitude * -1;
 }
 
 // retourne la version de la classe
 void  bm280::version(){
 
-    cout << "\nBME280 PS Touchard Version 1.2\n" << endl;
+    cout << "\nBME280 PS Touchard Version 1.3\n" << endl;
 
 }

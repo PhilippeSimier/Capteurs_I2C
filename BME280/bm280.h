@@ -109,9 +109,9 @@ public:
     float obtenirPression();
     float obtenirHumidite();
 
-    // methode pour obtnir l'altitude en métre
-    float obtenirAltitudeEnMetres();
-    float obtenirAltitudeEnPieds();
+    // methode pour obtenir la pression au niveau de la mer
+    void  donnerAltitude(float h);
+    float obtenirPression0();
 
     // methode pour obtenir la version
     void  version();
@@ -123,6 +123,7 @@ private:
     i2c *deviceI2C;                   // file descriptor
     bme280_calib_data cal;           // calibration
     bme280_raw_data raw;             // les registres
+    float h;                         // différence d'altitude du capteur avec le niveau de la mer en m
     void readCalibrationData();
     void getRawData();
 };
