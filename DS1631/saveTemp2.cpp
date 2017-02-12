@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     Ds1631 capteur1(0x4F);
 
     driver = get_driver_instance();
-    connection = driver -> connect("localhost", "root", "toto");
+    connection = driver -> connect("localhost", "root", "jelbroet");
 
     stmt = connection->createStatement();
 

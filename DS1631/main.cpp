@@ -1,11 +1,11 @@
 /************************************************************************
   Sujet   : Affichage des valeurs  du thermostat Ds1631
           : Les valeurs sont envoyés sur la sortie standard
-          : au format Json
+          : au format Json.
   Autheur : SIMIER Philippe
-  Date    : Mai 2016
+  Date    : Février 2017
 
-  Compilation : g++ temperature.cpp Ds1631.cpp -l wiringPi -o temperature
+  Compilation : g++ temperature.cpp Ds1631.cpp i2c.cpp  -o temperature
   puis          chmod +s temperature
                 mv thermostat /usr/lib/cgi-bin/temperature
 
