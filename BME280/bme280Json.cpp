@@ -16,16 +16,16 @@ using namespace std;
 int main()
 {
     bm280 capteur;
+    float altitude = 74.0; // altitude ou se situe le capteur chez moi)
     cout << "Content-type: application/json" << endl << endl;
     cout << "{" << endl;
 
-    cout << "\"TemperatureC\":\"" << capteur.obtenirTemperatureEnC() << "\"," << endl;
-    cout << "\"TemperatureF\":\"" << capteur.obtenirTemperatureEnF() << "\"," << endl;
-    cout << "\"Pression\":\"" << capteur.obtenirPression() << "\","<< endl;
-    cout << "\"Humidite\":\"" << capteur.obtenirHumidite() << "\","<< endl;
-    cout << "\"AltitudeM\":\"" << capteur.obtenirAltitudeEnMetres() << "\","<< endl;
-    cout << "\"AltitudeF\":\"" << capteur.obtenirAltitudeEnPieds() << "\"" << endl;
-
+    capteur.donnerAltitude(altitude);
+    cout << "\"altitude\":\"" << altitude << " m\"," << endl;
+    cout << "\"TemperatureC\":\"" << fixed << setprecision (1) << capteur.obtenirTemperatureEnC() << " C\"," << endl;
+    cout << "\"TemperatureF\":\"" << fixed << setprecision (1) << capteur.obtenirTemperatureEnF() << " F\"," << endl;
+    cout << "\"Pression\":\"" << fixed << setprecision (1) << capteur.obtenirPression0() << " hPa\","<< endl;
+    cout << "\"Humidite\":\"" << fixed << setprecision (1) << capteur.obtenirHumidite() << " %\""<< endl;
     cout << "}" << endl;
     return 0;
 }
