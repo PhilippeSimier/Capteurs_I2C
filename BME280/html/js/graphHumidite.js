@@ -1,22 +1,22 @@
 $(function () {
 	var options = {
         chart: {
-            type: 'spline',
-			zoomType: 'x'
+			zoomType: 'x',
+			className: 'panel panel-info',
+			backgroundColor: '#F9F9F9'
         },
 		plotOptions: {
             spline: {
-                lineWidth: 2,
+                lineWidth: 2,   // épaisseur de la ligne
                 states: {
                     hover: {
                         lineWidth: 3
                     }
                 },
                 marker: {
-                    enabled: false
+                    enabled: false   // disable the point marker.
                 },
-                pointInterval: 600000, // 600s soit 10 min
-                pointStart: Date.parse("")
+                pointInterval: 600000 // pointInterval définit l'intervalle des valeurs sur x (600s soit 10 min)
             }
         },
 		title: {
@@ -28,7 +28,7 @@ $(function () {
             x: -20
         },
 		credits: {
-            text: '© Section SNIR Le Mans',
+            text: '© PST  Le Mans',
             href: 'http://philippes.ddns.net'
 		},
 		
@@ -89,72 +89,38 @@ $(function () {
                return s;
             }
         }
-	});		
+	});
 	
-	$.getJSON("humidite.php", function(json) {
-            console.log(json);
+	// fonction pour afficher les données json reçues sous forme graphique
+    function affiche( json ) {               	
+		console.log(json);
 			
-			options.series[0] 		= json.serie;
-			options.title.text 		= json.title;
-			options.subtitle.text 	= json.subtitle;
-			options.plotOptions.spline.pointStart = Date.parse(json.to);
-			$('#average').text(json.average);
-			$('#maxi').text(json.maxi);
-			$('#mini').text(json.mini);
-			$('#container').highcharts(options);
-		
-			
-        });
+		options.series[0] 		= json.serie;
+		options.title.text 		= json.title;
+		options.subtitle.text 	= json.subtitle;
+		options.plotOptions.spline.pointStart = Date.parse(json.to); // pointStart définit la première valeur de x ici se sera json.to.
+		$('#average').text(json.average);
+		$('#maxi').text(json.maxi);
+		$('#mini').text(json.mini);
+		$('#container').highcharts(options);
+	}
 	
+	// fonction pour lancer une requète AJAX à la fin du chargement de la page
+	$.getJSON("php/humidite.php", affiche);
+	
+	// fonction pour lancer une requéte AJAX quand on clique sur le btn id="jour"
 	$("#jour").click( function() {
-            $.get("humidite.php", 
-			function(json) {
-            console.log(json);
-			options.series[0] = json.serie;
-			options.title.text = json.title;
-			options.plotOptions.spline.pointStart = Date.parse(json.to);
-			$('#average').text(json.average);
-			$('#maxi').text(json.maxi);
-			$('#mini').text(json.mini);	
-			$('#container').highcharts(options);
-			
-        });	
-	});	
+        $.getJSON("php/humidite.php", affiche);	
+	});
 	
-	$("#semaine").click( function() {
-            $.get("humidite.php", 
-			{to: "uneSemaine"},
-			function(json) {
-            console.log(json);
-			options.series[0] = json.serie;
-			options.title.text = json.title;
-			options.plotOptions.spline.pointStart = Date.parse(json.to);
-			$('#average').text(json.average);
-			$('#maxi').text(json.maxi);
-			$('#mini').text(json.mini);	
-			$('#container').highcharts(options);
-			
-        });	
+	// fonction pour lancer une requéte AJAX quand on clique sur le btn id="semaine"	
+	$("#uneSemaine").click( function() {
+        $.getJSON("php/humidite.php", {to: "uneSemaine"}, affiche);	
 	});	
-	
-	$("#button").click( function() {
-			
-            $.get("humidite.php", 
-				{to: "troisJours"},
-				function(json) {
-				console.log(json);
-				options.series[0] = json.serie;
-				options.title.text = json.title;
-				options.plotOptions.spline.pointStart = Date.parse(json.to); 
-				$('#average').text(json.average);
-				$('#maxi').text(json.maxi);
-				$('#mini').text(json.mini);	
-				$('#container').highcharts(options);
-			
-			});
+
+    // fonction pour lancer une requéte AJAX quand on clique sur le btn id="troisJours" 	
+	$("#troisJours").click( function() {
+		$.getJSON("php/humidite.php", {to: "troisJours"}, affiche);
     });	
-	
-	
-    
-    
+		
 });

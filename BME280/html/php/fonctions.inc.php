@@ -47,6 +47,7 @@ function getTemperature($to) {
 	$options['to'] = strtr($to1, " ", "T");  //la date au format ISO 8601
 	
 	$data['name']  = "Temperature";
+	$data['type']  = "spline";	
 	$data['data']  = $valeur;
 	
 	$options[serie] = $data;
@@ -87,6 +88,7 @@ function getPression($to) {
 	$options['to'] = strtr($to1, " ", "T");  //la date au format ISO 8601
 	
 	$data['name']  = "Pression";
+	$data['type']  = "spline";	
 	$data['data']  = $valeur;
 	
 	$options[serie] = $data;
@@ -127,6 +129,7 @@ function getHumidite($to) {
 	$options['to'] = strtr($to1, " ", "T");  //la date au format ISO 8601
 	
 	$data['name']  = "Humidite";
+	$data['type']  = "spline";		
 	$data['data']  = $valeur;
 	
 	$options[serie] = $data;
