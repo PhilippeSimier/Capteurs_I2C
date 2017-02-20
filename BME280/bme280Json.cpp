@@ -22,7 +22,7 @@ int main()
 
     capteur.donnerAltitude(altitude);
     cout << "\"altitude\":\"" << altitude << " m\"," << endl;
-    cout << "\"TemperatureC\":\"" << fixed << setprecision (1) << capteur.obtenirTemperatureEnC() << " C\"," << endl;
+    cout << "\"TemperatureC\":\"" << fixed << setprecision (1) << capteur.obtenirTemperatureEnC() << " °C\"," << endl;
     cout << "\"TemperatureF\":\"" << fixed << setprecision (1) << capteur.obtenirTemperatureEnF() << " F\"," << endl;
     cout << "\"Pression\":\"" << fixed << setprecision (1) << capteur.obtenirPression0() << " hPa\","<< endl;
     cout << "\"Humidite\":\"" << fixed << setprecision (1) << capteur.obtenirHumidite() << " %\""<< endl;
