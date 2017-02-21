@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 
     capteur.donnerAltitude(74.0);   // initialisation de l'altitude du capteur
     driver = get_driver_instance();
-    connection = driver -> connect("localhost", "root", "jelbroet");
+    connection = driver -> connect("localhost", "root", "********");
 
     stmt = connection->createStatement();
 
