@@ -25,9 +25,15 @@ function getValeur($to, $from, $grandeur) {
 	$requete->bindParam(":from", $from);
     $requete->execute() or die(print_r($requete->errorInfo()));
 
-    $data = array();   
+    $data1 = array();
+    $data2 = array();
+    $data3 = array();
+
     while ($ligne = $requete->fetch()) {
-        array_push($data, $ligne[$grandeur]);
+        array_push($data1, $ligne['temperature']);
+		array_push($data2, $ligne['pression']);
+		array_push($data3, $ligne['humidite']);
+		
 		if(empty($debut)){     // on mémorise la première date retournée
 			$debut = $ligne['date'];
 		}	
@@ -55,17 +61,30 @@ function getValeur($to, $from, $grandeur) {
 
 	$options['title'] = "BME280 sur ".$_SERVER["SERVER_NAME"];
 	
-	$series = array();
-	
- 	if ($grandeur == 'temperature') {   $serie['name'] = "Température";  $tooltip[valueSuffix] = " °C"; }
-    if ($grandeur == 'pression')    {   $serie['name'] = "Pression";     $tooltip[valueSuffix] = " hPa";}
-    if ($grandeur == 'humidite')    {   $serie['name'] = "Humidité";     $tooltip[valueSuffix] = " %";  }
-    
+	$series = array();	
+	$tooltip[valueSuffix] = " °C"; 
+ 	$serie['name'] = "Température"; 
 	$serie['type']  = "spline";		
-	$serie['data']  = $data;
+	$serie['data']  = $data1;
 	$serie['tooltip'] = $tooltip;
-	
 	array_push($series, $serie);
+	
+ 	$tooltip[valueSuffix] = " hPa";
+	$serie['name'] = "Pression"; 
+	$serie['type']  = "spline";
+    $serie['yAxis'] = 1;	
+	$serie['data']  = $data2;
+	$serie['tooltip'] = $tooltip;
+	array_push($series, $serie);
+
+ 	$tooltip[valueSuffix] = " %";
+	$serie['name'] = "Humiditité"; 
+	$serie['type']  = "spline";
+    $serie['yAxis'] = 2;	
+	$serie['data']  = $data3;
+	$serie['tooltip'] = $tooltip;
+	array_push($series, $serie);	
+	
 	$options[series] = $series;
 	
 	$requete->closeCursor();

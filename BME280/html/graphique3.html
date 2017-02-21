@@ -12,7 +12,7 @@
 	<script src="//code.highcharts.com/modules/exporting.js"></script>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-    <script type="text/javascript" src="js/graphique.js"></script>
+    <script type="text/javascript" src="js/graphique3.js"></script>
 </head>
 
 <body>
@@ -68,10 +68,7 @@
 				  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Affichage
 				  <span class="caret"></span></button>
 				  <ul class="dropdown-menu">
-					<li><a id="temperature" href="#">Température</a></li>
-					<li><a id="pression" href="#">Pression</a></li>
-					<li><a id="humidite" href="#">Humidité</a></li>
-					<li><a id="combine" href="graphique3.html">Toutes</a></li>
+					<li><a id="temperature" href="graphique.html">Grandeurs Individuelles</a></li>
 				  </ul>
 			</div>
 			</section>
@@ -84,22 +81,9 @@
 		</div>
 		<div class="row">
 			<section class="col-sm-12" style="padding:10px;">
-				<div id="container" style="height: 450px; margin: 0 auto"></div>
+				<div id="graphique" style="height: 450px; margin: 0 auto"></div>
 			</section>
-			<section class="col-sm-12" style="padding:5px;"> 
-				<div class="row"  style="padding:5px;">
-					<section class="col-sm-6">
-						<div class="panel panel-info">
-							<h4 class="text-center">  
-							Mini :    <span id="mini"    class="label label-default"></span>
-							Maxi :    <span id="maxi"    class="label label-default"></span> 
-							Moyenne : <span id="average" class="label label-default"></span>
-							</h4>
-						</div>
-					</section>
-					
-				</div>	
-			</section>
+			
 		</div>		
     </div>
 </body>
