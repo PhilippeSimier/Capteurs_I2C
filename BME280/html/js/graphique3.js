@@ -140,27 +140,22 @@ $(function () {
 	// fonction pour lancer une requète AJAX au click sur pression
 	$("#pression").click( function() {
         grandeur = 'pression';
-//unite = ' hPa';
         cb(start,end);		
 	});
 	
 	// fonction pour lancer une requète AJAX au click sur temperature
 	$("#temperature").click( function() {
 		grandeur = 'temperature';
-//		unite = ' °C';
         cb(start,end);	
 	});
 
 	// fonction pour lancer une requète AJAX au click sur humidité
 	$("#humidite").click( function() {
  		grandeur = 'humidite';
-//		unite = ' %';
         cb(start,end);	       
 	});	
 	
-	// fonction pour afficher le datepicker
-
-
+	// fonction pour lancer la requete AJAX methode GET
 	function cb(debut, fin) {
 		start = debut;
 		end = fin;
@@ -168,20 +163,56 @@ $(function () {
 		$.getJSON("php/grandeur3.php", {to: debut.format('MMMM D, YYYY'), from: fin.format('MMMM D, YYYY'), grandeur:grandeur}, affiche);	
 	}
 
-			$('#reportrange').daterangepicker({
-				startDate: start,
-				endDate: end,
-				ranges: {
-				   'Today': [moment(), moment()],
-				   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-				   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-				   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-				   'This Month': [moment().startOf('month'), moment().endOf('month')],
-				   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-				}
-			}, cb);
+	$('#reportrange').daterangepicker({
+		"locale": {
+			"format": "DD/MM/YYYY",
+			"separator": " - ",
+			"applyLabel": "Appliquer",
+			"cancelLabel": "Annuler",
+			"fromLabel": "de",
+			"toLabel": "à",
+			"customRangeLabel": "Définir l'intervalle",
+			"weekLabel": "W",
+			"daysOfWeek": [
+				"Di",
+				"Lu",
+				"Ma",
+				"Me",
+				"Je",
+				"Ve",
+				"Sa"
+			],
+			"monthNames": [
+				"Janvier",
+				"Février",
+				"Mars",
+				"Avril",
+				"Mai",
+				"Juin",
+				"Juillet",
+				"Août",
+				"Septembre",
+				"Octobre",
+				"Novembre",
+				"Decembre"
+			],
+			"firstDay": 1
+		},
 
-			cb(start, end);
-			$('input[name="daterange"]').daterangepicker();
+		startDate: start,
+		endDate: end,
+		ranges: {
+		   'Aujourd\'hui': [moment(), moment()],
+		   'Hier': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		   'Derniers 7 jours': [moment().subtract(6, 'days'), moment()],
+		   'Derniers 30 jours': [moment().subtract(29, 'days'), moment()],
+		   'Ce mois': [moment().startOf('month'), moment().endOf('month')],
+		   'Mois précédent': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+		}
+				
+	}, cb);		
+
+    cb(start, end);
+	$('input[name="daterange"]').daterangepicker();
 		
 });
