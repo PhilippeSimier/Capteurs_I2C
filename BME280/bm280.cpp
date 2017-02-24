@@ -167,10 +167,30 @@ float bm280::obtenirPression0(){
     return P * ( pow(1.0 -(0.0065 * h/(273.15+15)), 5.255));
 }
 
-// h = différence d'altitude du capteur avec P (mètres), 
+// h = différence d'altitude du capteur avec P (mètres),
 // négatif pour les élévations, positif pour les dépressions (la Mer Morte par exemple)
 void bm280::donnerAltitude(float altitude){
 	this->h = altitude * -1;
+}
+
+// retourne la valeur du point de rosée
+float bm280::obtenirPointDeRosee(){
+    float ai = 7.45;
+    float bi = 235.0;
+    float z1, z2, z3, es, e, tau;
+
+    float t = obtenirTemperatureEnC();
+    float hum = obtenirHumidite();
+
+    z1=(ai*t)/(bi+t);
+    es = 6.1 *  exp(z1 * 2.3025851);
+    e  = es * hum/100;
+    z2 = e / 6.1;
+    z3 = 0.434292289 * log(z2);
+    tau= (235*z3)/(7.45-z3)*100;
+    tau= floor(tau)/100;
+
+    return tau;
 }
 
 // retourne la version de la classe

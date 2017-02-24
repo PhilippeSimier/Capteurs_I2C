@@ -21,6 +21,7 @@ int main()
     cout << " Pression         : " << fixed << setprecision (1) << capteur.obtenirPression() << " hPa"<< endl;
     cout << " Humidité         : " << fixed << setprecision (1) << capteur.obtenirHumidite() << " %"<< endl;
     cout << " Pression P0      : " << fixed << setprecision (1) << capteur.obtenirPression0() << " hPa"<< endl;
+    cout << " Point de rosée   : " << fixed << setprecision (1) << capteur.obtenirPointDeRosee() << " °C"<< endl;
     capteur.version();
     return 0;
 }

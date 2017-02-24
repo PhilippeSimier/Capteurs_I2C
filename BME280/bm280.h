@@ -113,6 +113,9 @@ public:
     void  donnerAltitude(float h);
     float obtenirPression0();
 
+    // méthode pour obtenir la valeur du point de rosée
+    float obtenirPointDeRosee();
+
     // methode pour obtenir la version
     void  version();
 
