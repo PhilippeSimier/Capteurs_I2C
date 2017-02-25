@@ -51,9 +51,9 @@ $(function () {
                 }
             },
             plotLines: [{
-                value: 0,
+                value: 1013,  // ligne grise pour la pression atmosphérique moyenne à 1013hPa
                 width: 1,
-                color: '#808080'
+                color: '#CCCCCC'
             }]
         },
 		tooltip: {
@@ -71,11 +71,10 @@ $(function () {
 			floating: true,
 			backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
 		},
-
-        series: []
+		series: []
     };
 
-    var start = moment().subtract(1, 'days');
+    var start = moment();
 	var end = moment();
 	var grandeur = 'pression';
 	var unite = ' hPa';
@@ -87,7 +86,15 @@ $(function () {
 			shortMonths: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil','Août', 'Sept', 'Oct', 'Nov', 'Déc'],
             decimalPoint: ',',
             resetZoom: 'Reset zoom',
-            resetZoomTitle: 'Reset zoom à 1:1'
+            resetZoomTitle: 'Reset zoom à 1:1',
+			downloadPNG: "Télécharger au format PNG image",
+            downloadJPEG: "Télécharger au format JPEG image",
+            downloadPDF: "Télécharger au format PDF document",
+            downloadSVG: "Télécharger au format SVG vector image",
+            exportButtonTitle: "Exporter image ou document",
+            printChart: "Imprimer le graphique",
+            loading: "Chargement...",
+			noData: "Aucune donnée à afficher"
             } 
 
 	});

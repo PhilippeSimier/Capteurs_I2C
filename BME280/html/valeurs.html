@@ -33,6 +33,7 @@
 				$('#pression').text(data.Pression);
 				$('#humidite').text(data.Humidite);
 				$('#altitude').text(data.altitude);
+				$('#pointRosee').text(data.PointRosee);
 			}	
 		
 			function requete_ajax(){
@@ -155,7 +156,11 @@
 					<div class="row">
 					    <div class="col-sm-6"><h3>Humidité:</h3></div>
 						<div class="col-sm-6"><h3><span id="humidite"></span></h3></div>
-					</div>									
+					</div>
+					<div class="row">
+					    <div class="col-sm-6"><h3>Point de rosée:</h3></div>
+						<div class="col-sm-6"><h3><span id="pointRosee"></span></h3></div>
+					</div>	
 				</div>
 			</section>
 			<section class="col-sm-6">
