@@ -15,10 +15,10 @@ int main()
     ina219 capteur;
 
     cout << "Capteur INA219" << endl;
-    cout << " Tension bus   : " << fixed << setprecision (3) << capteur.obtenirTensionEnV() << " V"<< endl;
-    cout << " Tension shunt : " << fixed << setprecision (3) << capteur.obtenirTensionShuntEnV() << " V"<< endl;
-    cout << " Courant bus   : " << fixed << setprecision (3) << capteur.obtenirCourantEnA() << " A"<< endl;
-    cout << " Puissance bus : " << fixed << setprecision (3) << capteur.obtenirPuissanceEnW() << " W"<< endl;
+    cout << " Tension bus   : " << fixed << setprecision (3) << capteur.obtenirTension_V() << " V"<< endl;
+    cout << " Tension shunt : " << fixed << setprecision (3) << capteur.obtenirTensionShunt_mV() << " mV"<< endl;
+    cout << " Courant bus   : " << fixed << setprecision (3) << capteur.obtenirCourant_A() << " A"<< endl;
+    cout << " Puissance bus : " << fixed << setprecision (3) << capteur.obtenirPuissance_W() << " W"<< endl;
     capteur.version();
     return 0;
 }
