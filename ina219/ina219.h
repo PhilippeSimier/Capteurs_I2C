@@ -31,7 +31,7 @@
     #define BADCRES_9BIT              (0x0080)  // 9-bit bus res = 0..511
     #define BADCRES_10BIT             (0x0100)  // 10-bit bus res = 0..1023
     #define BADCRES_11BIT             (0x0200)  // 11-bit bus res = 0..2047
-    #define BADCRES_12BIT             (0x0400)  // 12-bit bus res = 0..4097
+    #define BADCRES_12BIT             (0x0400)  // 12-bit bus res = 0..4095
 
     #define SADCRES_MASK              (0x0078)  // Shunt ADC Resolution and Averaging Mask
     #define SADCRES_9BIT_1S_84US      (0x0000)  // 1 x 9-bit shunt sample

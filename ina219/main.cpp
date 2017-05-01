@@ -12,14 +12,21 @@ using namespace std;
 
 int main()
 {
-    ina219 capteur;
+    	ina219 capteur;
+	float U,I;
 
-    cout << "Capteur INA219" << endl;
-    cout << " Tension bus   : " << fixed << setprecision (3) << capteur.obtenirTension_V() << " V"<< endl;
-    cout << " Tension shunt : " << fixed << setprecision (3) << capteur.obtenirTensionShunt_mV() << " mV"<< endl;
-    cout << " Courant bus   : " << fixed << setprecision (3) << capteur.obtenirCourant_A() << " A"<< endl;
-    cout << " Puissance bus : " << fixed << setprecision (3) << capteur.obtenirPuissance_W() << " W"<< endl;
-    capteur.version();
+	system("clear");
+    	cout << "Capteur INA219" << endl;
+
+	U = capteur.obtenirTension_V();
+	I = capteur.obtenirTensionShunt_mV()/100;    // I = U/R   avec R = 100 mOhms
+        cout << " Tension bus   : " << fixed << setprecision (3) << U  << " V"<< endl;
+        cout << " Tension shunt : " << fixed << setprecision (3) << capteur.obtenirTensionShunt_mV() << " mV"<< endl;
+        cout << " Courant bus   : " << fixed << setprecision (3) << I << " A"<< endl;
+        cout << " Puissance bus : " << fixed << setprecision (3) << U*I << " W"<< endl;
+
+
+capteur.version();
     return 0;
 }
 
