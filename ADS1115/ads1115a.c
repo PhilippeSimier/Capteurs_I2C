@@ -1,19 +1,17 @@
-// ads1115b.c read pot on ANC1
-// output value in volts exit program.
-// uses one-shot mode
-// pull up resistors in module caused problems
-// used level translator - operated ADS1115 at 5V
-// by Lewis Loflin lewis@bvu.net
-// www.bristolwatch.com
+// ads1115b.c lecture tension sur curseur potentiomètre on ANC1
+// Affichage de la valeur en volts
+// uses one-shot mod
 // http://www.bristolwatch.com/rpi/ads1115.html
+// compilation gcc ads1115.c lm
 
 #include <stdio.h>
-#include <sys/types.h> // open
-#include <sys/stat.h>  // open
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>     // open
 #include <unistd.h>    // read/write usleep
 #include <stdlib.h>    // exit
 #include <inttypes.h>  // uint8_t, etc
+#include <math.h>
 #include <linux/i2c-dev.h> // I2C bus definitions
 
 int fd;
@@ -23,7 +21,7 @@ int16_t val;
 uint8_t writeBuf[3];
 uint8_t readBuf[2];
 
-float myfloat;
+float volt;
 
 const float VPS = 4.096 / 32768.0; //volts par pas
 
@@ -99,10 +97,11 @@ while(1){
 
   	if (val < 0)   val = 0;
 
-  	myfloat = val * VPS; // convert to voltage
+  	volt = val * VPS; // conversion en volt
+	volt = ceil(volt*1000)/1000;
 	system("clear");
-  	printf("Values: HEX 0x%02x DEC %d reading %4.3f volts.\n",
-                val, val, myfloat);
+  	printf("Values: HEX 0x%02x DEC %d reading %4.3f V\n",
+                val, val, volt);
 	sleep(1);
   }
   close(fd);
