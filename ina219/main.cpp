@@ -17,14 +17,17 @@ int main()
 	float U,Us,I;
 
     	cout << "Capteur INA219" << endl;
-
+       while(1){
 	U = capteur.obtenirTension_V();
 	Us = capteur.obtenirTensionShunt_mV();
         I = Us/100.0;  // I = U/R   avec R = 100 mOhms
-        cout << " Tension bus   : " << fixed << setprecision (3) << U  << " V"<< endl;
-        cout << " Tension shunt : " << fixed << setprecision (3) << Us << " mV"<< endl;
-        cout << " Courant bus   : " << fixed << setprecision (3) << I << " A"<< endl;
-        cout << " Puissance bus : " << fixed << setprecision (3) << U*I << " W"<< endl;
+        cout << " Tension bus   : " << fixed << setprecision (3) << U  << " V" << endl;
+        cout << " Tension shunt : " << fixed << setprecision (3) << Us << " mV" << endl;
+        cout << " Courant bus   : " << fixed << setprecision (3) << I << " A" << endl;
+        cout << " Puissance bus : " << fixed << setprecision (3) << U*I << " W" << endl << endl;
+	sleep(1);
+        system("clear");
+       }
 
 
 capteur.version();

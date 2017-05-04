@@ -18,14 +18,14 @@
     #define REG_CALIBRATION 0x05
 
     #define BVOLTAGERANGE_MASK        (0x2000)  // Bus Voltage Range Mask
-    #define BVOLTAGERANGE_16V         (0x0000)  // 0-16V Range
-    #define BVOLTAGERANGE_32V         (0x2000)  // 0-32V Range
+    #define BVOLTAGERANGE_16V         (0x0000)  // plage 0-16V
+    #define BVOLTAGERANGE_32V         (0x2000)  // plage 0-32V
 
-    #define GAIN_MASK                 (0x1800)  // Gain Mask
-    #define GAIN_1_40MV               (0x0000)  // Gain 1, 40mV Range
-    #define GAIN_2_80MV               (0x0800)  // Gain 2, 80mV Range
-    #define GAIN_4_160MV              (0x1000)  // Gain 4, 160mV Range
-    #define GAIN_8_320MV              (0x1800)  // Gain 8, 320mV Range
+    #define GAIN_MASK                 (0x1800)  // Gain Masque
+    #define GAIN_1                    (0x0000)  // Gain 1, plage 40mV
+    #define GAIN_2	              (0x0800)  // Gain 2, plage 80mV
+    #define GAIN_4	              (0x1000)  // Gain 4, plage 160mV
+    #define GAIN_8	              (0x1800)  // Gain 8, plage 320mV
 
     #define BADCRES_MASK              (0x0780)  // Bus ADC Resolution Mask
     #define BADCRES_9BIT              (0x0080)  // 9-bit bus res = 0..511
@@ -34,13 +34,13 @@
     #define BADCRES_12BIT             (0x0400)  // 12-bit bus res = 0..4095
 
     #define SADCRES_MASK              (0x0078)  // Shunt ADC Resolution and Averaging Mask
-    #define SADCRES_9BIT_1S_84US      (0x0000)  // 1 x 9-bit shunt sample
-    #define SADCRES_10BIT_1S_148US    (0x0008)  // 1 x 10-bit shunt sample
-    #define SADCRES_11BIT_1S_276US    (0x0010)  // 1 x 11-bit shunt sample
-    #define SADCRES_12BIT_1S_532US    (0x0018)  // 1 x 12-bit shunt sample
-    #define SADCRES_12BIT_2S_1060US   (0x0048)	// 2 x 12-bit shunt samples averaged together
-    #define SADCRES_12BIT_4S_2130US   (0x0050)  // 4 x 12-bit shunt samples averaged together
-    #define SADCRES_12BIT_8S_4260US   (0x0058)  // 8 x 12-bit shunt samples averaged together
+    #define SADCRES_9BIT_1S           (0x0000)  // 1 x 9-bit shunt sample 84us
+    #define SADCRES_10BIT_1S          (0x0008)  // 1 x 10-bit shunt sample 148 us
+    #define SADCRES_11BIT_1S          (0x0010)  // 1 x 11-bit shunt sample 276 us
+    #define SADCRES_12BIT_1S          (0x0018)  // 1 x 12-bit shunt sample 532 us
+    #define SADCRES_12BIT_2S          (0x0048)	// 2 x 12-bit shunt samples averaged together 1060us
+    #define SADCRES_12BIT_4S          (0x0050)  // 4 x 12-bit shunt samples averaged together 2130us
+    #define SADCRES_12BIT_8S   	      (0x0058)  // 8 x 12-bit shunt samples averaged together 4260us
     #define SADCRES_12BIT_16S_8510US  (0x0060)  // 16 x 12-bit shunt samples averaged together
     #define SADCRES_12BIT_32S_17MS    (0x0068)  // 32 x 12-bit shunt samples averaged together
     #define SADCRES_12BIT_64S_34MS    (0x0070)  // 64 x 12-bit shunt samples averaged together
