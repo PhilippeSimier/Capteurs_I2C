@@ -10,12 +10,12 @@
 
 #define ADRESSE_I2C_DEFAUT              0x40  // adresse I2C par défaut pour ina219
 //Adresse des Registres internes du composant
-#define REG_CONFIG      0x00
-#define REG_SHUNT       0x01
-#define REG_BUS         0x02
-#define REG_POWER       0x03
-#define REG_CURRENT     0x04
-#define REG_CALIBRATION 0x05
+    #define REG_CONFIG      0x00
+    #define REG_SHUNT       0x01
+    #define REG_BUS         0x02
+    #define REG_POWER       0x03
+    #define REG_CURRENT     0x04
+    #define REG_CALIBRATION 0x05
 
     #define BVOLTAGERANGE_MASK        (0x2000)  // Bus Voltage Range Mask
     #define BVOLTAGERANGE_16V         (0x0000)  // 0-16V Range
@@ -63,7 +63,7 @@ class ina219
 
     public:
     // le constructeur
-    ina219(int i2cAddress=ADRESSE_I2C_DEFAUT);
+    ina219(int i2cAddress=ADRESSE_I2C_DEFAUT, float _quantum=4.0495);
     // le destructeur
     ~ina219();
     // Les méthodes pour lire la tension et le courant du bus
@@ -72,9 +72,11 @@ class ina219
     float obtenirPuissance_W();
     float obtenirTensionShunt_mV();
     void  version();
-    private:
 
+    private:
     i2c *deviceI2C;                   // file descriptor
+    float quantum;		      // la valeur du Quantum en mV
+    float shunt;		      // la valeur du shunt en ohm
 };
 
 #endif // INA219_H_INCLUDED
