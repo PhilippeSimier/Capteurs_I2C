@@ -10,7 +10,7 @@
 *  Execution : Pour executer périodiquement toutes les 10 minutes
               Ajouter avec crontab
 ********************************************************************************************/
-  //  */10 * * * * /home/pi/cplus/saveTemp
+  //  */10 * * * * /home/pi/Capteur_I2C/ina219/dataLoggers
 /*******************************************************************************************/
 
 #include <iostream>
