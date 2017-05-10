@@ -41,10 +41,10 @@
     #define SADCRES_12BIT_2S          (0x0048)	// 2 x 12-bit shunt samples averaged together 1060us
     #define SADCRES_12BIT_4S          (0x0050)  // 4 x 12-bit shunt samples averaged together 2130us
     #define SADCRES_12BIT_8S   	      (0x0058)  // 8 x 12-bit shunt samples averaged together 4260us
-    #define SADCRES_12BIT_16S_8510US  (0x0060)  // 16 x 12-bit shunt samples averaged together
-    #define SADCRES_12BIT_32S_17MS    (0x0068)  // 32 x 12-bit shunt samples averaged together
-    #define SADCRES_12BIT_64S_34MS    (0x0070)  // 64 x 12-bit shunt samples averaged together
-    #define SADCRES_12BIT_128S_69MS   (0x0078)  // 128 x 12-bit shunt samples averaged together
+    #define SADCRES_12BIT_16S         (0x0060)  // 16 x 12-bit shunt samples averaged together 8510us
+    #define SADCRES_12BIT_32S         (0x0068)  // 32 x 12-bit shunt samples averaged together 17ms
+    #define SADCRES_12BIT_64S	      (0x0070)  // 64 x 12-bit shunt samples averaged together 34 ms
+    #define SADCRES_12BIT_128S	      (0x0078)  // 128 x 12-bit shunt samples averaged together 69 ms
 
     #define MODE_MASK                 (0x0007)  // Operating Mode Mask
     #define MODE_POWERDOWN            (0x0000)
