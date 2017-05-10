@@ -9,8 +9,9 @@
 *  Compilation :  g++ dataloggers.cpp i2c.cpp  ina219.cpp -lmysqlcppconn -o dataLoggers
 *  Execution : Pour executer périodiquement toutes les 10 minutes
               Ajouter avec crontab
+		en tant que super utilisateur (sudo crontab -e)
 ********************************************************************************************/
-  //  */10 * * * * /home/pi/Capteur_I2C/ina219/dataLoggers
+  //  */10 * * * * /home/pi/Capteurs_I2C/ina219/dataLoggers
 /*******************************************************************************************/
 
 #include <iostream>
