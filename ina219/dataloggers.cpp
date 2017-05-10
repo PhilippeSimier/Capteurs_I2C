@@ -1,6 +1,18 @@
 /*******************************************************************************************
-*   Compilation :  g++ dataloggers.cpp i2c.cpp  ina219.cpp -lmysqlcppconn -o dataLoggers
-*******************************************************************************************/
+* Sujet	: Programme pour enregistrer les valeurs tension courant puissance batterie
+*         dans la table batterie de la base de données MySQL Valeurs
+*  langage   : C++
+*  Auteur 	: SIMIER Philippe
+*  Date   	: Mai 2017
+*  Prérequis : sudo apt-get install libmysqlcppconn-dev
+*
+*  Compilation :  g++ dataloggers.cpp i2c.cpp  ina219.cpp -lmysqlcppconn -o dataLoggers
+*  Execution : Pour executer périodiquement toutes les 10 minutes
+              Ajouter avec crontab
+********************************************************************************************/
+  //  */10 * * * * /home/pi/cplus/saveTemp
+/*******************************************************************************************/
+
 #include <iostream>
 #include <sstream>
 #include <iomanip>
