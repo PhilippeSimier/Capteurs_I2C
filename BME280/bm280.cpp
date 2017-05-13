@@ -12,7 +12,7 @@ bm280::bm280(int i2cAddress)  	// Le constructeur
   readCalibrationData();
   deviceI2C->WriteReg8(0xf2, 0x01); // humidity oversampling x 1
 
-  deviceI2C->WriteReg8(0xf4, 0x25);   // pressure and temperature oversampling x 1, mode normal
+  deviceI2C->WriteReg8(0xf4, 0x27);   // pressure and temperature oversampling x 1, mode normal
   h = -78.0;  // différence d'altitude avec le niveau de la mer
 
 }

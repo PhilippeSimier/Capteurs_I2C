@@ -6,6 +6,7 @@
 *******************************************************************************************/
 
 #include <iostream>
+#include <unistd.h>
 #include "ina219.h"
 
 using namespace std;
@@ -14,17 +15,23 @@ int main()
 {
 	system("clear");
     	ina219 capteur;
-	float U,Us,I;
+	float u,us,i,p;
+        float en = 0.0; // l'energie en J (Ws)
+        int t = 1;  // période d'échantillonage (1s)
 
     	cout << "Capteur INA219" << endl;
        while(1){
-	U = capteur.obtenirTension_V();
-	Us = capteur.obtenirTensionShunt_mV();
-        I = Us/100.0;  // I = U/R   avec R = 100 mOhms
-        cout << " Tension bus   : " << fixed << setprecision (3) << U  << " V" << endl;
-        cout << " Tension shunt : " << fixed << setprecision (3) << Us << " mV" << endl;
-        cout << " Courant bus   : " << fixed << setprecision (3) << I << " A" << endl;
-        cout << " Puissance bus : " << fixed << setprecision (3) << U*I << " W" << endl << endl;
+	u = capteur.obtenirTension_V();
+	us = capteur.obtenirTensionShunt_mV();
+        i = us/100.0;  // I = U/R   avec R = 100 mOhms
+        p = u*i;
+	en += p*t;
+
+        cout << " Tension bus   : " << fixed << setprecision (3) << u  << " V" << endl;
+        cout << " Tension shunt : " << fixed << setprecision (3) << us << " mV" << endl;
+        cout << " Courant bus   : " << fixed << setprecision (3) << i << " A" << endl;
+        cout << " Puissance bus : " << fixed << setprecision (3) << p << " W" << endl;
+	cout << " Energie       : " << fixed << setprecision (3) << en / 3.6 << " mWh" << endl;
 	sleep(1);
         system("clear");
        }

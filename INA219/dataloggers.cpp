@@ -11,7 +11,7 @@
               Ajouter avec crontab
 		en tant que super utilisateur (sudo crontab -e)
 ********************************************************************************************/
-  //  */10 * * * * /home/pi/Capteurs_I2C/ina219/dataLoggers
+  //  */10 * * * * /home/pi/Capteurs_I2C/INA219/dataLoggers
 /*******************************************************************************************/
 
 #include <iostream>
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 
 
     driver = get_driver_instance();
-    connection = driver -> connect("localhost", "root", "toto");
+    connection = driver -> connect("localhost", "root", "liberte");
 
     stmt = connection->createStatement();
 
