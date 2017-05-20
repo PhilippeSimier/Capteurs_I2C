@@ -44,14 +44,16 @@ int main(int argc, char* argv[]) {
     Statement *stmt;
     ResultSet *res;
     PreparedStatement *pstmt;
+    ina219 *capteur;
+
     float energie = 0.0;
     float u,i,p;
     time_t date, now;
     double t;
 
-    ina219 capteur;   // déclaration d'un ina219 à l'adresse par défaut 0x40
-    u = capteur.obtenirTension_V();
-    i = capteur.obtenirCourant_A();
+    capteur = new ina219();   // déclaration d'un capteur de type ina219 à l'adresse par défaut 0x40
+    u = capteur->obtenirTension_V();
+    i = capteur->obtenirCourant_A();
     p = u*i;
 
     driver = get_driver_instance();
@@ -88,6 +90,7 @@ int main(int argc, char* argv[]) {
     delete res;
     connection -> close();
     delete connection;
+    delete capteur;
     cout << "Done bye" << endl;
     return 0;
 }
