@@ -23,6 +23,7 @@
 #include <cppconn/statement.h>
 #include <time.h>
 
+
 #include "ina219.h"
 
 using namespace std;
@@ -35,6 +36,7 @@ time_t dateToTimeStamp(std::string dateString){
     memset(&tm, 0, sizeof(tm));
 
     strptime(dateString.c_str(), "%Y-%m-%d %T", &tm);
+    tm.tm_isdst = -1;    // because not set by strptime();
     return mktime(&tm);
 }
 
@@ -49,7 +51,7 @@ int main(int argc, char* argv[]) {
     float energie = 0.0;
     float u,i,p;
     time_t date, now;
-    double t;
+    time_t t;
 
     capteur = new ina219();   // déclaration d'un capteur de type ina219 à l'adresse par défaut 0x40
     u = capteur->obtenirTension_V();
@@ -75,8 +77,11 @@ int main(int argc, char* argv[]) {
     if (res->next()){
 	date = dateToTimeStamp(res->getString("date"));
     	energie = std::stof(res->getString("energie"));
-	time(&now);  // obtenir le  current time
-	t = difftime(now,date) + 3600; // la différence entre maintenant et la date de la dernière mesure
+	now = time(NULL);  // obtenir le  current time
+            printf("now = %d\n", now);
+            printf("date = %d\n", date);
+	t = now - date; // la différence entre maintenant et la date de la dernière mesure
+	    printf("t = %d\n", t);
 	energie += p * (float)t / 3.6;   // L'énergie en mWh  3600J = 1Wh  donc 3.6J = 1mWh
     }
 
