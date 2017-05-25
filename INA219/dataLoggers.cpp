@@ -29,16 +29,6 @@
 using namespace std;
 using namespace sql;
 
-/* fonction pour convertir une chaîne date en timeStamp */
-time_t dateToTimeStamp(std::string dateString){
-
-    struct tm tm;
-    memset(&tm, 0, sizeof(tm));
-
-    strptime(dateString.c_str(), "%Y-%m-%d %T", &tm);
-    tm.tm_isdst = -1;    // because not set by strptime();
-    return mktime(&tm);
-}
 
 int main(int argc, char* argv[]) {
     Driver* driver;
@@ -73,16 +63,14 @@ int main(int argc, char* argv[]) {
     stmt->execute("CREATE TABLE IF NOT EXISTS batterie ( id int(11) NOT NULL AUTO_INCREMENT, courantBus float NOT NULL, tensionBus float NOT NULL, puissanceBus float NOT NULL, energie float NOT NULL, date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id))");
 
     // Lecture de la dernière valeur de l'énergie enregistrée
-    res = stmt->executeQuery("SELECT energie , date FROM batterie ORDER BY id DESC LIMIT 1");
+    res = stmt->executeQuery("SELECT energie ,UNIX_TIMESTAMP(date) as date FROM batterie ORDER BY id DESC LIMIT 1");
     if (res->next()){
-	date = dateToTimeStamp(res->getString("date"));
     	energie = std::stof(res->getString("energie"));
-	now = time(NULL);  // obtenir le  current time
-            printf("now = %d\n", now);
-            printf("date = %d\n", date);
-	t = now - date; // la différence entre maintenant et la date de la dernière mesure
-	    printf("t = %d\n", t);
+
+	t = time(NULL) - res->getInt("date"); // la différence entre maintenant et la date de la dernière mesure
+	printf("temps écoulé : %d\n", t);
 	energie += p * (float)t / 3.6;   // L'énergie en mWh  3600J = 1Wh  donc 3.6J = 1mWh
+        printf("energie : %f mWh\n", energie);
     }
 
 
