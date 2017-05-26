@@ -28,11 +28,13 @@ function getValeur($to, $from, $grandeur) {
     $data1 = array();
     $data2 = array();
     $data3 = array();
+    $data4 = array();	
 
     while ($ligne = $requete->fetch()) {
         array_push($data1, $ligne['temperature']);
 		array_push($data2, $ligne['pression']);
 		array_push($data3, $ligne['humidite']);
+		array_push($data4, $ligne['pointDeRosee']);
 		
 		if(empty($debut)){     // on mémorise la première date retournée
 			$debut = $ligne['date'];
@@ -82,6 +84,14 @@ function getValeur($to, $from, $grandeur) {
 	$serie['type']  = "spline";
     $serie['yAxis'] = 2;	
 	$serie['data']  = $data3;
+	$serie['tooltip'] = $tooltip;
+	array_push($series, $serie);
+
+ 	$tooltip[valueSuffix] = " °C";
+	$serie['name'] = "Point de Rosée"; 
+	$serie['type']  = "spline";
+    $serie['yAxis'] = 0;	
+	$serie['data']  = $data4;
 	$serie['tooltip'] = $tooltip;
 	array_push($series, $serie);	
 	

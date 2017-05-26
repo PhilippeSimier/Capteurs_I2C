@@ -35,6 +35,7 @@ int main(int argc, char* argv[]) {
     float energie;
     float u,i,p;
     float t = 600.0;    // la période d'échantillonage 10 min soit 600s
+    string date;
 
     ina219 capteur;   // déclaration d'un ina219 à l'adresse par défaut 0x40
     u = capteur.obtenirTension_V();
@@ -56,9 +57,11 @@ int main(int argc, char* argv[]) {
     stmt->execute("CREATE TABLE IF NOT EXISTS batterie ( id int(11) NOT NULL AUTO_INCREMENT, courantBus float NOT NULL, tensionBus float NOT NULL, puissanceBus float NOT NULL, energie float NOT NULL, date datetime NOT NULL, PRIMARY KEY (id))");
 
     // Lecture de la dernière valeur de l'énergie enregistrée
-    res = stmt->executeQuery("SELECT energie FROM batterie ORDER BY id DESC LIMIT 1");
+    res = stmt->executeQuery("SELECT energie,date FROM batterie ORDER BY id DESC LIMIT 1");
     if (res->next()){
     	energie = std::stof(res->getString("energie"));
+        date = res->getString("date");
+        cout << date << " : " << energie << "mWh" << endl;
     }
     energie += p * t / 3.6;   // L'énergie en mWh  3600J = 1Wh  donc 3.6J = 1mWh
 
