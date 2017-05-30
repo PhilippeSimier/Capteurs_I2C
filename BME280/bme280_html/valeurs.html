@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Quelle température fait-il ?</title>
+        <title>Météo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -26,7 +26,6 @@
 	
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script type="text/javascript">
-		
 			function affiche( data ) {               // fonction pour afficher les données reçues
 				console.log(data);                   // affichage de data dans la console
 				$('#temperature').text(data.TemperatureC); 
@@ -43,10 +42,12 @@
 					affiche 
 				);
 			}
-			
+				
 			$(document).ready(function(){
+								
 			    $.getJSON("/cgi-bin/bme280Json", affiche); // affichage des données quand la page est dispo
-				setInterval(requete_ajax, 2000);  // appel de la fonction requete_ajax toutes les 2 secondes
+				setInterval(requete_ajax, 10000);  // appel de la fonction requete_ajax toutes les 10 secondes
+				//setInterval("requete_ajax()", 10000);  écriture alternative  possible avec une chaîne "requete_ajax()"
 			});
 		</script>
   </head>
@@ -82,6 +83,7 @@
 						</ul>
 					</li>
 					<li><a href="/gmaps.html">Google Map</a></li>
+					<li><a href="/thingspeak.html">ThingSpeak</a></li>
 					<li><a href="/phpmyadmin">phpMyAdmin</a></li>
                     <li><a href="https://github.com/PhilippeSimier">GitHub</a></li>
                 </ul>
