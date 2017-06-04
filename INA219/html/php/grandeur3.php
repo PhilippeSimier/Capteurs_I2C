@@ -17,7 +17,7 @@ function connexionBD() {
     return $bdd;
 }
 
-function getValeur($to, $from, $grandeur) {
+function getValeur($to, $from) {
     $bdd = connexionBD();
 
     $requete = $bdd->prepare("SELECT * FROM `batterie` WHERE date BETWEEN :to AND :from ORDER BY `id` ASC;");
@@ -32,31 +32,19 @@ function getValeur($to, $from, $grandeur) {
 
     while ($ligne = $requete->fetch()) {
 	    
-        array_push($data1, $ligne['courantBus']);
+        array_push($data1, round($ligne['courantBus'], 2));
 		
-		array_push($data2, $ligne['tensionBus']);
+		array_push($data2, round($ligne['tensionBus'], 2));
 		
-		array_push($data3, $ligne['puissanceBus']);
+		array_push($data3, round($ligne['puissanceBus'], 2));
 		
-		array_push($data4, $ligne['energie']);
+		array_push($data4, round($ligne['energie'], 2));
 
 		if(empty($debut)){     // on mémorise la première date retournée
 			$debut = $ligne['date'];
 		}
     }
-	$sql = "SELECT avg(".$grandeur.") as average, min(".$grandeur.") as mini, max(".$grandeur.") as maxi FROM `batterie` WHERE date BETWEEN :to AND :from";
-	$requete = $bdd->prepare($sql);
-    $requete->bindParam(":to", $to);
-	$requete->bindParam(":from", $from);
-    $requete->execute() or die(print_r($requete->errorInfo()));
-	$ligne = $requete->fetch();
 
-	$options['average'] =  round($ligne['average'], 1);
-	$options['maxi']    =  round($ligne['maxi'], 1);
-	$options['mini']    =  round($ligne['mini'], 1);
-
-
-//	$to1 = substr($to, 0, -6)."+0000";
     $to1 = $debut."+0000";
 	$options['to'] = strtr($to1, " ", "T");  //la date au format ISO 8601 (remplace l'espace par un T)
 
@@ -65,12 +53,13 @@ function getValeur($to, $from, $grandeur) {
 	$debut = new DateTime($debut);
 	$options['subtitle'] = "du ".$debut->format('d/m/Y')." au ".$from->format('d/m/Y');
 
-	$options['title'] = "INA219 sur ".$_SERVER["SERVER_NAME"];
+	$options['title'] = "BATTERIE sur ".$_SERVER["SERVER_NAME"];
 
 	$series = array();
 	$tooltip[valueSuffix] = " A";
  	$serie['name'] = "Courant";
 	$serie['type']  = "spline";
+	    $serie['yAxis'] = 0;
 	$serie['data']  = $data1;
 	$serie['tooltip'] = $tooltip;
 	array_push($series, $serie);
@@ -86,7 +75,7 @@ function getValeur($to, $from, $grandeur) {
  	$tooltip[valueSuffix] = " W";
 	$serie['name'] = "Puissance";
 	$serie['type']  = "spline";
-    	$serie['yAxis'] = 2;
+    	$serie['yAxis'] = 0;
 	$serie['data']  = $data3;
 	$serie['tooltip'] = $tooltip;
 	array_push($series, $serie);
@@ -94,7 +83,7 @@ function getValeur($to, $from, $grandeur) {
  	$tooltip[valueSuffix] = " mWh";
 	$serie['name'] = "Energie";
 	$serie['type']  = "spline";
-        $serie['yAxis'] = 0;
+        $serie['yAxis'] = 2;
 	$serie['data']  = $data4;
 	$serie['tooltip'] = $tooltip;
 	array_push($series, $serie);
@@ -112,10 +101,8 @@ if (!empty($_GET['to']) || !empty($_GET['from'])){
 	$to = new DateTime($_GET['to']);
 	$from = new DateTime($_GET['from']);
 	$from->add(new DateInterval('PT24H'));
-	if (empty($_GET['grandeur'])){
-		$_GET['grandeur']= "tensionBus";
-	}
-    getValeur($to->format('Y-m-d H:00:00P'), $from->format('Y-m-d H:00:00P'), $_GET['grandeur']);
+
+    getValeur($to->format('Y-m-d H:00:00P'), $from->format('Y-m-d H:00:00P'));
 
 }
 else{
@@ -126,10 +113,8 @@ else{
 	// on retire 24 heures avec la methode sub de DateTime
 	$de->sub(new DateInterval('PT24H'));
 	// on tronque $to à l'heure entière
-	if (empty($_GET['grandeur'])){
-		$_GET['grandeur']= "tensionBus";
-	}
-	getValeur($de->format('Y-m-d H:00:00P'), $a->format('Y-m-d H:00:00P'), $_GET['grandeur']);
+	
+	getValeur($de->format('Y-m-d H:00:00P'), $a->format('Y-m-d H:00:00P'));
 
 }
 

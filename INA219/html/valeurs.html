@@ -30,10 +30,13 @@
 		
 			function affiche( data ) {               // fonction pour afficher les données reçues
 				console.log(data);                   // affichage de data dans la console
-				$('#tension').text(data.tension); 
-				$('#courant').text(data.courant);
-				$('#puissance').text(data.puissance);
-				energie += (parseFloat(data.puissance) * 1.0)/3.6;
+				$('#tension').text(data.u + " " + data.uniteU); 
+				$('#courant').text(data.i + " " + data.uniteI);
+				$('#puissance').text(data.p + " " + data.uniteP);
+				if (data.unitP === "W")
+					energie += (parseFloat(data.p) * 1.0)/3.6;
+				else 
+					energie += (parseFloat(data.p) * 1.0)/3600;
 				$('#energie').text(energie.toFixed(2) + " mWh");
 			}	
 		

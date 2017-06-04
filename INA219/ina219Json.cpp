@@ -2,6 +2,7 @@
 *   Programme exemple mise en oeuvre du ina219
 *   sujet : Renvoie les valeurs mesurées par le capteur ina219 au format JSON
 *           Les différentes valeures sont envoyées sur la sortie standard
+*	    avec une précison de deux chiffres après la virgule.
 *   Auteur : Philippe SIMIER (SNIR Touchard le Mans)
 *   Date   : 25 Mai 2017
 *   Compilation  : g++ ina219Json.cpp ina219.cpp i2c.cpp -o ina219Json
@@ -25,9 +26,20 @@ int main()
     cout << "Content-type: application/json" << endl << endl;
 
     cout << "{" << endl;
-    cout << "\"tension\":\"" << fixed << setprecision (2) << u << " V\"," << endl;
-    cout << "\"courant\":\"" << fixed << setprecision (2) << i << " A\"," << endl;
-    cout << "\"puissance\":\"" << fixed << setprecision (2) << p << " W\""<< endl;
+    cout << "\"u\": " << fixed << setprecision (2) << u << "," << endl;
+    cout << "\"uniteU\" : \"V\"," << endl;
+    if (i > 1){
+    	cout << "\"i\":" << fixed << setprecision (2) << i << "," << endl;
+        cout << "\"uniteI\" : \"A\"," << endl;
+	cout << "\"p\":" << fixed << setprecision (2) << p << "," << endl;
+	cout << "\"uniteP\" : \"W\"" << endl;
+    }
+    else{
+	cout << "\"i\":" << fixed << setprecision (2) << i * 1000 << "," << endl;
+        cout << "\"uniteI\" : \"mA\"," << endl;
+	cout << "\"p\":" << fixed << setprecision (2) << p * 1000 << "," << endl;
+	cout << "\"uniteP\" : \"mW\"" << endl;
+    }
     cout << "}" << endl;
 
     delete capteur;

@@ -75,15 +75,15 @@ $(function () {
 				gridLineWidth: 0,
 				
 				title: {
-					text: 'Puissance',
+					text: 'Energie',
 					style: {
-						color: Highcharts.getOptions().colors[2]
+						color: Highcharts.getOptions().colors[3]
 					}
 				},
 				labels: {
 					format: '{value}',
 					style: {
-						color: Highcharts.getOptions().colors[2]
+						color: Highcharts.getOptions().colors[3]
 					}
 				},
 				opposite: true
