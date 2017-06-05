@@ -15,15 +15,19 @@ using namespace std;
 
 ina219::ina219(int i2cAddress, float  _quantum)  // Le constructeur  calibration 32V 2A
 {
-  deviceI2C = new i2c(i2cAddress);
-  deviceI2C->WriteReg16(REG_CONFIG, 0x0080);   // reset
-  deviceI2C->WriteReg16(REG_CALIBRATION , 4096);  // écriture du registre de calibration
-  uint16_t config;
-  config  = BVOLTAGERANGE_32V | GAIN_8 | BADCRES_12BIT | SADCRES_12BIT_32S | MODE_SANDBVOLT_CONTINUOUS;
-  config = ((config & 0x00FF) << 8) | ((config & 0xFF00) >> 8);  // inversion msb lsb
+    deviceI2C = new i2c(i2cAddress);
+    deviceI2C->WriteReg16(REG_CONFIG, 0x0080);   // reset
 
-  deviceI2C->WriteReg16(REG_CONFIG, config);
-  quantum = _quantum;
+    short rc = 4096;
+    rc = ((rc & 0x00FF) << 8) | ((rc & 0xFF00) >> 8);
+    deviceI2C->WriteReg16(REG_CALIBRATION , rc);  // écriture du registre de calibration
+
+    uint16_t config;
+    config  = BVOLTAGERANGE_32V | GAIN_8 | BADCRES_12BIT | SADCRES_12BIT_32S | MODE_SANDBVOLT_CONTINUOUS;
+    config = ((config & 0x00FF) << 8) | ((config & 0xFF00) >> 8);  // inversion msb lsb
+    deviceI2C->WriteReg16(REG_CONFIG, config);
+
+    quantum = _quantum;
 }
 
 ina219::~ina219()		//le Destructeur
@@ -59,8 +63,11 @@ float ina219::obtenirTensionShunt_mV(){ // la tension aux bornes du shunt 0.01 o
 float ina219::obtenirCourant_A(){
 
     short data;
-    deviceI2C->WriteReg16(REG_CALIBRATION , 4096);  // écriture du registre de calibration
+    short rc = 4096;
+    rc = ((rc & 0x00FF) << 8) | ((rc & 0xFF00) >> 8);
+    deviceI2C->WriteReg16(REG_CALIBRATION , rc);  // écriture du registre de calibration
     data = deviceI2C->ReadReg16(REG_CURRENT);
+    data = ((data & 0x00FF) << 8) | ((data & 0xFF00) >> 8); // inversion msb lsb
     return (float)data * 100E-6;   // 100 micro Ampere par bit
 
 }
@@ -70,6 +77,7 @@ float ina219::obtenirPuissance_W(){
     short data;
 
     data = deviceI2C->ReadReg16(REG_POWER);
+    data = ((data & 0x00FF) << 8) | ((data & 0xFF00) >> 8); // inversion msb lsb
     return (float)data * 2E-3;     // 2 mW par bit
 
 

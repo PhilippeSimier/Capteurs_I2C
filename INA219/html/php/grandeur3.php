@@ -32,13 +32,13 @@ function getValeur($to, $from) {
 
     while ($ligne = $requete->fetch()) {
 	    
-        array_push($data1, round($ligne['courantBus'], 2));
+        array_push($data1, round($ligne['courantBus'] * 1000, 1)); // le courant en mA
 		
-		array_push($data2, round($ligne['tensionBus'], 2));
+		array_push($data2, round($ligne['tensionBus'], 3)); // la tension en V
 		
-		array_push($data3, round($ligne['puissanceBus'], 2));
+		array_push($data3, round($ligne['puissanceBus'] * 1000, 1)); // la puissance en mW
 		
-		array_push($data4, round($ligne['energie'], 2));
+		array_push($data4, round($ligne['energie'], 0));  // l'energie en mWh 
 
 		if(empty($debut)){     // on mémorise la première date retournée
 			$debut = $ligne['date'];
@@ -56,7 +56,7 @@ function getValeur($to, $from) {
 	$options['title'] = "BATTERIE sur ".$_SERVER["SERVER_NAME"];
 
 	$series = array();
-	$tooltip[valueSuffix] = " A";
+	$tooltip[valueSuffix] = " mA";
  	$serie['name'] = "Courant";
 	$serie['type']  = "spline";
 	    $serie['yAxis'] = 0;
@@ -72,7 +72,7 @@ function getValeur($to, $from) {
 	$serie['tooltip'] = $tooltip;
 	array_push($series, $serie);
 
- 	$tooltip[valueSuffix] = " W";
+ 	$tooltip[valueSuffix] = " mW";
 	$serie['name'] = "Puissance";
 	$serie['type']  = "spline";
     	$serie['yAxis'] = 0;
