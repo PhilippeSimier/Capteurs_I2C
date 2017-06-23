@@ -23,7 +23,7 @@ ina219::ina219(int i2cAddress, float  _quantum)  // Le constructeur  calibration
     deviceI2C->WriteReg16(REG_CALIBRATION , rc);  // écriture du registre de calibration
 
     uint16_t config;
-    config  = BVOLTAGERANGE_32V | GAIN_8 | BADCRES_12BIT | SADCRES_12BIT_32S | MODE_SANDBVOLT_CONTINUOUS;
+    config  = BVOLTAGERANGE_32V | GAIN_8 | BADCRES_12BIT | SADCRES_12BIT_128S | MODE_SANDBVOLT_CONTINUOUS;
     config = ((config & 0x00FF) << 8) | ((config & 0xFF00) >> 8);  // inversion msb lsb
     deviceI2C->WriteReg16(REG_CONFIG, config);
 
