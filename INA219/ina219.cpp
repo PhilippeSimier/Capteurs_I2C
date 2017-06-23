@@ -1,11 +1,19 @@
-/**
-  Pour comprendre la calibration du INA219
-  sachez que la conversion se fait sur 12 bits (2 exp 12 = 4096)
+/**************************************************************************
+/*!
+    @file     ina219.cpp
+    @author   Philippe SIMIER (Touchard Wahington le Mans)
+    @license  BSD (see license.txt)
 
-  L'ADC peut mesurer des tensions comprises entre ± 40mV (± pour la mesure du courant bidirectionnel).
-  le PGA est un diviseur de tension programmable par 1, 2, 4, or 8
-  Cela donne à l'INA219 une plage effective de ± 40 mV, ± 80 mV, ± 160mV, ou ± 320mV respectivement.
-  http://cdwilson.us/articles/understanding-the-INA219
+    Pour comprendre la calibration du INA219
+    la conversion se fait sur 12 bits (2 exp 12 = 4096)
+
+    L'ADC peut mesurer des tensions comprises entre ± 40mV (± pour la mesure du courant bidirectionnel).
+    le PGA est un diviseur de tension programmable par 1, 2, 4, or 8
+    Cela donne à l'INA219 une plage effective de ± 40 mV, ± 80 mV, ± 160mV, ou ± 320mV respectivement.
+    http://cdwilson.us/articles/understanding-the-INA219
+
+    @section  HISTORY
+    v1.0 - First release
 
 */
 #include "ina219.h"
@@ -13,7 +21,17 @@
 
 using namespace std;
 
-ina219::ina219(int i2cAddress, float  _quantum)  // Le constructeur  calibration 32V 2A
+/*!
+    @brief  Instantiates a new INA219 class
+            and Configures to INA219 to be able to measure up to 32V and 2A
+            of current.  Each unit of current corresponds to 100uA, and
+            each unit of power corresponds to 2mW. Counter overflow
+            occurs at 3.2A.
+
+    @note   These calculations assume a 0.1 ohm resistor is present
+*/
+
+ina219::ina219(int i2cAddress, float  _quantum)
 {
     deviceI2C = new i2c(i2cAddress);
     deviceI2C->WriteReg16(REG_CONFIG, 0x0080);   // reset
@@ -29,12 +47,20 @@ ina219::ina219(int i2cAddress, float  _quantum)  // Le constructeur  calibration
 
     quantum = _quantum;
 }
+/*!
+    @brief  destructor
 
-ina219::~ina219()		//le Destructeur
+*/
+
+ina219::~ina219()
 {
    if (deviceI2C != NULL)
         delete deviceI2C;
 }
+
+/*!
+    @brief  Gets the raw bus voltage (float)
+*/
 
 float ina219::obtenirTension_V(){   // La tension sur le bus d'alimentation en V
 
@@ -49,6 +75,10 @@ float ina219::obtenirTension_V(){   // La tension sur le bus d'alimentation en V
 
 }
 
+/*!
+    @brief  Gets the shunt voltage in mili volts
+*/
+
 float ina219::obtenirTensionShunt_mV(){ // la tension aux bornes du shunt 0.01 ohm en mV
 
     float shuntVoltage;
@@ -59,6 +89,10 @@ float ina219::obtenirTensionShunt_mV(){ // la tension aux bornes du shunt 0.01 o
     shuntVoltage = 9.76E-3 * (float)data;   // 9,765625  microV par bit
     return shuntVoltage;
 }
+
+/*!
+    @brief  Gets the current value in Ampere (float)
+*/
 
 float ina219::obtenirCourant_A(){
 
@@ -72,6 +106,11 @@ float ina219::obtenirCourant_A(){
 
 }
 
+/*!
+    @brief  Gets the current power in Watt (float)
+*/
+
+
 float ina219::obtenirPuissance_W(){
 
     short data;
@@ -83,9 +122,13 @@ float ina219::obtenirPuissance_W(){
 
 }
 
-// retourne la version de la classe
+
+/*!
+    @brief  Gets the current version of the class
+*/
+
 void  ina219::version(){
 
-    cout << "\nINA219 PS Touchard Version 1.1\n" << endl;
+    cout << "\nINA219 PS Touchard Version 1.0\n" << endl;
 
 }
