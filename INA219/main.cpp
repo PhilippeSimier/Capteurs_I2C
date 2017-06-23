@@ -13,34 +13,27 @@ using namespace std;
 
 int main()
 {
-	system("clear");
-    	ina219 capteur;
-	float u,us,i,p;
-        float ic, pc;
-        float en = 0.0; // l'energie en J (Ws)
-        int t = 1;  // période d'échantillonage (1s)
+    system("clear");
+    ina219 capteur;
 
-    	cout << "Capteur INA219" << endl;
-       while(1){
-	u = capteur.obtenirTension_V();
-	us = capteur.obtenirTensionShunt_mV();
-        ic = capteur.obtenirCourant_A();
-        pc = capteur.obtenirPuissance_W();
+    float en = 0.0; // l'energie en J (Ws)
+    int t = 2;  // période d'échantillonage (2s)
 
-        p = u*ic;
-	en += p*t;
+    cout << "Capteur INA219" << endl;
+    while(1){
 
-        cout << " Tension bus   : " << fixed << setprecision (3) << u  << " V" << endl;
-        cout << " Tension shunt : " << fixed << setprecision (3) << us << " mV" << endl;
-        cout << " Courant bus   : " << fixed << setprecision (3) << ic << " A" << endl;
-        cout << " Puissance bus : " << fixed << setprecision (3) << p << " W" << endl;
+        cout << " Tension bus   : " << fixed << setprecision (3) << capteur.obtenirTension_V()  << " V" << endl;
+        cout << " Tension shunt : " << fixed << setprecision (3) << capteur.obtenirTensionShunt_mV() << " mV" << endl;
+        cout << " Courant bus   : " << fixed << setprecision (3) << capteur.obtenirCourant_A() << " A" << endl;
+        cout << " Puissance bus : " << fixed << setprecision (3) << capteur.obtenirPuissance_W() << " W" << endl;
+	en += capteur.obtenirPuissance_W() * t;
 	cout << " Energie       : " << fixed << setprecision (3) << en / 3.6 << " mWh" << endl;
-	sleep(1);
+	sleep(t);
         system("clear");
        }
 
 
-capteur.version();
+    capteur.version();
     return 0;
 }
 
