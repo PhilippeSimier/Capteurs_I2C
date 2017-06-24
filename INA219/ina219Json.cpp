@@ -40,7 +40,7 @@ int main()
     cout << "\"u\": " << fixed << setprecision (2) << u << "," << endl;
     cout << "\"uniteU\" : \"V\"," << endl;
 
-    if (i > 1){
+    if (i < -1 || i > 1){
     	cout << "\"i\":" << fixed << setprecision (2) << i << "," << endl;
         cout << "\"uniteI\" : \"A\"," << endl;
     }
@@ -49,7 +49,7 @@ int main()
         cout << "\"uniteI\" : \"mA\"," << endl;
     }
 
-    if (p > 1){
+    if (p < -1 || p > 1){
     	cout << "\"p\":" << fixed << setprecision (2) << p << "," << endl;
     	cout << "\"uniteP\" : \"W\"" << endl;
     }
