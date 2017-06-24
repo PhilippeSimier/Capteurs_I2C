@@ -1,3 +1,20 @@
+/**************************************************************************
+/*!
+    @file     ina219.h
+    @author   Philippe SIMIER (Touchard Wahington le Mans)
+    @license  BSD (see license.txt)
+
+    Pour comprendre la calibration du INA219
+    la conversion se fait sur 12 bits (2 exp 12 = 4096)
+    L'ADC peut mesurer des tensions comprises entre ± 40mV (± pour la mesure du courant bidirectionnel).
+    le PGA est un diviseur de tension programmable par 1, 2, 4, or 8
+    Cela donne à l'INA219 une plage effective de ± 40 mV, ± 80 mV, ± 160mV, ou ± 320mV respectivement.
+    http://cdwilson.us/articles/understanding-the-INA219
+
+    @section  HISTORY
+    v1.0 - First release
+*/
+
 #ifndef INA219_H_INCLUDED
 #define INA219_H_INCLUDED
 
