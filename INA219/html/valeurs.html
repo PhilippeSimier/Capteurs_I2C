@@ -33,7 +33,7 @@
 				$('#tension').text(data.u + " " + data.uniteU); 
 				$('#courant').text(data.i + " " + data.uniteI);
 				$('#puissance').text(data.p + " " + data.uniteP);
-				if (data.unitP === "W")
+				if (data.uniteP === "W")
 					energie += (parseFloat(data.p) * 1.0)/3.6;
 				else 
 					energie += (parseFloat(data.p) * 1.0)/3600;
