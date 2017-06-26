@@ -1,19 +1,19 @@
 /**************************************************************************
 /*!
-    @file     ina219.cpp
-    @author   Philippe SIMIER (Touchard Wahington le Mans)
-    @license  BSD (see license.txt)
+    \file     ina219.cpp
+    \author   Philippe SIMIER (Touchard Wahington le Mans)
+    \license  BSD (see license.txt)
 
-    Pour comprendre la calibration du INA219
-    la conversion se fait sur 12 bits (2 exp 12 = 4096)
+    \brief    Classe pour le composant i2c  INA219
+    \detail   Pour comprendre la calibration du INA219
+    	la conversion se fait sur 12 bits (2 exp 12 = 4096)
 
-    L'ADC peut mesurer des tensions comprises entre ± 40mV (± pour la mesure du courant bidirectionnel).
-    le PGA est un diviseur de tension programmable par 1, 2, 4, or 8
-    Cela donne à l'INA219 une plage effective de ± 40 mV, ± 80 mV, ± 160mV, ou ± 320mV respectivement.
-    http://cdwilson.us/articles/understanding-the-INA219
+    	L'ADC peut mesurer des tensions comprises entre ± 40mV (± pour la mesure du courant bidirectionnel).
+    	le PGA est un diviseur de tension programmable par 1, 2, 4, or 8
+    	Cela donne à l'INA219 une plage effective de ± 40 mV, ± 80 mV, ± 160mV, ou ± 320mV respectivement.
+    	http://cdwilson.us/articles/understanding-the-INA219
 
-    @section  HISTORY
-    v1.0 - First release
+    \version    1.0 - First release
 
 */
 #include "ina219.h"
@@ -23,7 +23,7 @@ using namespace std;
 
 /*!
     @brief  Instantiates a new INA219 class
-            and Configures to INA219 to be able to measure up to 32V and 2A
+            and Configures to INA219 to be able to measure up to 32V and 3.2A
             of current.  Each unit of current corresponds to 100uA, and
             each unit of power corresponds to 2mW. Counter overflow
             occurs at 3.2A.
@@ -59,10 +59,24 @@ ina219::~ina219()
 }
 
 /*!
+    @brief  Set calibration at 16V
+*/
+
+void ina219::fixerCalibration_16V(){
+
+    uint16_t config;
+    config  = BVOLTAGERANGE_16V | GAIN_8 | BADCRES_12BIT | SADCRES_12BIT_128S | MODE_SANDBVOLT_CONTINUOUS;
+    config = ((config & 0x00FF) << 8) | ((config & 0xFF00) >> 8);  // inversion msb lsb
+    deviceI2C->WriteReg16(REG_CONFIG, config);
+
+
+}
+
+/*!
     @brief  Gets the raw bus voltage (float)
 */
 
-float ina219::obtenirTension_V(){   // La tension sur le bus d'alimentation en V
+float ina219::obtenirTension_V(){
 
     float vb;
     unsigned short data;

@@ -1,9 +1,10 @@
 /**************************************************************************
 /*!
-    @file     ina219.h
-    @author   Philippe SIMIER (Touchard Wahington le Mans)
-    @license  BSD (see license.txt)
-
+    \file     ina219.h
+    \author   Philippe SIMIER (Touchard Wahington le Mans)
+    \license  BSD (see license.txt)
+    \brief    Classe pour le composant I2C ina219
+    \detail
     Pour comprendre la calibration du INA219
     la conversion se fait sur 12 bits (2 exp 12 = 4096)
     L'ADC peut mesurer des tensions comprises entre ± 40mV (± pour la mesure du courant bidirectionnel).
@@ -11,8 +12,7 @@
     Cela donne à l'INA219 une plage effective de ± 40 mV, ± 80 mV, ± 160mV, ou ± 320mV respectivement.
     http://cdwilson.us/articles/understanding-the-INA219
 
-    @section  HISTORY
-    v1.0 - First release
+    \version  v1.0 - First release
 */
 
 #ifndef INA219_H_INCLUDED
@@ -89,6 +89,7 @@ class ina219
     float obtenirPuissance_W();
     float obtenirTensionShunt_mV();
     void  version();
+    void  fixerCalibration_16V();
 
     private:
     i2c *deviceI2C;                   // file descriptor
