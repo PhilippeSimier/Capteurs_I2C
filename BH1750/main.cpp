@@ -27,7 +27,7 @@ int main()
     cout << "Capteur luminosité" << endl;
 
     while(1){
-	cout << "Luminosité : " << fixed << setprecision (3) << capteur.obtenirLuminosite_Lux()  << " Lux" << endl;
+	cout << "Luminosité : " << fixed << setprecision (0) << capteur.obtenirLuminosite_Lux()  << " lx" << endl;
         sleep(1);
 
     }
