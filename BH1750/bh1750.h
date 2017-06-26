@@ -1,6 +1,9 @@
 #ifndef BH1750_H_INCLUDED
 #define BH1750_H_INCLUDED
 
+#include "i2c.h"
+#include <unistd.h>
+
 #define ADRESSE_I2C_DEFAUT              0x23  // adresse I2C par défaut pour bh1750
 
 // No active state
