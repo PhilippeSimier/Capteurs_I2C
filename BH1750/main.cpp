@@ -4,7 +4,7 @@
     \author   Philippe SIMIER (Touchard Wahington le Mans)
     \license  BSD (see license.txt)
     \date     26 Juin 2017
-    \brief    Programme exemple mise en oeuvre du capteur de luminosité bh170
+    \brief    Programme exemple mise en oeuvre du capteur d'éclairement lumineux bh170
     \details
 	compilation : g++ main.cpp i2c.cpp  bh1750.cpp -o main
 
@@ -24,10 +24,15 @@ int main()
     system("clear");
     bh1750 capteur;
 
-    cout << "Capteur luminosité" << endl;
+    cout << "Capteur d'éclairement" << endl;
+
+    capteur.activer();
+    capteur.reset();
+
 
     while(1){
-	cout << "Luminosité : " << fixed << setprecision (0) << capteur.obtenirLuminosite_Lux()  << " lx" << endl;
+        capteur.configurer(BH1750_CONTINUOUS_HIGH_RES_MODE_2);
+	cout << "Eclairement : " << fixed << setprecision (1) << capteur.obtenirLuminosite_Lux()  << " lx" << endl;
         sleep(1);
 
     }

@@ -44,11 +44,18 @@ class bh1750
     bh1750(int i2cAddress=ADRESSE_I2C_DEFAUT);
     // le destructeur
     ~bh1750();
-    // methode pour lire la luninosité
+    // méthode pour lire la valeur de l'éclairement
     float obtenirLuminosite_Lux();
+    // méthode pour configurer le mode
+    void configurer(int mode=BH1750_ONE_TIME_HIGH_RES_MODE_2);
+    void activer(void);
+    void desactiver(void);
+    void reset(void);
+
 
     private:
     i2c *deviceI2C;
+    float resolution;
 
 };
 
