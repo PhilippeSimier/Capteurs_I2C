@@ -83,8 +83,8 @@ float ina219::obtenirTension_V(){
 
     data = deviceI2C->ReadReg16(REG_BUS);
     data = ((data & 0x00FF) << 8) | ((data & 0xFF00) >> 8); // inversion msb lsb
-    // printf("%X",data >> 3); à décommenter pour  évaluer le quantum expérimentalement
-    vb = (data >> 3) * quantum/1000.0;  // decalage de 3 bits vers la droite 4.0495 mv par bit
+    //printf("%d\n",data >> 3); // à décommenter pour  évaluer le quantum expérimentalement
+    vb = (data >> 3) * quantum/1000.0;  // decalage de 3 bits vers la droite 4.000 mv par bit
     return vb;
 
 }
@@ -147,10 +147,10 @@ float ina219::obtenirBatterieSOC(){
      // electrodes and inter-connections.
      // Ra is the resistance of the electrochemical path including the electrolyte and the separator.
      // The internal resistance of a galvanic cell is temperature dependent
-     // here we take 0.85 Ohm at 25 °C
+     // here I take Ra+Rm = 0.85 Ohm at 25 °C
      float ResistanceInt = 0.85;
      float fem = ina219::obtenirTension_V() - ResistanceInt * ina219::obtenirCourant_A();
-     float soc = ina219::map(fem, 11.9, 13.9, 0, 100);
+     float soc = ina219::map(fem, 11.6, 13.6, 0, 100);
      if (soc > 100) soc = 100;
      if (soc < 0)   soc = 0;
      return soc;

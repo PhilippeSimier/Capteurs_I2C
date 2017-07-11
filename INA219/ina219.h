@@ -80,7 +80,7 @@ class ina219
 
     public:
     // le constructeur
-    ina219(int i2cAddress=ADRESSE_I2C_DEFAUT, float _quantum=4.0495);
+    ina219(int i2cAddress=ADRESSE_I2C_DEFAUT, float _quantum=3.991);
     // le destructeur
     ~ina219();
     // Les méthodes pour lire la tension et le courant du bus
