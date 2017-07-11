@@ -88,6 +88,9 @@ class ina219
     float obtenirCourant_A();
     float obtenirPuissance_W();
     float obtenirTensionShunt_mV();
+    // fonction pour obtenir l'état de charge d'une batterie (plomb acide 12V)
+    // SOC  State Of Charge
+    float obtenirBatterieSOC();
     void  version();
     void  fixerCalibration_16V();
 
@@ -95,6 +98,8 @@ class ina219
     i2c *deviceI2C;                   // file descriptor
     float quantum;		      // la valeur du Quantum en mV
     float shunt;		      // la valeur du shunt en ohm
+    // Fonction pour réaliser une adaptation d'échelle de valeur
+    float map(float x, float in_min, float in_max, float out_min, float out_max);
 };
 
 #endif // INA219_H_INCLUDED

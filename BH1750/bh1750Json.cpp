@@ -6,7 +6,8 @@
     \date   : mardi 27 Juin 2017
 
     \brief    Programme exemple mise en oeuvre du bh1750
-    \details  Renvoie la valeur mesurée par le capteur bh1750 au format JSON
+    \details  Renvoie la valeur de l'éclairement  mesurée par
+              le capteur bh1750 au format JSON
               Les différentes valeures sont envoyées sur la sortie standard.
     Compilation  : g++ bh1750Json.cpp bh1750.cpp i2c.cpp -o bh1750Json
     Installation : sudo chown root bh1750Json
@@ -33,7 +34,7 @@ int main()
     cout << "Content-type: application/json" << endl << endl;
 
     cout << "{" << endl;
-    cout << "\"luninosite\": " << fixed << setprecision (0) << level << "," << endl;
+    cout << "\"Eclairement\": " << fixed << setprecision (0) << level << "," << endl;
     cout << "\"unite\" : \"lx\"" << endl;
     cout << "}" << endl;
 

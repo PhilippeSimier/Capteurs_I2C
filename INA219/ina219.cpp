@@ -136,6 +136,26 @@ float ina219::obtenirPuissance_W(){
 
 }
 
+float ina219::map(float x, float in_min, float in_max, float out_min, float out_max){
+
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
+}
+
+float ina219::obtenirBatterieSOC(){
+     // Rm is the resistance of the metallic path through the cell including the terminals,
+     // electrodes and inter-connections.
+     // Ra is the resistance of the electrochemical path including the electrolyte and the separator.
+     // The internal resistance of a galvanic cell is temperature dependent
+     // here we take 0.85 Ohm at 25 °C
+     float ResistanceInt = 0.85;
+     float fem = ina219::obtenirTension_V() - ResistanceInt * ina219::obtenirCourant_A();
+     float soc = ina219::map(fem, 11.9, 13.9, 0, 100);
+     if (soc > 100) soc = 100;
+     if (soc < 0)   soc = 0;
+     return soc;
+
+}
 
 /*!
     @brief  Gets the current version of the class
@@ -143,6 +163,6 @@ float ina219::obtenirPuissance_W(){
 
 void  ina219::version(){
 
-    cout << "\nINA219 PS Touchard Version 1.0\n" << endl;
+    cout << "\nINA219 PSR Touchard Version 1.0\n" << endl;
 
 }

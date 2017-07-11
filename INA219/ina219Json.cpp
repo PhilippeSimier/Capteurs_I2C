@@ -33,6 +33,7 @@ int main()
     float u = capteur->obtenirTension_V();
     float i = capteur->obtenirCourant_A();
     float p = u*i;
+    float soc = capteur->obtenirBatterieSOC();
 
     cout << "Content-type: application/json" << endl << endl;
 
@@ -51,13 +52,16 @@ int main()
 
     if (p < -1 || p > 1){
     	cout << "\"p\":" << fixed << setprecision (2) << p << "," << endl;
-    	cout << "\"uniteP\" : \"W\"" << endl;
+    	cout << "\"uniteP\" : \"W\"," << endl;
     }
     else{
         cout << "\"p\":" << fixed << setprecision (2) << p * 1000 << "," << endl;
-        cout << "\"uniteP\" : \"mW\"" << endl;
+        cout << "\"uniteP\" : \"mW\"," << endl;
 
     }
+    cout << "\"soc\": " << fixed << setprecision (0) << soc << "," << endl;
+    cout << "\"uniteSOC\" : \"%\"" << endl;
+
     cout << "}" << endl;
 
     delete capteur;

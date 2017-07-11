@@ -40,6 +40,7 @@ int main()
         cout << " Tension shunt : " << fixed << setprecision (3) << capteur.obtenirTensionShunt_mV() << " mV" << endl;
         cout << " Courant bus   : " << fixed << setprecision (3) << capteur.obtenirCourant_A() << " A" << endl;
         cout << " Puissance bus : " << fixed << setprecision (3) << capteur.obtenirPuissance_W() << " W" << endl;
+        cout << " Batterie SOC  : " << fixed << setprecision (0) << capteur.obtenirBatterieSOC() << " %" << endl;
 	en += capteur.obtenirPuissance_W() * t;
 	cout << " Energie       : " << fixed << setprecision (3) << en / 3.6 << " mWh" << endl;
 	sleep(t);
