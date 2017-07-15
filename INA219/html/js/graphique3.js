@@ -57,7 +57,7 @@ $(function () {
 			}, { // Secondary yAxis
 				gridLineWidth: 0,
 				title: {
-					text: 'Tension',
+					text: 'Tension & Puissance',
 					style: {
 						color: Highcharts.getOptions().colors[1]
 					},
@@ -75,7 +75,7 @@ $(function () {
 				gridLineWidth: 0,
 				
 				title: {
-					text: 'Energie',
+					text: 'Charge',
 					style: {
 						color: Highcharts.getOptions().colors[3]
 					}
@@ -142,8 +142,8 @@ $(function () {
 		options.title.text 	= json.title;
 		options.plotOptions.spline.pointStart = Date.parse(json.to); // pointStart définit la première valeur de x ici se sera json.to.
 		chart = Highcharts.chart('graphique', options );
-		chart.series[3].hide();  // le point de rosée n'est pas affiché par défaut.
-		chart.series[2].hide();  // l'humidité n'est pas affichée par défaut.
+		chart.series[1].hide();  // la tension n'est pas affiché par défaut.
+		chart.series[0].hide();  // le courant n'est pas affichée par défaut.
 		
 	}
 	

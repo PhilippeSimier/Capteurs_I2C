@@ -38,14 +38,14 @@ int main(int argc, char* argv[]) {
     PreparedStatement *pstmt;
     ina219 *capteur;
 
-    float energie = 0.0;
+    float charge = 0.0;
     float u,i,p;
     time_t date, now;
     time_t t;
 
     capteur = new ina219();   // déclaration d'un capteur de type ina219 à l'adresse par défaut 0x40
     u = capteur->obtenirTension_V();
-    i = capteur->obtenirTensionShunt_mV() / 100.0; //i = capteur->obtenirCourant_A();
+    i = capteur->obtenirCourant_A();
     p = u*i;
 
     driver = get_driver_instance();
@@ -60,23 +60,23 @@ int main(int argc, char* argv[]) {
     stmt->execute("USE Valeurs");
 
     //creation de la table batterie si elle n'existe pas
-    stmt->execute("CREATE TABLE IF NOT EXISTS batterie ( id int(11) NOT NULL AUTO_INCREMENT, courantBus float NOT NULL, tensionBus float NOT NULL, puissanceBus float NOT NULL, energie float NOT NULL, date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id))");
+    stmt->execute("CREATE TABLE IF NOT EXISTS batterie ( id int(11) NOT NULL AUTO_INCREMENT, courantBus float NOT NULL, tensionBus float NOT NULL, puissanceBus float NOT NULL, charge float NOT NULL, date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (id))");
 
-    // Lecture de la dernière valeur de l'énergie enregistrée
-    res = stmt->executeQuery("SELECT energie ,UNIX_TIMESTAMP(date) as date FROM batterie ORDER BY id DESC LIMIT 1");
+    // Lecture de la dernière valeur de la charge enregistrée
+    res = stmt->executeQuery("SELECT charge ,UNIX_TIMESTAMP(date) as date FROM batterie ORDER BY id DESC LIMIT 1");
     if (res->next()){
-    	energie = std::stof(res->getString("energie"));
+    	charge = std::stof(res->getString("charge"));
 
 	t = time(NULL) - res->getInt("date"); // la différence entre maintenant et la date de la dernière mesure
 	printf("temps écoulé : %d\n", t);
-	energie += p * (float)t / 3.6;   // L'énergie en mWh  3600J = 1Wh  donc 3.6J = 1mWh
-        printf("energie : %f mWh\n", energie);
+	charge += i * (float)t / 3.6;   // La charge en Ah  1 mAh = 3.6 C
+        printf("charge : %f mAh\n", charge);
     }
 
 
     // insertion des mesures de tensionBus, courantBus , PuissanceBus , energie dans la table batterie
     ostringstream sql;
-    sql << "INSERT INTO batterie(tensionBus, courantBus, PuissanceBus, energie) VALUES (" << u << "," << i << "," << p << "," << energie << ")";
+    sql << "INSERT INTO batterie(tensionBus, courantBus, PuissanceBus, charge) VALUES (" << u << "," << i << "," << p << "," << charge << ")";
     stmt->execute(sql.str());
 
     delete stmt;

@@ -31,14 +31,14 @@ function getValeur($to, $from) {
     $data4 = array();
 
     while ($ligne = $requete->fetch()) {
-	    
-        array_push($data1, round($ligne['courantBus'] * 1000, 1)); // le courant en mA
-		
-		array_push($data2, round($ligne['tensionBus'], 3)); // la tension en V
-		
-		array_push($data3, round($ligne['puissanceBus'] * 1000, 1)); // la puissance en mW
-		
-		array_push($data4, round($ligne['energie'], 0));  // l'energie en mWh 
+
+        array_push($data1, round($ligne['courantBus'], 2)); // le courant en A
+
+	array_push($data2, round($ligne['tensionBus'], 2)); // la tension en V
+
+	array_push($data3, round($ligne['puissanceBus'], 2)); // la puissance en W
+
+	array_push($data4, round($ligne['charge'] / 1000, 2));  // la charge en Ah
 
 		if(empty($debut)){     // on mémorise la première date retournée
 			$debut = $ligne['date'];
@@ -56,10 +56,10 @@ function getValeur($to, $from) {
 	$options['title'] = "BATTERIE sur ".$_SERVER["SERVER_NAME"];
 
 	$series = array();
-	$tooltip[valueSuffix] = " mA";
+	$tooltip[valueSuffix] = " A";
  	$serie['name'] = "Courant";
 	$serie['type']  = "spline";
-	    $serie['yAxis'] = 0;
+	$serie['yAxis'] = 0;
 	$serie['data']  = $data1;
 	$serie['tooltip'] = $tooltip;
 	array_push($series, $serie);
@@ -72,16 +72,16 @@ function getValeur($to, $from) {
 	$serie['tooltip'] = $tooltip;
 	array_push($series, $serie);
 
- 	$tooltip[valueSuffix] = " mW";
+ 	$tooltip[valueSuffix] = " W";
 	$serie['name'] = "Puissance";
 	$serie['type']  = "spline";
-    	$serie['yAxis'] = 0;
+    	$serie['yAxis'] = 1;
 	$serie['data']  = $data3;
 	$serie['tooltip'] = $tooltip;
 	array_push($series, $serie);
 
- 	$tooltip[valueSuffix] = " mWh";
-	$serie['name'] = "Energie";
+ 	$tooltip[valueSuffix] = " Ah";
+	$serie['name'] = "Charge";
 	$serie['type']  = "spline";
         $serie['yAxis'] = 2;
 	$serie['data']  = $data4;
@@ -113,10 +113,9 @@ else{
 	// on retire 24 heures avec la methode sub de DateTime
 	$de->sub(new DateInterval('PT24H'));
 	// on tronque $to à l'heure entière
-	
+
 	getValeur($de->format('Y-m-d H:00:00P'), $a->format('Y-m-d H:00:00P'));
 
 }
-
 
 ?>

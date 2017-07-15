@@ -147,10 +147,10 @@ float ina219::obtenirBatterieSOC(){
      // electrodes and inter-connections.
      // Ra is the resistance of the electrochemical path including the electrolyte and the separator.
      // The internal resistance of a galvanic cell is temperature dependent
-     // here I take Ra+Rm = 0.85 Ohm at 25 °C
-     float ResistanceInt = 0.85;
-     float fem = ina219::obtenirTension_V() - ResistanceInt * ina219::obtenirCourant_A();
-     float soc = ina219::map(fem, 11.6, 13.6, 0, 100);
+     // here I take Ra+Rm = 1.5 Ohm at 25 °C
+     float ResistanceInt = 1.5;
+     float fem = ina219::obtenirTension_V() - (ResistanceInt * ina219::obtenirCourant_A());
+     float soc = ina219::map(fem, 11.9, 13.6, 10, 100);
      if (soc > 100) soc = 100;
      if (soc < 0)   soc = 0;
      return soc;
