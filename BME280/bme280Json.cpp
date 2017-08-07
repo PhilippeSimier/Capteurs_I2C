@@ -5,8 +5,9 @@
 *   Auteur : Philippe SIMIER (SNIR Touchard le Mans)
 *   Date   : 6 Février 2017
 *   Compilation : g++ bme280Json.cpp bm280.cpp i2c.cpp -o bme280Json
-*                 chmod +s bme280Json
-*                 mv bme280Json /usr/lib/cgi-bin/bme280Json
+*                 sudo chown root bme280Json
+*                 sudo chmod +s bme280Json
+*                 sudo mv bme280Json /usr/lib/cgi-bin/bme280Json
 ************************************************************************************/
 #include <iostream>
 #include "bm280.h"
@@ -15,7 +16,7 @@ using namespace std;
 
 int main()
 {
-    bm280 capteur;
+    bm280 capteur(0x77);
     float altitude = 74.0; // altitude ou se situe le capteur chez moi)
     capteur.donnerAltitude(altitude);
 

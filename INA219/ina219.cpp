@@ -119,6 +119,19 @@ float ina219::obtenirCourant_A(){
     return (float)data * 100E-6;   // 100 micro Ampere par bit
 
 }
+/*!
+    @brief  calcul la moyenne du courant sur n echantillons prélevés toutes les secondes
+*/
+float ina219::obtenirCourantMoyen_A(int nb){
+  float som = 0.0;
+  int i; 
+  for(i=0; i < nb; i++){
+     som +=  ina219::obtenirCourant_A();
+     usleep(1000*1000);
+    }
+  cout << i << " : " << fixed << setprecision (3) << som << endl;
+  return som / i;
+}
 
 /*!
     @brief  Gets the current power in Watt (float)

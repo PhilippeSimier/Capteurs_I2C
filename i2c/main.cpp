@@ -12,7 +12,7 @@ using namespace std;
 
 int main()
 {
-    i2c Ds1620(0x4F);  // création d'un objet DS1620 à l'adresse 4F
+    i2c Ds1620(0x4F, 1);  // création d'un objet DS1620 à l'adresse 4F sur le bus 1
     int tab[32]={0};
     int val, i;
 

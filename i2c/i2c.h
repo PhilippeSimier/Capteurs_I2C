@@ -9,8 +9,9 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
-#include <asm/ioctl.h>
+//#include <asm/ioctl.h>
 #include <iostream>
+
 
 
 // I2C definitions

@@ -23,7 +23,7 @@
 #include "i2c.h"
 #include <stdint.h>       // pour les types uint8_t etc
 #include <math.h>
-
+#include <unistd.h>
 
 #define ADRESSE_I2C_DEFAUT              0x40  // adresse I2C par défaut pour ina219
 //Adresse des Registres internes du composant
@@ -86,6 +86,7 @@ class ina219
     // Les méthodes pour lire la tension et le courant du bus
     float obtenirTension_V();
     float obtenirCourant_A();
+    float obtenirCourantMoyen_A(int nb);
     float obtenirPuissance_W();
     float obtenirTensionShunt_mV();
     // fonction pour obtenir l'état de charge d'une batterie (plomb acide 12V)

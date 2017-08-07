@@ -16,11 +16,11 @@ int main(int argc, char* argv[]) {
     Driver* driver;
     Connection* connection;
     Statement *stmt;
-    bm280 capteur;   // déclaration d'un bme280 à l'adresse par défaut 0x77
+    bm280 capteur(0x77);   // déclaration d'un bme280 à l'adresse 0x77 (par défaut 0x77)
 
     capteur.donnerAltitude(74.0);   // initialisation de l'altitude du capteur
     driver = get_driver_instance();
-    connection = driver -> connect("localhost", "root", "********");
+    connection = driver -> connect("localhost", "root", "liberte");
 
     stmt = connection->createStatement();
 

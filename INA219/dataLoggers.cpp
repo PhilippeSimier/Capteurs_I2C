@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 
     capteur = new ina219();   // déclaration d'un capteur de type ina219 à l'adresse par défaut 0x40
     u = capteur->obtenirTension_V();
-    i = capteur->obtenirCourant_A();
+    i = capteur->obtenirCourantMoyen_A(10);
     p = u*i;
 
     driver = get_driver_instance();

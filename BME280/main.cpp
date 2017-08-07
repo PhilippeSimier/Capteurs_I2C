@@ -15,7 +15,7 @@ int main()
     cout << "Capteur BME 280" << endl;
 
     while(1){
-	bm280 capteur;
+	bm280 capteur(0x77);
 	capteur.donnerAltitude(74);
     	cout << " Température (C)  : " << fixed << setprecision (1) << capteur.obtenirTemperatureEnC() << " °C"<< endl;
     	cout << " Température (F)  : " << fixed << setprecision (1) << capteur.obtenirTemperatureEnF() << " °F"<< endl;
