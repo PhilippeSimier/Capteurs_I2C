@@ -26,7 +26,7 @@ using namespace std;
 int main()
 {
     system("clear");
-    ina219 capteur;
+    ina219 capteur(0x40);
 
     float en = 0.0; // l'energie en J (Ws)
     int t = 2;  // période d'échantillonage (2s)

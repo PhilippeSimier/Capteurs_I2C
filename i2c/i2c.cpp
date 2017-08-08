@@ -1,11 +1,19 @@
 /***************************************************************************
-*   Class i2c pour le raspberry pi
-*   I2C (pronounce: I squared C) is a protocol developed by Philips. It is a
-*   slow two-wire protocol (variable speed, up to 400 kHz), with a high speed
-*   extension (3.4 MHz).  It provides an inexpensive bus for connecting many
-*   types of devices with infrequent or low bandwidth communications needs.
-*   I2C is widely used with embedded systems.
-***************************************************************************/
+/*!
+    \file     ina219.h
+    \author   Philippe SIMIER (Touchard Wahington le Mans)
+    \license  BSD (see license.txt)
+    \brief    Classe pour le bus I2C
+
+    \detail  I2C (pronounce: I squared C) is a protocol developed by Philips. It is a
+	     slow two-wire protocol (variable speed, up to 400 kHz), with a high speed
+	     extension (3.4 MHz).  It provides an inexpensive bus for connecting many
+	     types of devices with in frequent or low bandwidth communications needs.
+	     I2C is widely used with embedded systems.
+
+    \version v1.0 - First release
+*/
+
 #include "i2c.h"
 
     // Le constructeur
@@ -24,12 +32,17 @@
             cout << "Impossible de sélectionner l'adresse I2C" << endl ;
             exit(1);
         }
-        // test de la présence du composant sur le bus 
+        // test de la présence du composant sur le bus
         if (i2c_smbus_access (I2C_SMBUS_READ, 0, I2C_SMBUS_BYTE, &data)){
-	    cout << "Impossible de lire l'adresse I2C "<< hex << adresseI2C << endl ;
-            exit(1);
-
+	    error = true ;
 	}
+	else{
+	    error = false ;
+	}
+    }
+
+    bool i2c::getError(){
+	return error;
     }
 
     int i2c::i2c_smbus_access (char rw, uint8_t command, int size, union i2c_smbus_data *data)
@@ -48,7 +61,7 @@
         union i2c_smbus_data data ;
 
         if (i2c_smbus_access (I2C_SMBUS_READ, 0, I2C_SMBUS_BYTE, &data))
-            return -1 ;
+            error = true ;
         else
             return data.byte & 0xFF ;
 
@@ -58,7 +71,7 @@
          union i2c_smbus_data data;
 
         if (i2c_smbus_access (I2C_SMBUS_READ, reg, I2C_SMBUS_BYTE_DATA, &data))
-            return -1 ;
+            error = true ;
         else
             return data.byte & 0xFF ;
     }
@@ -67,7 +80,7 @@
         union i2c_smbus_data data;
 
         if (i2c_smbus_access (I2C_SMBUS_READ, reg, I2C_SMBUS_WORD_DATA, &data))
-            return -1 ;
+            error = true ;
         else
             return data.word & 0xFFFF ;
     }
@@ -111,8 +124,10 @@
                  length = 32;
          data.block[0] = length;
          if (i2c_smbus_access(I2C_SMBUS_READ, reg, length == 32 ? I2C_SMBUS_I2C_BLOCK_BROKEN :
-                               I2C_SMBUS_I2C_BLOCK_DATA,&data))
-                 return -1;
+                               I2C_SMBUS_I2C_BLOCK_DATA,&data)){
+	     error = true;
+             return -1;
+	 }
          else {
                  for (i = 1; i <= data.block[0]; i++)
                          values[i-1] = data.block[i];

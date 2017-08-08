@@ -15,6 +15,8 @@
     // Le constructeur
     i2c::i2c(int adresseI2C, int idBusI2C){
         char filename[20];
+	union i2c_smbus_data data ;
+
         snprintf(filename, 19, "/dev/i2c-%d", idBusI2C);
         if ((fd = open (filename, O_RDWR)) < 0){
             cout << "Erreur d'ouverture du bus I2C" << endl;
@@ -26,6 +28,12 @@
             cout << "Impossible de sélectionner l'adresse I2C" << endl ;
             exit(1);
         }
+	// test de la présence du composant sur le bus
+        if (i2c_smbus_access (I2C_SMBUS_READ, 0, I2C_SMBUS_BYTE, &data)){
+	    cout << "Impossible de lire l'adresse I2C "<< hex << adresseI2C << endl ;
+            exit(1);
+
+	}
     }
 
     int i2c::i2c_smbus_access (char rw, uint8_t command, int size, union i2c_smbus_data *data)
