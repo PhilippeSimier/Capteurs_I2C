@@ -15,7 +15,7 @@
 		<link href="/css/half-slider.css" rel="stylesheet">
 		<!-- Style pour la boite (div id popin) coins arrondis bordure blanche ombre -->
 		<style type="text/css"> 
-		#popin {
+		.popin {
 				background-color: #fff;
 				border-radius: 8px;
 				box-shadow: 0 0 20px #999;
@@ -30,14 +30,21 @@
 		
 			function affiche( data ) {               // fonction pour afficher les données reçues
 				console.log(data);                   // affichage de data dans la console
+				if(data.OK){
 				$('#tension').text(data.u + " " + data.uniteU); 
 				$('#courant').text(data.i + " " + data.uniteI);
 				$('#puissance').text(data.p + " " + data.uniteP);
+				$('#soc').text(data.soc + " " +data.uniteSOC);
 				if (data.uniteP === "W")
 					energie += (parseFloat(data.p) * 1.0)/3.6;
 				else 
 					energie += (parseFloat(data.p) * 1.0)/3600;
 				$('#energie').text(energie.toFixed(2) + " mWh");
+				}
+				else{
+				$('#affichage').hide();
+				$('#erreur').show();
+				}
 			}	
 		
 			function requete_ajax(){
@@ -74,26 +81,42 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav ">
                     <li class="dropdown navbar-inverse">
-			<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Raspberry pi<span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li><a href="/gpio/gpio.html">GPIO Formulaire</a></li>
-					<li><a href="/gpio/traffic_light.html">GPIO Traffic light</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="/bme280/valeurs.html">Météo Valeurs</a></li>
-					<li><a href="/bme280/graphique.html">Météo Graphiques</a></li>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Raspberry pi<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/gpio/gpio.html">GPIO Formulaire</a></li>
+							<li><a href="/gpio/traffic_light.html">GPIO Traffic light</a></li>
+							<li role="separator" class="divider"></li>
 							
-					<li role="separator" class="divider"></li>
-					<li><a href="/ina219/valeurs.html">Batterie Valeurs</a></li>
-					<li><a href="/ina219/graphique.html">Batterie Graphiques</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="/documentation/">Fiches aide mémoire</a></li>
+							<li><a href="/bme280/valeurs.html">Météo Valeurs</a></li>
+							<li><a href="/bme280/graphique.html">Météo Graphiques</a></li>
+							<li role="separator" class="divider"></li>
 							
-				</ul>
+							<li><a href="/bh1750/valeurs.html">Eclairement Valeurs</a></li>
+							<li><a href="/bh1750/graphique.html">Eclairement Graphiques</a></li>
+							<li role="separator" class="divider"></li>
+											
+							
+							<li><a href="/ina219/valeurs.html">Batterie Valeurs</a></li>
+							<li><a href="/ina219/graphique.html">Batterie Graphiques</a></li>
+							<li role="separator" class="divider"></li>
+							
+							<li><a href="/documentation/">Fiches aide mémoire</a></li>
+									
+						</ul>
+					</li>
+					<li class="dropdown navbar-inverse">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">JavaScript<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/jQuery/calculatrice.html">Calculatrice</a></li>
+							<li><a href="/jQuery/digicode.html">Digicode</a></li>
+							<li><a href="/gmaps.html">Google Map</a></li>
+							<li><a href="http://philippes.ddns.net/gmap/sun.html">ISS Sun Light</a></li>
+						</ul>
+					</li>
 					
-					<li><a href="/gmaps.html">Google Map</a></li>
 					<li><a href="/thingspeak.html">ThingSpeak</a></li>
 					<li><a href="/phpmyadmin">phpMyAdmin</a></li>
-                    			<li><a href="https://github.com/PhilippeSimier">GitHub</a></li>
+                    <li><a href="https://github.com/PhilippeSimier">GitHub</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -153,7 +176,7 @@
 				<div class="page-header">
 					<h2>Batterie <small>& chargeur solaire </h2>
 				</div>
-				<div id="popin">
+				<div class="popin" id="affichage">
 					
 					<div class="row">
 					    <div class="col-sm-6"><h3>Tension :</h3></div>
@@ -168,17 +191,26 @@
 						<div class="col-sm-6"><h3><span id="puissance"></span></h3></div>
 					</div>
 					<div class="row">
+					    <div class="col-sm-6"><h3>Taux de charge :</h3></div>
+						<div class="col-sm-6"><h3><span id="soc"></span></h3></div>
+					</div>
+					<div class="row">
 					    <div class="col-sm-6"><h3>Energie :</h3></div>
 						<div class="col-sm-6"><h3><span id="energie"></span></h3></div>
 					</div>
 					
+				</div>
+				<div class="popin" id="erreur" style="display: none;">
+					<div class="row">
+					    <div class="col-sm-6"><h3>Erreur de lecture </h3></div>
+					</div>	
 				</div>
 			</section>
 			<section class="col-sm-6">
 				<div class="page-header">
 					<h2>Capteur <small> INA219</small> </h2>
 				</div>
-				<div id="popin">
+				<div class="popin">
 					<img src="/images/INA219.png">
 				</div>
 				<br />

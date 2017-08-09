@@ -9,8 +9,9 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
-#include <asm/ioctl.h>
+//#include <asm/ioctl.h>
 #include <iostream>
+
 
 
 // I2C definitions
@@ -69,26 +70,28 @@ class i2c
 
     public:
 
-            // le constructeur
-	    i2c(int adresseI2C, int idBusI2C=1);
-            //idBusI2C = 0 pour les raspberry version 1
-            //idBusI2C = 1 pour les raspberry version 2 et 3
+        // le constructeur
+	i2c(int adresseI2C, int idBusI2C=1);
+        //idBusI2C = 0 pour les raspberry version 1
+        //idBusI2C = 1 pour les raspberry version 2 et 3
 
-            unsigned char Read ();
-            unsigned char ReadReg8 (int reg);
-            unsigned short ReadReg16 (int reg);
-            int ReadBlockData (int reg, int length, int *values);
+	bool getError();
 
-            unsigned char Write (int data);
-            unsigned char WriteReg8 (int reg, int value);
-            unsigned short WriteReg16 (int reg, int value);
-	    int WriteBlockData (int reg, int length, int *data);
+        unsigned char Read ();
+        unsigned char ReadReg8 (int reg);
+        unsigned short ReadReg16 (int reg);
+        int ReadBlockData (int reg, int length, int *values);
 
+        unsigned char Write (int data);
+        unsigned char WriteReg8 (int reg, int value);
+        unsigned short WriteReg16 (int reg, int value);
+	int WriteBlockData (int reg, int length, int *data);
 
     private:
 
-            int fd;
-            inline int i2c_smbus_access (char rw, uint8_t command, int size, union i2c_smbus_data *data);
+        int fd;
+        bool error;
+        inline int i2c_smbus_access (char rw, uint8_t command, int size, union i2c_smbus_data *data);
 
 };
 

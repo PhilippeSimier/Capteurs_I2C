@@ -26,7 +26,10 @@ using namespace std;
 int main()
 {
     system("clear");
-    ina219 capteur(0x40);
+    char adresse = 0x40;
+    ina219 capteur(adresse);
+
+if (!capteur.obtenirErreur()){
 
     float en = 0.0; // l'energie en J (Ws)
     int t = 2;  // période d'échantillonage (2s)
@@ -46,9 +49,11 @@ int main()
 	sleep(t);
         system("clear");
     }
-
-
-    capteur.version();
+}
+else{
+	cout << " Le capteur INA219 n'est pas présent à l'adresse : 0x" << hex << (int)adresse << endl;
+	capteur.version();
+    }
     return 0;
 }
 

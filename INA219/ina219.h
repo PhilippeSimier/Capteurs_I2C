@@ -83,6 +83,7 @@ class ina219
     ina219(int i2cAddress=ADRESSE_I2C_DEFAUT, float _quantum=3.991);
     // le destructeur
     ~ina219();
+    bool obtenirErreur();
     // Les méthodes pour lire la tension et le courant du bus
     float obtenirTension_V();
     float obtenirCourant_A();
@@ -97,6 +98,7 @@ class ina219
 
     private:
     i2c *deviceI2C;                   // file descriptor
+    bool  error;
     float quantum;		      // la valeur du Quantum en mV
     float shunt;		      // la valeur du shunt en ohm
     // Fonction pour réaliser une adaptation d'échelle de valeur

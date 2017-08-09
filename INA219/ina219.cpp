@@ -34,18 +34,24 @@ using namespace std;
 ina219::ina219(int i2cAddress, float  _quantum)
 {
     deviceI2C = new i2c(i2cAddress);
-    deviceI2C->WriteReg16(REG_CONFIG, 0x0080);   // reset
+    if (!deviceI2C->getError()){
+    	deviceI2C->WriteReg16(REG_CONFIG, 0x0080);   // reset
 
-    short rc = 4096;
-    rc = ((rc & 0x00FF) << 8) | ((rc & 0xFF00) >> 8);
-    deviceI2C->WriteReg16(REG_CALIBRATION , rc);  // écriture du registre de calibration
+    	short rc = 4096;
+    	rc = ((rc & 0x00FF) << 8) | ((rc & 0xFF00) >> 8);
+    	deviceI2C->WriteReg16(REG_CALIBRATION , rc);  // écriture du registre de calibration
 
-    uint16_t config;
-    config  = BVOLTAGERANGE_32V | GAIN_8 | BADCRES_12BIT | SADCRES_12BIT_128S | MODE_SANDBVOLT_CONTINUOUS;
-    config = ((config & 0x00FF) << 8) | ((config & 0xFF00) >> 8);  // inversion msb lsb
-    deviceI2C->WriteReg16(REG_CONFIG, config);
+    	uint16_t config;
+    	config  = BVOLTAGERANGE_32V | GAIN_8 | BADCRES_12BIT | SADCRES_12BIT_128S | MODE_SANDBVOLT_CONTINUOUS;
+    	config = ((config & 0x00FF) << 8) | ((config & 0xFF00) >> 8);  // inversion msb lsb
+    	deviceI2C->WriteReg16(REG_CONFIG, config);
 
-    quantum = _quantum;
+    	quantum = _quantum;
+	error = false;
+     }
+     else{
+	error = true;
+     }
 }
 /*!
     @brief  destructor
@@ -58,6 +64,9 @@ ina219::~ina219()
         delete deviceI2C;
 }
 
+bool ina219::obtenirErreur(){
+	return error;
+    }
 /*!
     @brief  Set calibration at 16V
 */

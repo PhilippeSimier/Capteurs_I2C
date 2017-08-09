@@ -30,40 +30,51 @@ int main()
     ina219 *capteur;
 
     capteur = new ina219();   // déclaration d'un capteur de type ina219 à l'adresse par défaut 0x40
-    float u = capteur->obtenirTension_V();
-    float i = capteur->obtenirCourant_A();
-    float p = u*i;
-    float soc = capteur->obtenirBatterieSOC();
 
-    cout << "Content-type: application/json" << endl << endl;
+    if (!capteur->obtenirErreur()){
+    	float u = capteur->obtenirTension_V();
+    	float i = capteur->obtenirCourant_A();
+    	float p = u*i;
+    	float soc = capteur->obtenirBatterieSOC();
 
-    cout << "{" << endl;
-    cout << "\"u\": " << fixed << setprecision (2) << u << "," << endl;
-    cout << "\"uniteU\" : \"V\"," << endl;
+    	cout << "Content-type: application/json" << endl << endl;
 
-    if (i < -1 || i > 1){
-    	cout << "\"i\":" << fixed << setprecision (2) << i << "," << endl;
-        cout << "\"uniteI\" : \"A\"," << endl;
+    	cout << "{" << endl;
+	cout << "\"OK\" : true," << endl;
+    	cout << "\"u\": " << fixed << setprecision (2) << u << "," << endl;
+    	cout << "\"uniteU\" : \"V\"," << endl;
+
+    	if (i < -1 || i > 1){
+
+            cout << "\"i\":" << fixed << setprecision (2) << i << "," << endl;
+            cout << "\"uniteI\" : \"A\"," << endl;
+     	}
+    	else{
+	    cout << "\"i\":" << fixed << setprecision (2) << i * 1000 << "," << endl;
+            cout << "\"uniteI\" : \"mA\"," << endl;
+    	}
+
+    	if (p < -1 || p > 1){
+    	    cout << "\"p\":" << fixed << setprecision (2) << p << "," << endl;
+    	    cout << "\"uniteP\" : \"W\"," << endl;
+    	}
+    	else{
+            cout << "\"p\":" << fixed << setprecision (2) << p * 1000 << "," << endl;
+            cout << "\"uniteP\" : \"mW\"," << endl;
+
+    	}
+    	cout << "\"soc\": " << fixed << setprecision (0) << soc << "," << endl;
+    	cout << "\"uniteSOC\" : \"%\"" << endl;
+
+    	cout << "}" << endl;
+    } else {
+        cout << "Content-type: application/json" << endl << endl;
+        cout << "{" << endl;
+        cout << "\"OK\" : false" << endl;
+        cout << "}" << endl;
+
+
     }
-    else{
-	cout << "\"i\":" << fixed << setprecision (2) << i * 1000 << "," << endl;
-        cout << "\"uniteI\" : \"mA\"," << endl;
-    }
-
-    if (p < -1 || p > 1){
-    	cout << "\"p\":" << fixed << setprecision (2) << p << "," << endl;
-    	cout << "\"uniteP\" : \"W\"," << endl;
-    }
-    else{
-        cout << "\"p\":" << fixed << setprecision (2) << p * 1000 << "," << endl;
-        cout << "\"uniteP\" : \"mW\"," << endl;
-
-    }
-    cout << "\"soc\": " << fixed << setprecision (0) << soc << "," << endl;
-    cout << "\"uniteSOC\" : \"%\"" << endl;
-
-    cout << "}" << endl;
-
     delete capteur;
     return 0;
 }
