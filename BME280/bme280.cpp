@@ -1,3 +1,19 @@
+/**************************************************************************
+/*!
+    \file     bme280.cpp
+    \author   Philippe SIMIER (Touchard Wahington le Mans)
+    \license  BSD (see license.txt)
+    \brief    Classe pour le composant i2c  BME280
+    \detail   Le BME280 est un capteur environnemental pour mesurer la température,
+	      la pression barométrique et l'humidité relative! Ce capteur est idéal
+              pour réaliser une petite station météo. Il peut être connecté sur
+              un bus I2C ou SPI! La broche CSB doit être connecté à VDDIO pour
+              sélectionner l'interface I²C. Son adresse sur le bus est 0x77 ou 0x76
+              en fonction du niveau de tension appliquée sur la broche SDO.
+
+    \version    1.0 - First release
+*/
+
 #include "bme280.h"
 #include "i2c.h"
 
