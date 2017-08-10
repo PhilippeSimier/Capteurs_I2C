@@ -34,15 +34,15 @@
         }
         // test de la présence du composant sur le bus
         if (i2c_smbus_access (I2C_SMBUS_READ, 0, I2C_SMBUS_BYTE, &data)){
-	    error = true ;
+	    this->error = true ;
 	}
 	else{
-	    error = false ;
+	    this->error = false ;
 	}
     }
 
     bool i2c::getError(){
-	return error;
+	return this->error;
     }
 
     int i2c::i2c_smbus_access (char rw, uint8_t command, int size, union i2c_smbus_data *data)
