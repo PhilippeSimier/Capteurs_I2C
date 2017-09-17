@@ -2,7 +2,7 @@
 // Affichage de la valeur en volts
 // uses one-shot mod
 // http://www.bristolwatch.com/rpi/ads1115.html
-// compilation gcc ads1115.c lm
+// compilation gcc ads1115a.c -lm
 
 #include <stdio.h>
 #include <sys/types.h>
