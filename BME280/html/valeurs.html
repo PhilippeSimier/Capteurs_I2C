@@ -15,7 +15,7 @@
 		<link href="/css/half-slider.css" rel="stylesheet">
 		<!-- Style pour la boite (div id popin) coins arrondis bordure blanche ombre -->
 		<style type="text/css"> 
-		#popin {
+		.popin {
 				background-color: #fff;
 				border-radius: 8px;
 				box-shadow: 0 0 20px #999;
@@ -28,11 +28,19 @@
 		<script type="text/javascript">
 			function affiche( data ) {               // fonction pour afficher les données reçues
 				console.log(data);                   // affichage de data dans la console
-				$('#temperature').text(data.TemperatureC); 
-				$('#pression').text(data.Pression);
-				$('#humidite').text(data.Humidite);
-				$('#altitude').text(data.altitude);
-				$('#pointRosee').text(data.PointRosee);
+				if(data.OK){
+					$('#affichage').show();
+					$('#erreur').hide();
+					$('#temperature').text(data.TemperatureC); 
+					$('#pression').text(data.Pression);
+					$('#humidite').text(data.Humidite);
+					$('#altitude').text(data.altitude);
+					$('#pointRosee').text(data.PointRosee);
+				}
+				else{
+					$('#affichage').hide();
+					$('#erreur').show();
+				}
 			}	
 		
 			function requete_ajax(){
@@ -74,15 +82,34 @@
 							<li><a href="/gpio/gpio.html">GPIO Formulaire</a></li>
 							<li><a href="/gpio/traffic_light.html">GPIO Traffic light</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="/bme280/valeurs.html">BME280 Valeurs</a></li>
-							<li><a href="/bme280/graphique.html">BME280 Graphiques</a></li>
 							
+							<li><a href="/bme280/valeurs.html">Météo Valeurs</a></li>
+							<li><a href="/bme280/graphique.html">Météo Graphiques</a></li>
 							<li role="separator" class="divider"></li>
+							
+							<li><a href="/bh1750/valeurs.html">Eclairement Valeurs</a></li>
+							<li><a href="/bh1750/graphique.html">Eclairement Graphiques</a></li>
+							<li role="separator" class="divider"></li>
+							
+							<li><a href="/ina219/valeurs.html">Batterie Valeurs</a></li>
+							<li><a href="/ina219/graphique.html">Batterie Graphiques</a></li>
+							<li role="separator" class="divider"></li>
+							
 							<li><a href="/documentation/">Fiches aide mémoire</a></li>
 							
 						</ul>
 					</li>
-					<li><a href="/gmaps.html">Google Map</a></li>
+					
+					<li class="dropdown navbar-inverse">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">JavaScript<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/jQuery/calculatrice.html">Calculatrice</a></li>
+							<li><a href="/jQuery/digicode.html">Digicode</a></li>
+							<li><a href="/gmaps.html">Google Map</a></li>
+							<li><a href="/gmap/sun.html">ISS Sun Light</a></li>
+						</ul>
+					</li>
+					
 					<li><a href="/thingspeak.html">ThingSpeak</a></li>
 					<li><a href="/phpmyadmin">phpMyAdmin</a></li>
                     <li><a href="https://github.com/PhilippeSimier">GitHub</a></li>
@@ -145,7 +172,7 @@
 				<div class="page-header">
 					<h2>Le Mans (72) <small>- alt. <span id="altitude"></span></small></h2>
 				</div>
-				<div id="popin">
+				<div class="popin" id="affichage">
 					
 					<div class="row">
 					    <div class="col-sm-6"><h3>Température:</h3></div>
@@ -164,17 +191,26 @@
 						<div class="col-sm-6"><h3><span id="pointRosee"></span></h3></div>
 					</div>	
 				</div>
+				
+				<div class="popin" id="erreur" style="display: none;">
+					<div class="row">
+					    <div class="col-sm-6"><h3>Erreur de lecture du BME280</h3></div>
+					</div>	
+				</div>
+				
 			</section>
 			<section class="col-sm-6">
 				<div class="page-header">
 					<h2>Capteur <small> BME280</small> </h2>
 				</div>
-				<div id="popin">
+				<div class="popin">
 					<img src="/images/bme280.jpg" style="width:100%">
 				</div>
 				<br />
 				<p> Le BME280 est un capteur environnemental pour mesurer la température, la pression barométrique et l'humidité relative! 
-				    Ce capteur est idéal pour réaliser une petite station météo. Il peut  être connecté sur un bus I2C ou SPI! 		 
+				    Ce capteur est idéal pour réaliser une petite station météo. Il peut  être connecté sur un bus I2C ou SPI! 
+					La broche CSB doit être connecté à VDDIO pour sélectionner l'interface I²C.
+					Son adresse sur le bus est 0x77 ou 0x76 en fonction du niveau de tension appliquée sur la broche SDO. 
 				</p>		
 			</section>
 			<section class="col-sm-12">
@@ -202,7 +238,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Section Snir Lycée Touchard le Mans</p>
+                    <p>Copyright &copy; PSR</p>
                 </div>
             </div>
             <!-- /.row -->

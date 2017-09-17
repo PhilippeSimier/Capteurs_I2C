@@ -1,5 +1,24 @@
-#ifndef BM280_H_INCLUDED
-#define BM280_H_INCLUDED
+/**************************************************************************
+/*!
+    \file     bme280.h
+    \author   Philippe SIMIER (Touchard Wahington le Mans)
+    \license  BSD (see license.txt)
+
+    \brief    Classe pour le composant i2c  BME280
+    \detail   Le BME280 est un capteur environnemental pour mesurer la température,
+              la pression barométrique et l'humidité relative! Ce capteur est idéal
+              pour réaliser une petite station météo. Il peut être connecté sur
+              un bus I2C ou SPI! La broche CSB doit être connecté à VDDIO pour
+              sélectionner l'interface I²C. Son adresse sur le bus est 0x77 ou 0x76
+              en fonction du niveau de tension appliquée sur la broche SDO.
+
+    \version    1.0 - First release
+*/
+
+
+
+#ifndef BME280_H_INCLUDED
+#define BME280_H_INCLUDED
 
 #include <iostream>
 #include <iomanip>
@@ -92,32 +111,35 @@ typedef struct
 } bme280_calib_data;
 
 
-class bm280
+class bme280
 {
 
 public:
     // le constructeur
-    bm280(int i2cAddress=ADRESSE_I2C_DEFAUT);
+    bme280(int i2cAddress=ADRESSE_I2C_DEFAUT);
     // le destructeur
-    ~bm280();
+    ~bme280();
+
+    // méthode pour vérifier la présence du composant sur le bus I2C
+    bool obtenirErreur();
 
     // méthodes pour lire la température le pression et l'humidité
 
     int32_t getTemperatureCalibration();
-    float obtenirTemperatureEnC();
-    float obtenirTemperatureEnF();
-    float obtenirPression();
-    float obtenirHumidite();
+    float   obtenirTemperatureEnC();
+    float   obtenirTemperatureEnF();
+    float   obtenirPression();
+    float   obtenirHumidite();
 
     // methode pour obtenir la pression au niveau de la mer
-    void  donnerAltitude(float h);
-    float obtenirPression0();
+    void    donnerAltitude(float h);
+    float   obtenirPression0();
 
     // méthode pour obtenir la valeur du point de rosée
-    float obtenirPointDeRosee();
+    float   obtenirPointDeRosee();
 
     // methode pour obtenir la version
-    void  version();
+    void    version();
 
 
 private:
@@ -127,8 +149,9 @@ private:
     bme280_calib_data cal;           // calibration
     bme280_raw_data raw;             // les registres
     float h;                         // différence d'altitude du capteur avec le niveau de la mer en m
+    bool  error;
     void readCalibrationData();
     void getRawData();
 };
 
-#endif // BM280_H_INCLUDED
+#endif // BME280_H_INCLUDED

@@ -29,7 +29,7 @@ int main()
 {
     ina219 *capteur;
 
-    capteur = new ina219();   // déclaration d'un capteur de type ina219 à l'adresse par défaut 0x40
+    capteur = new ina219(0x42);   // déclaration d'un capteur de type ina219 à l'adresse par défaut 0x40
 
     if (!capteur->obtenirErreur()){
     	float u = capteur->obtenirTension_V();

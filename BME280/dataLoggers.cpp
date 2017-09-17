@@ -1,13 +1,32 @@
 /*******************************************************************************************
-*   Compilation :  g++ dataLoggers.cpp i2c.cpp  bm280.cpp -lmysqlcppconn -o dataLoggers
-*******************************************************************************************/
+/*!
+    \file     dataLoggers.cpp
+    \author   Philippe SIMIER (Touchard Wahington le Mans)
+    \license  BSD (see license.txt)
+
+    \brief    Programme pour enregistrer les valeurs tension courant puissance batterie
+	      dans la table batterie de la base de données MySQL Valeurs
+
+
+   \date      Mai 2017
+
+   \version v1.0 - First release
+   \detail    Prérequis    : sudo apt-get install libmysqlcppconn-dev
+              Compilation  : g++ dataLoggers.cpp i2c.cpp  bme280.cpp -lmysqlcppconn -o dataLoggers
+              Execution    : Pour executer périodiquement toutes les 10 minutes
+                             Ajouter avec crontab
+		             en tant que super utilisateur (sudo crontab -e)
+
+*/
+/*******************************************************************************************/
+
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include "cppconn/driver.h"
 #include "cppconn/connection.h"
 #include <cppconn/statement.h>
-#include "bm280.h"
+#include "bme280.h"
 
 using namespace std;
 using namespace sql;
@@ -16,9 +35,9 @@ int main(int argc, char* argv[]) {
     Driver* driver;
     Connection* connection;
     Statement *stmt;
-    bm280 capteur(0x77);   // déclaration d'un bme280 à l'adresse 0x77 (par défaut 0x77)
+    bme280 capteur(0x77);   // déclaration d'un bme280 à l'adresse 0x77 (par défaut 0x77)
 
-    capteur.donnerAltitude(74.0);   // initialisation de l'altitude du capteur
+    capteur.donnerAltitude(62.0);   // initialisation de l'altitude du capteur
     driver = get_driver_instance();
     connection = driver -> connect("localhost", "root", "liberte");
 

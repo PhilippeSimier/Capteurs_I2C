@@ -1,29 +1,53 @@
-#include "bm280.h"
+/**************************************************************************
+/*!
+    \file     bme280.cpp
+    \author   Philippe SIMIER (Touchard Wahington le Mans)
+    \license  BSD (see license.txt)
+    \brief    Classe pour le composant i2c  BME280
+    \detail   Le BME280 est un capteur environnemental pour mesurer la température,
+	      la pression barométrique et l'humidité relative! Ce capteur est idéal
+              pour réaliser une petite station météo. Il peut être connecté sur
+              un bus I2C ou SPI! La broche CSB doit être connecté à VDDIO pour
+              sélectionner l'interface I²C. Son adresse sur le bus est 0x77 ou 0x76
+              en fonction du niveau de tension appliquée sur la broche SDO.
+
+    \version    1.0 - First release
+*/
+
+#include "bme280.h"
 #include "i2c.h"
 
 using namespace std;
 
 
-bm280::bm280(int i2cAddress)  	// Le constructeur
+bme280::bme280(int i2cAddress)  	// Le constructeur
 {
-  deviceI2C = new i2c(i2cAddress);
+    deviceI2C = new i2c(i2cAddress);
+    if (!deviceI2C->getError()){
 
+  	readCalibrationData();
+  	deviceI2C->WriteReg8(0xf2, 0x01); // humidity oversampling x 1
 
-  readCalibrationData();
-  deviceI2C->WriteReg8(0xf2, 0x01); // humidity oversampling x 1
-
-  deviceI2C->WriteReg8(0xf4, 0x27);   // pressure and temperature oversampling x 1, mode normal
-  h = -78.0;  // différence d'altitude avec le niveau de la mer
-
+  	deviceI2C->WriteReg8(0xf4, 0x27);   // pressure and temperature oversampling x 1, mode normal
+  	h = -78.0;  // différence d'altitude avec le niveau de la mer
+        error = false;
+    }
+    else{
+	error = true;
+    }
 }
 
-bm280::~bm280()
+bme280::~bme280()
 {
    if (deviceI2C != NULL)
         delete deviceI2C;
 }
 
-void bm280::readCalibrationData() {
+bool bme280::obtenirErreur(){
+	return error;
+    }
+
+void bme280::readCalibrationData() {
   cal.dig_T1 = (uint16_t)deviceI2C->ReadReg16(DIG_T1);
   cal.dig_T2 = (int16_t)deviceI2C->ReadReg16(DIG_T2);
   cal.dig_T3 = (int16_t)deviceI2C->ReadReg16(DIG_T3);
@@ -46,7 +70,7 @@ void bm280::readCalibrationData() {
   cal.dig_H6 = (int8_t)deviceI2C->ReadReg8(DIG_H6);
 }
 
-void bm280::getRawData() {
+void bme280::getRawData() {
 
   deviceI2C->Write(0xf7);
 
@@ -77,7 +101,7 @@ void bm280::getRawData() {
   raw.humidity = (raw.humidity | raw.hlsb);
 }
 
-int32_t bm280::getTemperatureCalibration()
+int32_t bme280::getTemperatureCalibration()
 {
   getRawData();
 
@@ -88,14 +112,14 @@ int32_t bm280::getTemperatureCalibration()
   return var1 + var2;
 }
 
-float bm280::obtenirTemperatureEnC()
+float bme280::obtenirTemperatureEnC()
 {
   int32_t t_fine = getTemperatureCalibration();
   float T  = (t_fine * 5 + 128) >> 8;
   return T/100;
 }
 
-float bm280::obtenirTemperatureEnF()
+float bme280::obtenirTemperatureEnF()
 {
 	float output = obtenirTemperatureEnC();
 	output = (output * 9) / 5 + 32;
@@ -109,7 +133,7 @@ float bm280::obtenirTemperatureEnF()
 // Le capteur retourne la pression en Pa sur unsigned 32 bit integer avec le format Q24.8  (24 bits pour la partie entière et 8 bits pour la partie fractionnaire).
 // 24674867 represente 24674867/256 = 96386.2 Pa ou 24674867/25600 963.862 hPa
 
-float bm280::obtenirPression()
+float bme280::obtenirPression()
 {
   int32_t t_fine = getTemperatureCalibration();
   int64_t var1, var2, p;
@@ -136,7 +160,7 @@ float bm280::obtenirPression()
 
 // retourne le taux d'humidité relative en %
 
-float bm280::obtenirHumidite()
+float bme280::obtenirHumidite()
 {
   int32_t v_x1_u32r;
   int32_t t_fine = getTemperatureCalibration();
@@ -162,19 +186,19 @@ float bm280::obtenirHumidite()
 // Selon l'atmosphère standard internationale (ISA) ou atmosphère normalisée
 // (appelée aussi QNH en aviation) qui ne tient pas compte de la température réelle.
 
-float bm280::obtenirPression0(){
+float bme280::obtenirPression0(){
     float P = obtenirPression();
     return P * ( pow(1.0 -(0.0065 * h/(273.15+15)), 5.255));
 }
 
 // h = différence d'altitude du capteur avec P (mètres),
 // négatif pour les élévations, positif pour les dépressions (la Mer Morte par exemple)
-void bm280::donnerAltitude(float altitude){
+void bme280::donnerAltitude(float altitude){
 	this->h = altitude * -1;
 }
 
 // retourne la valeur du point de rosée
-float bm280::obtenirPointDeRosee(){
+float bme280::obtenirPointDeRosee(){
     float ai = 7.45;
     float bi = 235.0;
     float z1, z2, z3, es, e, tau;
@@ -194,8 +218,8 @@ float bm280::obtenirPointDeRosee(){
 }
 
 // retourne la version de la classe
-void  bm280::version(){
+void  bme280::version(){
 
-    cout << "\nBME280 PS Touchard Version 1.3\n" << endl;
+    cout << "\nBME280 PSR Version 1.3\n" << endl;
 
 }
