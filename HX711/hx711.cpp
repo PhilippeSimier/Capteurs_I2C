@@ -4,45 +4,45 @@
 
 #include "hx711.h"
 
-HX711::HX711(uint8_t clockPin, uint8_t dataPin, uint8_t skipSetup) :
-	mGainBits(1),
-	mScale(1.0f),
-	mOffset(0),
-	mClockPin(clockPin),
-	mDataPin(dataPin)
+HX711::HX711(uint8_t _clockPin, uint8_t _dataPin, uint8_t _skipSetup) :
+	gainBits(1),
+	scale(1.0f),
+	offset(0),
+	clockPin(_clockPin),
+	dataPin(_dataPin)
 {
-	this->initialize(skipSetup);
+	this->initialize(_skipSetup);
 }
 
-void HX711::initialize(uint8_t skipSetup){
-	if((!skipSetup) && wiringPiSetup() == -1){
+void HX711::initialize(uint8_t _skipSetup){
+	if((!_skipSetup) && wiringPiSetup() == -1){
 		printf("initialization failed");
 	}
-	pinMode(mClockPin, OUTPUT);
-	pinMode(mDataPin, INPUT);
+	pinMode(clockPin, OUTPUT);
+	pinMode(dataPin, INPUT);
 }
 
 bool HX711::isReady(){
-	return digitalRead(mDataPin) == LOW;
+	return digitalRead(dataPin) == LOW;
 }
 
-void HX711::setGain(uint8_t gain){
-	switch(gain){
+void HX711::setGain(uint8_t _gain){
+	switch(_gain){
 		case GAIN_128:
-			this->mGainBits = 1;
+			this->gainBits = 1;
 		break;
 		case GAIN_64:
-			this->mGainBits = 3;
+			this->gainBits = 3;
 		break;
 		case GAIN_32:
-			this->mGainBits = 2;
+			this->gainBits = 2;
 		break;
 		default:
 			//invalid gain, ignore
 		break;
 	}
 
-	digitalWrite(mClockPin, LOW);
+	digitalWrite(clockPin, LOW);
 	read();
 }
 
@@ -53,18 +53,18 @@ int32_t HX711::read() {
 	int32_t data = 0;
 	// pulse the clock pin 24 times to read the data
 	for(uint8_t i = 24; i--;){
-		digitalWrite(mClockPin, HIGH);
+		digitalWrite(clockPin, HIGH);
 
-		digitalRead(mDataPin);
-		data |= (digitalRead(mDataPin) << i);
+		digitalRead(dataPin);
+		data |= (digitalRead(dataPin) << i);
 
-		digitalWrite(mClockPin, LOW);
+		digitalWrite(clockPin, LOW);
 	}
 
 	// set the channel and the gain factor for the next reading using the clock pin
-	for (int i = 0; i < mGainBits; i++) {
-		digitalWrite(mClockPin, HIGH);
-		digitalWrite(mClockPin, LOW);
+	for (int i = 0; i < gainBits; i++) {
+		digitalWrite(clockPin, HIGH);
+		digitalWrite(clockPin, LOW);
 	}
 
 	if(data & 0x800000){
@@ -83,11 +83,11 @@ int32_t HX711::readAverage(uint8_t times) {
 }
 
 int32_t HX711::getRawValue(uint8_t times) {
-	return readAverage(times) - mOffset;
+	return readAverage(times) - offset;
 }
 
 float HX711::getUnits(uint8_t times) {
-	return getRawValue(times) / mScale;
+	return getRawValue(times) / scale;
 }
 
 void HX711::tare(uint8_t times) {
@@ -95,28 +95,28 @@ void HX711::tare(uint8_t times) {
 	setOffset(sum);
 }
 
-void HX711::setScale(float scale) {
-	mScale = scale;
+void HX711::setScale(float _scale) {
+	scale = _scale;
 }
 
-void HX711::setOffset(int32_t offset) {
-	mOffset = offset;
+void HX711::setOffset(int32_t _offset) {
+	offset = _offset;
 }
 
 void HX711::powerDown() {
-	digitalWrite(mClockPin, LOW);
-	digitalWrite(mClockPin, HIGH);
+	digitalWrite(clockPin, LOW);
+	digitalWrite(clockPin, HIGH);
 }
 
 void HX711::powerUp() {
-	digitalWrite(mClockPin, LOW);
+	digitalWrite(clockPin, LOW);
 }
 
 int32_t HX711::getOffset(){
-	return this->mOffset;
+	return this->offset;
 }
 
 float HX711::getScale(){
-	return this->mScale;
+	return this->scale;
 }
 

@@ -14,25 +14,25 @@
 
 class HX711{
 private:
-	uint8_t mGainBits;
-	float mScale;
-	int32_t mOffset;
+	uint8_t gainBits;
+	float scale;
+	int32_t offset;
 
-	uint8_t mClockPin;
-	uint8_t mDataPin;
+	uint8_t clockPin;
+	uint8_t dataPin;
 
 public:
-	HX711(uint8_t clockPin, uint8_t dataPin, uint8_t skipSetup);
-	void initialize(uint8_t skipSetup);
+	HX711(uint8_t _clockPin, uint8_t _dataPin, uint8_t _skipSetup);
+	void initialize(uint8_t _skipSetup);
 	bool isReady();
-	void setGain(uint8_t gain);
+	void setGain(uint8_t _gain);
 	int32_t read();
 	int32_t readAverage(uint8_t times = 5);
 	int32_t getRawValue(uint8_t times = 5);
 	float getUnits(uint8_t times = 3);
 	void tare(uint8_t times = 20);
-	void setScale(float scale);
-	void setOffset(int32_t offset);
+	void setScale(float _scale);
+	void setOffset(int32_t _offset);
 	void powerDown();
 	void powerUp();
 	int32_t getOffset();
