@@ -28,20 +28,20 @@ int main()
 {
     float poids;
     system("clear");
-    HX711 capteur(4, 5, 0);  // clock data skipInit
+    HX711 capteur(4, 5);  // clock data
 
     cout << "Capteur de pesage 5000g" << endl;
 
     if (capteur.isReady()){
     	cout << "Capteur de pesage connecté" << endl;
-	capteur.tare(3);
-        cout << "tare : " << capteur.getOffset() << endl;
+	capteur.tarer(3);
+        cout << "tare : " << capteur.obtenirOffset() << endl;
         sleep(5);
-	capteur.setScale(-500);   // le capteur est montée en traction
+	capteur.fixerEchelle(-500);   // Valeur négative car le capteur est montée en traction
 	while(true){
-                poids = capteur.getUnits();
+                poids = capteur.obtenirPoids();
 		system("clear");
-		cout << "Valeur   : " << fixed << setprecision (1) << poids << " g " << endl;
+		cout << "Poids : " << fixed << setprecision (1) << poids << " g " << endl;
 		sleep(1);
         }
     }

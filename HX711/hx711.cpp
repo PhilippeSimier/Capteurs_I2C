@@ -11,12 +11,12 @@ HX711::HX711(uint8_t _clockPin, uint8_t _dataPin, uint8_t _skipSetup) :
 	clockPin(_clockPin),
 	dataPin(_dataPin)
 {
-	this->initialize(_skipSetup);
+	this->initialiser(_skipSetup);
 }
 
-void HX711::initialize(uint8_t _skipSetup){
+void HX711::initialiser(uint8_t _skipSetup){
 	if((!_skipSetup) && wiringPiSetup() == -1){
-		printf("initialization failed");
+		printf("Erreur à l'initialisation");
 	}
 	pinMode(clockPin, OUTPUT);
 	pinMode(dataPin, INPUT);
@@ -26,7 +26,7 @@ bool HX711::isReady(){
 	return digitalRead(dataPin) == LOW;
 }
 
-void HX711::setGain(uint8_t _gain){
+void HX711::fixerGain(uint8_t _gain){
 	switch(_gain){
 		case GAIN_128:
 			this->gainBits = 1;
@@ -38,20 +38,20 @@ void HX711::setGain(uint8_t _gain){
 			this->gainBits = 2;
 		break;
 		default:
-			//invalid gain, ignore
+			// gain invalide, on ignore
 		break;
 	}
 
 	digitalWrite(clockPin, LOW);
-	read();
+	lecture();
 }
 
-int32_t HX711::read() {
-	// wait for the chip to become ready
+int32_t HX711::lecture() {
+	// attend que la puce soit prête
 	while (!this->isReady());
 
 	int32_t data = 0;
-	// pulse the clock pin 24 times to read the data
+	// Envoie 24 impulsions sur la sortie clock pour lire les données
 	for(uint8_t i = 24; i--;){
 		digitalWrite(clockPin, HIGH);
 
@@ -61,7 +61,9 @@ int32_t HX711::read() {
 		digitalWrite(clockPin, LOW);
 	}
 
-	// set the channel and the gain factor for the next reading using the clock pin
+	// fixe le canal et le facteur de gain pour la prochaine lecture
+	// en applicant des impulsions sur la sortie clock
+
 	for (int i = 0; i < gainBits; i++) {
 		digitalWrite(clockPin, HIGH);
 		digitalWrite(clockPin, LOW);
@@ -74,32 +76,34 @@ int32_t HX711::read() {
 	return data;
 }
 
-int32_t HX711::readAverage(uint8_t times) {
+int32_t HX711::obtenirMoyenne(uint8_t times) {
 	int64_t sum = 0;
 	for (uint8_t i = 0; i < times; i++) {
-		sum += read();
+		sum += lecture();
 	}
 	return sum / times;
 }
 
-int32_t HX711::getRawValue(uint8_t times) {
-	return readAverage(times) - offset;
+// retourne la valeur brute du convertisseur en tenant compte de la tare
+int32_t HX711::obtenirValeur(uint8_t times) {
+	return obtenirMoyenne(times) - offset;
 }
 
-float HX711::getUnits(uint8_t times) {
-	return getRawValue(times) / scale;
+// retourne la valeur du poids (fonction de la valeur scale)
+float HX711::obtenirPoids(uint8_t times) {
+	return obtenirValeur(times) / scale;
 }
 
-void HX711::tare(uint8_t times) {
-	uint64_t sum = readAverage(times);
-	setOffset(sum);
+void HX711::tarer(uint8_t times) {
+	uint64_t sum = obtenirMoyenne(times);
+	fixerOffset(sum);
 }
 
-void HX711::setScale(float _scale) {
+void HX711::fixerEchelle(float _scale) {
 	scale = _scale;
 }
 
-void HX711::setOffset(int32_t _offset) {
+void HX711::fixerOffset(int32_t _offset) {
 	offset = _offset;
 }
 
@@ -112,11 +116,11 @@ void HX711::powerUp() {
 	digitalWrite(clockPin, LOW);
 }
 
-int32_t HX711::getOffset(){
+int32_t HX711::obtenirOffset(){
 	return this->offset;
 }
 
-float HX711::getScale(){
+float HX711::obtenirEchelle(){
 	return this->scale;
 }
 
