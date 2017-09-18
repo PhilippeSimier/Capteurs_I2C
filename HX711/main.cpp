@@ -34,14 +34,14 @@ int main()
 
     if (capteur.isReady()){
     	cout << "Capteur de pesage connecté" << endl;
-	capteur.tarer(3);
+	capteur.tarer(9);
         cout << "tare : " << capteur.obtenirOffset() << endl;
-        sleep(5);
+        sleep(2);
 	capteur.fixerEchelle(-500);   // Valeur négative car le capteur est montée en traction
 	while(true){
-                poids = capteur.obtenirPoids();
+                poids = capteur.obtenirPoids(9);
 		system("clear");
-		cout << "Poids : " << fixed << setprecision (1) << poids << " g " << endl;
+		cout << "Poids : " << fixed << setprecision (0) << poids << " g " << endl;
 		sleep(1);
         }
     }

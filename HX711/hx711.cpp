@@ -77,11 +77,18 @@ int32_t HX711::lecture() {
 }
 
 int32_t HX711::obtenirMoyenne(uint8_t times) {
-	int64_t sum = 0;
-	for (uint8_t i = 0; i < times; i++) {
-		sum += lecture();
+	int64_t sum;
+	sum = lecture();
+	int32_t max = sum;
+        int32_t min = sum;
+	int32_t val;
+	for (uint8_t i = 1; i < times; i++) {
+	    val = lecture();
+	    sum += val;
+	    if (val > max) max = val;
+	    if (val < min) min = val;
 	}
-	return sum / times;
+	return (sum-max-min) / (times-2);
 }
 
 // retourne la valeur brute du convertisseur en tenant compte de la tare
