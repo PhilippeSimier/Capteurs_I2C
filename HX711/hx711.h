@@ -21,18 +21,21 @@ private:
 	uint8_t clockPin;
 	uint8_t dataPin;
 
+	int32_t lecture();
+	void    initialiser(uint8_t _skipSetup);
+	int32_t obtenirMoyenne(uint8_t times = 5);
+        int32_t obtenirValeur(uint8_t times = 5);
+	void    fixerOffset(int32_t _offset);
+
 public:
 	HX711(uint8_t _clockPin, uint8_t _dataPin, uint8_t _skipSetup=0);
-	void    initialiser(uint8_t _skipSetup);
+
 	bool    isReady();
 	void    fixerGain(uint8_t _gain);
-	int32_t lecture();
-	int32_t obtenirMoyenne(uint8_t times = 5);
-	int32_t obtenirValeur(uint8_t times = 5);
+
 	float   obtenirPoids(uint8_t times = 3);
 	void    tarer(uint8_t times = 20);
 	void    fixerEchelle(float _scale);
-	void    fixerOffset(int32_t _offset);
 	void    powerDown();
 	void    powerUp();
 	int32_t obtenirOffset();
