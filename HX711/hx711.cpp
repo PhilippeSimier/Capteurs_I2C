@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <wiringPi.h>
-
 #include "hx711.h"
 
 HX711::HX711(uint8_t _clockPin, uint8_t _dataPin, uint8_t _skipSetup) :
@@ -68,7 +67,6 @@ int32_t HX711::lecture() {
 		digitalWrite(clockPin, HIGH);
 		digitalWrite(clockPin, LOW);
 	}
-
 	if(data & 0x800000){
 		data |= (long) ~0xffffff;
 	}
@@ -77,11 +75,12 @@ int32_t HX711::lecture() {
 }
 
 int32_t HX711::obtenirMoyenne(uint8_t times) {
-	int64_t sum;
-	sum = lecture();
-	int32_t max = sum;
-        int32_t min = sum;
-	int32_t val;
+        int32_t val;
+	val = lecture();
+	int32_t max = val;
+        int32_t min = val;
+	int64_t sum = val;
+
 	for (uint8_t i = 1; i < times; i++) {
 	    val = lecture();
 	    sum += val;
@@ -98,7 +97,8 @@ int32_t HX711::obtenirValeur(uint8_t times) {
 
 // retourne la valeur du poids (fonction de la valeur scale)
 float HX711::obtenirPoids(uint8_t times) {
-	return obtenirValeur(times) / scale;
+	float val;
+	return val =  obtenirValeur(times) / scale;
 }
 
 void HX711::tarer(uint8_t times) {

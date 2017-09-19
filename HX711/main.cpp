@@ -20,6 +20,7 @@
 #include <iomanip>
 #include <unistd.h>  // pour la fct sleep
 #include <stdlib.h>  // pour la fct system
+#include <math.h>
 #include "hx711.h"
 
 using namespace std;
@@ -34,12 +35,13 @@ int main()
 
     if (capteur.isReady()){
     	cout << "Capteur de pesage connecté" << endl;
-	capteur.tarer(9);
+        capteur.fixerGain(128);
+	capteur.tarer(5);
         cout << "tare : " << capteur.obtenirOffset() << endl;
         sleep(2);
-	capteur.fixerEchelle(-500);   // Valeur négative car le capteur est montée en traction
+	capteur.fixerEchelle(-426.5);   // Valeur négative car le capteur est montée en traction
 	while(true){
-                poids = capteur.obtenirPoids(9);
+                poids = round (capteur.obtenirPoids(5) / 5) * 5;
 		system("clear");
 		cout << "Poids : " << fixed << setprecision (0) << poids << " g " << endl;
 		sleep(1);
