@@ -38,7 +38,7 @@
 #include <unistd.h>
 #include "spi.h"
 
-#define SCALE           -425.0 // parametre de calibration 425 représente un gramme pour un capteur 5 kg
+#define SCALE           -414  // parametre de calibration 414 représente un gramme pour un capteur 5 kg
 
 int obtenirValeur(spi_t *spi);
 
@@ -78,7 +78,7 @@ int main(void) {
 
         // Filtrage passe bas du premier ordre constante de temps 2.Te  (20ms)
 	// poids = 0.33 * capteur.obtenirPoids(3) + 0.66 * poids;   yn = 0,33.xn + 0,66.yn-1
-	// Filtre passe bas du premier ordre constante de temps 10.Te (100ms) // yn = 0,091.xn + 0,91.yn-1
+ 	// Filtre passe bas du premier ordre constante de temps 10.Te (100ms) // yn = 0,091.xn + 0,91.yn-1
         yn = 0.33 * xn + 0.66 * yn_1;
 
         if ((yn_1 - yn) < 0.1 && (yn_1 - yn) > - 0.1) stable = '*'; else stable = ' ';
