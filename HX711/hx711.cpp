@@ -46,7 +46,6 @@ int hx711::obtenirValeur()
 {
 	unsigned char byte;
 	int valeur = 0;
-	int i, j;
 
         unsigned char bufferReception[7];
         unsigned char bufferEmission[7] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0x80}; // To change the gain to 64, change the last byte(0x80)
@@ -54,8 +53,8 @@ int hx711::obtenirValeur()
         spi_transfer(&spi, bufferEmission, bufferReception, sizeof(bufferEmission));
 
 
-	for (i=0; i<6; i++){
-	    for (j=6; j>=0; j=j-2){
+	for (int i=0; i<6; i++){
+	    for (int j=6; j>=0; j=j-2){
 	    	byte = bufferReception[i] & (1<<j);
 	    	byte >>= j;
 	    	valeur = valeur | byte ;
