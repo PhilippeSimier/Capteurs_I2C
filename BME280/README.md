@@ -1,5 +1,3 @@
-![GitHub Logo](images/logo.png)
-
 ﻿# Le Capteur BME280
 
 # Description
@@ -15,7 +13,7 @@ En fonction du niveau de tension appliquée sur la broche SDO,  l'adresse sur le
  
 # Câblage 
 Avec les branchements suivants, SD0=1 donc l’adresse du capteur sur le bus I2C sera 0x77
- ![enter image description here](https://lh3.googleusercontent.com/-9JsXlER7GO4/Wts49f7SZwI/AAAAAAAANz0/4QEEwLxhirYxqE-pmtXO8pyPOVTlmNHhACLcBGAs/s0/shema-BME280.png "shema-BME280.png")
+ ![cablage](/images/png "shema-BME280.png")
 
 # Installation
 
