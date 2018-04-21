@@ -16,7 +16,9 @@ Avec les branchements suivants, SD0=1 donc l’adresse du capteur sur le bus I2C
  ![enter image description here](https://lh3.googleusercontent.com/-9JsXlER7GO4/Wts49f7SZwI/AAAAAAAANz0/4QEEwLxhirYxqE-pmtXO8pyPOVTlmNHhACLcBGAs/s0/shema-BME280.png "shema-BME280.png")
 
 # Installation
+
 ####Activer le module **i2c** via l'utilitaire **raspi-config**
+
 ```bash
 pi@raspberry:~ $ sudo raspi-config
 ```
@@ -34,10 +36,12 @@ le message suivant s'affiche :
 
  
 ####Installer les outils i2c 
+
 ```bash
 pi@raspberry:~ $ sudo apt-get install i2c-tools
 ```
 ####Vérifier la présence du capteur
+
 ```bash
 pi@raspberry:~ $ sudo i2cdetect -y 1
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
@@ -53,17 +57,20 @@ pi@raspberry:~ $ sudo i2cdetect -y 1
 la valeur de l'adresse 77 doit s'afficher si le câblage est correct.
 
 ####Cloner le dépot
+
 ```bash
 pi@raspberry:~ $ git clone https://github.com/PhilippeSimier/Capteurs_I2C.git
 
 pi@raspberry:~ $ cd Capteurs_I2C/BME280/
 ```
 ####Compiler puis exécuter le programme principal
+
 ```bash
 pi@raspberry:~/Capteurs_I2C/BME280 $ g++ main.cpp i2c.cpp  bme280.cpp -o main
 
 pi@pi3PSR:~/Capteurs_I2C/BME280 $ ./main
 ```
+
 # Changelog
 
 **21/04/2018 : ** Ajout du README . 
