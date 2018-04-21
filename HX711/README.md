@@ -10,18 +10,18 @@ le module HX711 est un amplificateur pour capteurs de force à pont de Wheatston
 le driver **SPI** (Serial Peripheral Interface) du noyau linux permet seulement de créer des impulsions d'horloge par multiple de 8, pour contourner cette limitation l'idée originale consiste à utiliser la ligne de données MOSI du bus SPI pour générer les 25 impulsions d'horloge. En écrivant la valeur **10101010** (0xaa en hexadécimal), nous obtenons 4 impulsions. Il suffit donc d'envoyer 6 fois cette valeur pour obtenir 24 impulsions, puis d'écrire la valeur 0x80 pour obtenir la 25 éme impulsions.
  
 # Câblage 
- ![enter image description here](https://lh3.googleusercontent.com/-mNRDYTpVxts/WtIt_MIavBI/AAAAAAAANyg/fXT3A7exa583gZPzQeLJxO3L85qElCM2QCLcBGAs/s0/schema-HX711.png "schema-HX711.png")
+ ![schema cablage HX711](/HX711/images/schema-HX711.png)
 
 
 # Changelog
 
-**14/04/2018 : ** Ajout du README . 
+ **14/04/2018 :** Ajout du README . 
 
 > **Notes :**
 
 
 > - Licence : **licence publique générale** ![enter image description here](https://img.shields.io/badge/licence-GPL-green.svg)
-> - Auteur **Philippe SIMIER**
+> - Auteur **Philippe SIMIER Lycée Touchard Le Mans**
 >  ![enter image description here](https://img.shields.io/badge/built-passing-green.svg)
 <!-- TOOLBOX 
 
