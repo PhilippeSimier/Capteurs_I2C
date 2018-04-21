@@ -35,12 +35,12 @@ le message suivant s'affiche :
 > The ARM I2C interface is enabled**
 
  
-####Installer les outils i2c 
+#### Installer les outils i2c 
 
 ```bash
 pi@raspberry:~ $ sudo apt-get install i2c-tools
 ```
-####Vérifier la présence du capteur
+#### Vérifier la présence du capteur
 
 ```bash
 pi@raspberry:~ $ sudo i2cdetect -y 1
@@ -56,14 +56,14 @@ pi@raspberry:~ $ sudo i2cdetect -y 1
 ```
 la valeur de l'adresse 77 doit s'afficher si le câblage est correct.
 
-####Cloner le dépot
+#### Cloner le dépot
 
 ```bash
 pi@raspberry:~ $ git clone https://github.com/PhilippeSimier/Capteurs_I2C.git
 
 pi@raspberry:~ $ cd Capteurs_I2C/BME280/
 ```
-####Compiler puis exécuter le programme principal
+#### Compiler puis exécuter le programme principal
 
 ```bash
 pi@raspberry:~/Capteurs_I2C/BME280 $ g++ main.cpp i2c.cpp  bme280.cpp -o main
@@ -73,7 +73,7 @@ pi@pi3PSR:~/Capteurs_I2C/BME280 $ ./main
 
 # Changelog
 
-**21/04/2018 : ** Ajout du README . 
+ **21/04/2018 : ** Ajout du README . 
 
 > **Notes :**
 
