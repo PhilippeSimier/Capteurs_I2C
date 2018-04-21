@@ -1,3 +1,5 @@
+![GitHub Logo](/images/logo.png)
+
 ﻿# Le Capteur BME280
 
 # Description
@@ -17,7 +19,9 @@ Avec les branchements suivants, SD0=1 donc l’adresse du capteur sur le bus I2C
 
 # Installation
 
-####Activer le module **i2c** via l'utilitaire **raspi-config**
+#### Activer le module **i2c** 
+
+via l'utilitaire **raspi-config**
 
 ```bash
 pi@raspberry:~ $ sudo raspi-config
