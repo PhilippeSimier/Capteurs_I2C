@@ -13,7 +13,7 @@ En fonction du niveau de tension appliquée sur la broche SDO,  l'adresse sur le
  
 # Câblage 
 Avec les branchements suivants, SD0=1 donc l’adresse du capteur sur le bus I2C sera 0x77
- ![cablage](/images/schema-BME280.png)
+ ![cablage BME280](/BME280/images/schema-BME280.png)
 
 # Installation
 
