@@ -40,7 +40,7 @@ hx711::~hx711()
 /**
  * @brief hx711::obtenirValeur()
  *
- * @details Permet d'obtenir la valeur brute de la conversion
+ * @details Permet d'obtenir la valeur brute de la conversion avec un gain configurer à 128
  */
 int hx711::obtenirValeur()
 {
@@ -62,16 +62,19 @@ int hx711::obtenirValeur()
 	            valeur = (valeur<<1);
 	    }
 	}
+
 	if (valeur > 0x7ffff)
 	    valeur = valeur | 0xfff00000;
-
+	else
+	    valeur = valeur & 0x007ffff;
+	//cout << valeur << endl; a décommenter en mode debug
 	return valeur;
 }
 
 /**
  * @brief hx711::obtenirPoids()
  *
- * @details Permet d'obtenir la valeur du poids en g
+ * @details Permet d'obtenir la valeur du poids en unité de mesure
  * @return float la valeur du poids
  */
 
@@ -92,5 +95,43 @@ float hx711::obtenirPoids()
 void  hx711::effectuerTarage()
 {
     offset = obtenirValeur();
+}
+
+/**
+ * @brief hx711::fixerEchelle()
+ *
+ * @details Permet de configurer l'échelle de mesure
+ */
+
+void hx711::fixerEchelle(int _scale)
+{
+    scale = _scale;
+}
+
+
+/**
+ * @brief hx711::fixerOffset()
+ *
+ * @details Permet de configurer l'offset
+ * Cette valeur est obtenue après tarage de la balance
+ */
+
+void hx711::fixerOffset(int _offset)
+{
+	offset = _offset;
+}
+
+
+
+/**
+ * @brief hx711::fixerOffset()
+ *
+ * @details Permet d'obtenir la valeur de l'offset
+ * Cette valeur est obtenue après tarage de la balance
+ */
+
+int hx711::obtenirOffset()
+{
+	return offset;
 }
 

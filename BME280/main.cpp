@@ -15,7 +15,7 @@ int main()
     if (!capteur.obtenirErreur()){
 
     	cout << "Capteur BME 280 présent sur le bus I2C" << endl;
-        capteur.donnerAltitude(74);
+        capteur.donnerAltitude(40);
 
         while(1){
     	    cout << " Température (C)  : " << fixed << setprecision (1) << capteur.obtenirTemperatureEnC() << " °C"<< endl;
