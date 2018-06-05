@@ -33,8 +33,6 @@ int main()
     else
     {
 	fichier >> scale >> offset;
-	cout << " scale : " << scale;
-        cout << " offset : " << offset;
 	balance.fixerEchelle(scale);
         balance.fixerOffset(offset);
     }
@@ -44,11 +42,11 @@ int main()
 	xn = balance.obtenirPoids();
 	// Filtrage passe bas du premier ordre constante de temps 2.Te  (20ms)
         // Filtre passe bas du premier ordre constante de temps 10.Te (100ms)
-        // yn = 0,091.xn + 0,91.yn-1;
-	yn = 0.33 * xn + 0.66 * yn_1;
+        // yn = 0.091 * xn + 0.91 * yn_1;
+	 yn = 0.3333 * xn + 0.6666 * yn_1;
 
 	// calcul de la dérivée
-	if ((yn_1 - yn) < 0.1 && (yn_1 - yn) > - 0.1)
+	if ((yn_1 - yn) < 0.1 && (yn_1 - yn) > - 0.002)
             stable = '*';
         else stable = ' ';
         yn_1 = yn;
