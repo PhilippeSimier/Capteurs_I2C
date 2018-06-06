@@ -2,8 +2,10 @@
  *  @file     main.cpp
  *  @author   Philippe SIMIER (Touchard Wahington le Mans)
  *  @license  BSD (see license.txt)
- *  @date     15 avril 2018
- *  @brief    programme étalonnage la balance
+ *  @date     6 juin 2018
+ *  @brief    programme étalonnage de la balance
+ *            ce programme détermine les constantes offset scale et gain et
+ *            les enregistre dans le fichier balance.ini
  *            compilation: g++ etalonnage.cpp hx711.cpp  spi.c -o etalonnage
 */
 
@@ -25,19 +27,14 @@ int main()
     int gain;
     float poids;
 
-    ifstream fichier("balance.ini"); //Creation du flux en lecture sur le fichier de configuration
-
-    if (fichier.fail())
-        cerr << "Erreur lors de l'ouverture du fichier de configuration" << endl;
-    else
+    do
     {
-	fichier >> scale >> offset >> gain;
-	cout << " scale : " << scale;
-        cout << " offset : " << offset;
-	balance.fixerEchelle(scale);
-        balance.fixerOffset(offset);
-        balance.configurerGain(gain);
+        cout << "Donnez le gain souhaité : 128 ou 64 ? " << endl;
+        cin >> gain;
     }
+    while (gain !=128 && gain !=64);
+
+    balance.configurerGain(gain);
 
     int som = 0;
     for(int i=0 ; i<100 ; i++)
@@ -50,9 +47,9 @@ int main()
     offset = som / 100;
     cout << "offset : " << offset << endl;
 
-    cout << "donner la valeur du poids étalon posé sur le plateau en kg: " << endl;
+    cout << "Posez un poids étalon sur le plateau et donnez sa valeur en kg : " << endl;
     cin >> poids;
-    cout << "Vous avez posé un poids de " << poids << endl;
+    cout << "Vous avez posé un poids de " << poids << " kg" << endl;
 
     som = 0;
     for(int i=0 ; i<100 ; i++)
