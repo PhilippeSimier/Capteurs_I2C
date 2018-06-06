@@ -25,6 +25,7 @@ int main()
     char  stable;
     int   scale;
     int   offset;
+    int  gain;
 
     ifstream fichier("balance.ini"); //Creation du flux en lecture sur le fichier de configuration
 
@@ -32,9 +33,10 @@ int main()
         cerr << "Erreur lors de l'ouverture du fichier de configuration" << endl;
     else
     {
-	fichier >> scale >> offset;
+	fichier >> scale >> offset >> gain;
 	balance.fixerEchelle(scale);
         balance.fixerOffset(offset);
+        balance.configurerGain(gain);
     }
 
     while(1)

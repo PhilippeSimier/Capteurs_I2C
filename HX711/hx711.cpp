@@ -2,7 +2,7 @@
  *  @file     hx711.cpp
  *  @author   Philippe SIMIER (Touchard Wahington le Mans)
  *  @license  BSD (see license.txt)
- *  @date 4 mars 2018
+ *  @date     6 juin 2018
  *  @brief    Classe pour le composant HX711
 */
 
@@ -25,6 +25,13 @@ hx711::hx711(int _scale)
     }
     scale = _scale;
     offset = 0;
+    bufferEmission[0] = 0xaa;
+    bufferEmission[1] = 0xaa;
+    bufferEmission[2] = 0xaa;
+    bufferEmission[3] = 0xaa;
+    bufferEmission[4] = 0xaa;
+    bufferEmission[5] = 0xaa;
+    bufferEmission[6] = 0xa8;   // 0xa8 gain = 64  0x80 gain = 128
 }
 
 /**
@@ -40,7 +47,7 @@ hx711::~hx711()
 /**
  * @brief hx711::obtenirValeur()
  *
- * @details Permet d'obtenir la valeur brute de la conversion avec un gain configurer à 128
+ * @details Permet d'obtenir la valeur brute de la conversion
  */
 int hx711::obtenirValeur()
 {
@@ -48,7 +55,6 @@ int hx711::obtenirValeur()
 	int valeur = 0;
 
         unsigned char bufferReception[7];
-        unsigned char bufferEmission[7] = {0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0xaa, 0x80}; // To change the gain to 64, change the last byte(0x80)
 
         spi_transfer(&spi, bufferEmission, bufferReception, sizeof(bufferEmission));
 
@@ -135,3 +141,25 @@ int hx711::obtenirOffset()
 	return offset;
 }
 
+
+/**
+ * @brief hx711::configurerGain()
+ *
+ * @details Permet de configurer la valeur du gain de l'amplificateur
+ * pour le canal A deux valeurs possibles 128 ou 64
+ */
+
+void hx711::configurerGain(char gain)
+{
+    switch(gain){
+	case 128:
+	    bufferEmission[6] = 0x80; // 25 impulsions
+            break;
+        case 64:
+	    bufferEmission[6] = 0xa8; // 27 impulsions
+            break;
+        default:
+            bufferEmission[6] = 0xa8; // 27 impulsions
+
+    }
+}

@@ -27,6 +27,10 @@ public:
     void fixerOffset(int _offset);
     // Méthode pour obtenir l'offset
     int obtenirOffset();
+    // Méthode pour fixer le gain de l'amplificateur
+    // Prends effet après la prochaine lecture
+    // channel A can be set for a 128 or 64 gain; channel B has a fixed 32 gain
+    void configurerGain(char gain);
 
 
 private:
@@ -35,6 +39,7 @@ private:
     int   valeurBrute;
     int   offset;
     int   scale;
+    unsigned char bufferEmission[7];
 
 };
 
