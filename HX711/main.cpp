@@ -60,7 +60,7 @@ int main()
         else stable = ' ';
         yn_1 = yn;
 
-        cout << stable << " " << yn << fixed << setprecision (2) << " " << unite << endl;
+        cout << stable << " " << yn << fixed << setprecision (1) << " " << unite << endl;
         usleep(100000);
         system("clear");
     }

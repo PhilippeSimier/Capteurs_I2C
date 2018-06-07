@@ -28,7 +28,7 @@ int main()
     float poids;
     string unite;
 
-    cout << "Quel est l'unité de mesure ? (g kg lb)" << endl;
+    cout << "Quelle est l'unité de mesure ? (g kg lb)" << endl;
     cin >> unite;
 
     do
