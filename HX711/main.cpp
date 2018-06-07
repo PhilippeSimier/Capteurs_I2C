@@ -3,13 +3,14 @@
  *  @author   Philippe SIMIER (Touchard Wahington le Mans)
  *  @license  BSD (see license.txt)
  *  @date     15 avril 2018
- *  @brief    programme balance
+ *  @brief    programme exemple balance
  *            compilation: g++ main.cpp hx711.cpp  spi.c -o main
 */
 
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+
 #include "hx711.h"
 
 
@@ -25,15 +26,21 @@ int main()
     char  stable;
     int   scale;
     int   offset;
-    int  gain;
+    int   gain;
+    string unite;
 
     ifstream fichier("balance.ini"); //Creation du flux en lecture sur le fichier de configuration
 
     if (fichier.fail())
+    {
         cerr << "Erreur lors de l'ouverture du fichier de configuration" << endl;
+    	balance.fixerEchelle(1);
+        balance.fixerOffset(0);
+        balance.configurerGain(128);
+    }
     else
     {
-	fichier >> scale >> offset >> gain;
+	fichier >> scale >> offset >> gain >> unite;
 	balance.fixerEchelle(scale);
         balance.fixerOffset(offset);
         balance.configurerGain(gain);
@@ -53,7 +60,7 @@ int main()
         else stable = ' ';
         yn_1 = yn;
 
-        cout << stable << " " << yn << fixed << setprecision (2) << " kg" << endl;
+        cout << stable << " " << yn << fixed << setprecision (2) << " " << unite << endl;
         usleep(100000);
         system("clear");
     }

@@ -26,6 +26,10 @@ int main()
     int scale;
     int gain;
     float poids;
+    string unite;
+
+    cout << "Quel est l'unité de mesure ? (g kg lb)" << endl;
+    cin >> unite;
 
     do
     {
@@ -47,7 +51,7 @@ int main()
     offset = som / 100;
     cout << "offset : " << offset << endl;
 
-    cout << "Posez un poids étalon sur le plateau et donnez sa valeur en kg : " << endl;
+    cout << "Posez un poids étalon sur le plateau et donnez sa valeur en " << unite << " : " << endl;
     cin >> poids;
     cout << "Vous avez posé un poids de " << poids << " kg" << endl;
 
@@ -65,6 +69,6 @@ int main()
     cout << endl << scale << " " << offset << " " << gain << endl;
     // ecriture du fichier de configuration de la balance
     ofstream output("balance.ini");
-    output << scale << " " << offset << " " << gain << endl;
+    output << scale << " " << offset << " " << gain << " " << unite << endl;
 
 }
