@@ -40,30 +40,39 @@ int main()
 
     balance.configurerGain(gain);
 
-    int som = 0;
-    for(int i=0 ; i<100 ; i++)
+    int max,min,som;
+    som = balance.obtenirValeur();
+    min = som;
+    max = som;
+    for(int i=1 ; i<100 ; i++)
     {
+        usleep(100000);
 	x1 = balance.obtenirValeur();
         cout << x1 << endl;
-        usleep(100000);
         som += x1;
+	if (x1 > max) max = x1;
+	if (x1 < min) min = x1;
     }
-    offset = som / 100;
+    offset = (som - max - min)/ 98;
     cout << "offset : " << offset << endl;
-
     cout << "Posez un poids étalon sur le plateau et donnez sa valeur en " << unite << " : " << endl;
     cin >> poids;
     cout << "Vous avez posé un poids de " << poids << " kg" << endl;
 
-    som = 0;
-    for(int i=0 ; i<100 ; i++)
+    som = balance.obtenirValeur();
+    max = som;
+    min = som;
+    for(int i=1 ; i<100 ; i++)
     {
+        usleep(100000);
         x2 = balance.obtenirValeur();
         cout << x2 << endl;
-        usleep(100000);
         som += x2;
+        if (x2 > max) max = x2;
+        if (x2 < min) min = x2;
+
     }
-    x2 = som / 100;
+    x2 = (som - max - min)/98 ;
     scale = (x2 - offset)/poids;
     cout << "scale : " << scale  << endl;
     cout << endl << scale << " " << offset << " " << gain << endl;

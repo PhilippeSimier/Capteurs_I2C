@@ -55,13 +55,13 @@ int main()
 	 yn = 0.3333 * xn + 0.6666 * yn_1;
 
 	// calcul de la dérivée
-	if ((yn_1 - yn) < 0.1 && (yn_1 - yn) > - 0.002)
+	if ((yn_1 - yn) < 0.1 && (yn_1 - yn) > - 0.1)
             stable = '*';
         else stable = ' ';
         yn_1 = yn;
 
         cout << stable << " " << yn << fixed << setprecision (1) << " " << unite << endl;
-        usleep(100000);
+        usleep(80000);
         system("clear");
     }
 }
