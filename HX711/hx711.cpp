@@ -16,7 +16,7 @@ using namespace std;
  *          par défaut spi, scale, offset
  */
 
-hx711::hx711(int _scale)
+hx711::hx711(float _scale)
 {
     /* Ouverture de spidev0.0 avec le  mode 0 et la vitesse max 1MHz */
     if (spi_open(&spi, "/dev/spidev0.0", 0, 1000000) < 0) {
@@ -109,7 +109,7 @@ void  hx711::effectuerTarage()
  * @details Permet de configurer l'échelle de mesure
  */
 
-void hx711::fixerEchelle(int _scale)
+void hx711::fixerEchelle(float _scale)
 {
     scale = _scale;
 }

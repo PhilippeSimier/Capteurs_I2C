@@ -23,7 +23,7 @@ int main()
     hx711 balance;
     int x1,x2;
     int offset;
-    int scale;
+    float scale;
     int gain;
     float poids;
     string unite;
@@ -39,8 +39,8 @@ int main()
     while (gain !=128 && gain !=64);
 
     balance.configurerGain(gain);
-
     int max,min,som;
+
     som = balance.obtenirValeur();
     min = som;
     max = som;
@@ -73,7 +73,7 @@ int main()
 
     }
     x2 = (som - max - min)/98 ;
-    scale = (x2 - offset)/poids;
+    scale = (float)(x2 - offset)/poids;
     cout << "scale : " << scale  << endl;
     cout << endl << scale << " " << offset << " " << gain << endl;
     // ecriture du fichier de configuration de la balance

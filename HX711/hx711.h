@@ -12,7 +12,7 @@ class hx711
 public:
 
     // le constructeur
-    hx711(int scale = -414);
+    hx711(float scale = 1.0);
     // le destructeur
     ~hx711();
     // Méthode pour obtenir la valeur du poids
@@ -22,7 +22,7 @@ public:
     // Méthode pour obtenir la valeur brute
     int   obtenirValeur();
     // Méthode pour fixer l'échelle de mesure (nb de points par unité de mesure)
-    void fixerEchelle(int _scale);
+    void fixerEchelle(float _scale);
     // Méthode pour fixer l'offset (décalage d'origine)
     void fixerOffset(int _offset);
     // Méthode pour obtenir l'offset
@@ -38,7 +38,7 @@ private:
     spi_t spi;
     int   valeurBrute;
     int   offset;
-    int   scale;
+    float   scale;
     unsigned char bufferEmission[7];
 
 };

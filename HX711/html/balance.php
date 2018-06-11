@@ -1,24 +1,24 @@
  <?php
-   
+
 $balanceIni = fopen('/home/pi/Capteurs_I2C/HX711/balance.ini', 'r+');
- 
+
 //--------------------si des données  sont reçues---------------------------------------------------------
 if( !empty($_POST['envoyer'])){
-	$ligne =  $_POST['scale'] . " " . $_POST['offset']. " " . $_POST['gain'] . " " . $_POST['unite'] . " ";
+	$ligne =  $_POST['scale'] . " " . $_POST['offset']. " " . $_POST['gain'] . " " . $_POST['unite'] . "                ";
     fputs($balanceIni, $ligne);
 
 }
 else
 {
-	
+
     $ligne = fgets($balanceIni);
     list($_POST['scale'], $_POST['offset'], $_POST['gain'], $_POST['unite']) = explode(" ", $ligne);
-    
-	
-}	
+
+
+}
 
 fclose($balanceIni);
- ?>
+?>
 
 
 <!DOCTYPE html>
@@ -29,6 +29,8 @@ fclose($balanceIni);
 
     <title>Configuration Balance</title>
     <!-- Bootstrap CSS version 4.1.1 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/css/bootstrap.min.css" >
 </head>
 <body>
@@ -36,7 +38,7 @@ fclose($balanceIni);
 	<div class=" col-md-3"></div>
     <div class=" col-md-6">
 
-		<h2>Paramètres de la balance</h2>
+		<h2>Configuration de la balance</h2>
 		<form class="form-horizontal" method="post" action="<?php echo $_SERVER['SCRIPT_NAME'] ?>" name="configuration" >
 		
 		<div class="form-group">

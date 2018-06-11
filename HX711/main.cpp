@@ -24,7 +24,7 @@ int main()
     float yn   = 0.0;
     float yn_1 = 0.0;
     char  stable;
-    int   scale;
+    float   scale;
     int   offset;
     int   gain;
     string unite;
@@ -34,7 +34,7 @@ int main()
     if (fichier.fail())
     {
         cerr << "Erreur lors de l'ouverture du fichier de configuration" << endl;
-    	balance.fixerEchelle(1);
+    	balance.fixerEchelle(1.0);
         balance.fixerOffset(0);
         balance.configurerGain(128);
     }
@@ -52,7 +52,7 @@ int main()
 	// Filtrage passe bas du premier ordre constante de temps 2.Te  (20ms)
         // Filtre passe bas du premier ordre constante de temps 10.Te (100ms)
         // yn = 0.091 * xn + 0.91 * yn_1;
-	 yn = 0.3333 * xn + 0.6666 * yn_1;
+	 yn = 0.333333 * xn + 0.666666 * yn_1;
 
 	// calcul de la dérivée
 	if ((yn_1 - yn) < 0.1 && (yn_1 - yn) > - 0.1)
@@ -60,8 +60,8 @@ int main()
         else stable = ' ';
         yn_1 = yn;
 
-        cout << stable << " " << yn << fixed << setprecision (1) << " " << unite << endl;
-        usleep(80000);
+        cout << stable << " " << yn << fixed << setprecision (2) << " " << unite << endl;
+        usleep(100000);
         system("clear");
     }
 }
