@@ -21,13 +21,13 @@ int main()
 
     hx711 balance;
     float xn;
-    float yn   = 0.0;
-    float yn_1 = 0.0;
+    float xn_1 = 0.0;
     char  stable;
-    float   scale;
+    float scale;
     int   offset;
     int   gain;
     string unite;
+    int   precision = 1;
 
     ifstream fichier("balance.ini"); //Creation du flux en lecture sur le fichier de configuration
 
@@ -40,7 +40,7 @@ int main()
     }
     else
     {
-	fichier >> scale >> offset >> gain >> unite;
+	fichier >> scale >> offset >> gain >> unite >> precision;
 	balance.fixerEchelle(scale);
         balance.fixerOffset(offset);
         balance.configurerGain(gain);
@@ -49,19 +49,14 @@ int main()
     while(1)
     {
 	xn = balance.obtenirPoids();
-	// Filtrage passe bas du premier ordre constante de temps 2.Te  (20ms)
-        // Filtre passe bas du premier ordre constante de temps 10.Te (100ms)
-        // yn = 0.091 * xn + 0.91 * yn_1;
-	 yn = 0.333333 * xn + 0.666666 * yn_1;
+        system("clear");
 
 	// calcul de la dérivée
-	if ((yn_1 - yn) < 0.1 && (yn_1 - yn) > - 0.1)
+	if ((xn_1 - xn) < 0.1 && (xn_1 - xn) > - 0.1)
             stable = '*';
         else stable = ' ';
-        yn_1 = yn;
+        xn_1 = xn;
 
-        cout << stable << " " << yn << fixed << setprecision (2) << " " << unite << endl;
-        usleep(100000);
-        system("clear");
+        cout << stable << " " << xn << fixed << setprecision (precision) << " " << unite << endl;
     }
 }

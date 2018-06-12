@@ -56,8 +56,8 @@ int hx711::obtenirValeur()
 
         unsigned char bufferReception[7];
 
+        usleep(100000); // attente fin de conversion
         spi_transfer(&spi, bufferEmission, bufferReception, sizeof(bufferEmission));
-
 
 	for (int i=0; i<6; i++){
 	    for (int j=6; j>=0; j=j-2){
@@ -85,10 +85,14 @@ int hx711::obtenirValeur()
  */
 
 
-float hx711::obtenirPoids()
+float hx711::obtenirPoids(int nb)
 {
-    int valeurBrute;
-    valeurBrute = obtenirValeur();
+    int valeurBrute = 0;
+    for (int i=0; i < nb; i++)
+    {
+        valeurBrute += obtenirValeur();
+    }
+    valeurBrute = valeurBrute / nb;
     return (float)(valeurBrute - offset)/scale;
 }
 

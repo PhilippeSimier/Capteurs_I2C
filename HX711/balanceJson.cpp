@@ -24,11 +24,12 @@ using namespace std;
 int main()
 {
 
-    hx711 balance;
+    hx711   balance;
     float   scale;
-    int   offset;
-    int   gain;
-    string unite;
+    int     offset;
+    int     gain;
+    string  unite;
+    int     precision = 1;
 
     // Lecture du fichier de configuration
     ifstream fichier("/home/pi/Capteurs_I2C/HX711/balance.ini");
@@ -42,7 +43,7 @@ int main()
     }
     else
     {
-	fichier >> scale >> offset >> gain >> unite;
+	fichier >> scale >> offset >> gain >> unite >> precision;
 	balance.fixerEchelle(scale);
         balance.fixerOffset(offset);
         balance.configurerGain(gain);
@@ -50,6 +51,6 @@ int main()
 
     cout << "Content-type: application/json" << endl << endl;
     cout << "{" << endl;
-    cout << "\"Weight\":\"" << fixed << setprecision (2) << balance.obtenirPoids() << " " << unite << "\""<< endl;
+    cout << "\"Weight\":\"" << fixed << setprecision (precision) << balance.obtenirPoids() << " " << unite << "\""<< endl;
     cout << "}" << endl;
 }

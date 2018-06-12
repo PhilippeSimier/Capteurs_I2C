@@ -16,7 +16,7 @@ public:
     // le destructeur
     ~hx711();
     // Méthode pour obtenir la valeur du poids
-    float obtenirPoids();
+    float obtenirPoids(int nb = 10);
     // Méthode pour effectuer le tarage
     void  effectuerTarage();
     // Méthode pour obtenir la valeur brute

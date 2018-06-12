@@ -27,9 +27,16 @@ int main()
     int gain;
     float poids;
     string unite;
+    int precision;
 
     cout << "Quelle est l'unité de mesure ? (g kg lb)" << endl;
     cin >> unite;
+    do
+    {
+        cout << "Quelle est la précision d'affichage : 1 ou 2 chiffres après la virgule" << endl;
+        cin >> precision;
+    }
+    while (precision !=1 && precision !=2);
 
     do
     {
@@ -46,8 +53,7 @@ int main()
     max = som;
     for(int i=1 ; i<100 ; i++)
     {
-        usleep(100000);
-	x1 = balance.obtenirValeur();
+        x1 = balance.obtenirValeur();
         cout << x1 << endl;
         som += x1;
 	if (x1 > max) max = x1;
@@ -57,14 +63,13 @@ int main()
     cout << "offset : " << offset << endl;
     cout << "Posez un poids étalon sur le plateau et donnez sa valeur en " << unite << " : " << endl;
     cin >> poids;
-    cout << "Vous avez posé un poids de " << poids << " kg" << endl;
+    cout << "Vous avez posé un poids de " << poids << " " << unite << endl;
 
     som = balance.obtenirValeur();
     max = som;
     min = som;
     for(int i=1 ; i<100 ; i++)
     {
-        usleep(100000);
         x2 = balance.obtenirValeur();
         cout << x2 << endl;
         som += x2;
@@ -75,9 +80,9 @@ int main()
     x2 = (som - max - min)/98 ;
     scale = (float)(x2 - offset)/poids;
     cout << "scale : " << scale  << endl;
-    cout << endl << scale << " " << offset << " " << gain << endl;
+    cout << endl << scale << " " << offset << " " << gain << " " << precision << endl;
     // ecriture du fichier de configuration de la balance
     ofstream output("balance.ini");
-    output << scale << " " << offset << " " << gain << " " << unite << endl;
+    output << scale << " " << offset << " " << gain << " " << unite << " " << precision << endl;
 
 }
