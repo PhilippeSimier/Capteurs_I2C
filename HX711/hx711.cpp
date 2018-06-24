@@ -87,13 +87,19 @@ int hx711::obtenirValeur()
 
 float hx711::obtenirPoids(int nb)
 {
-    int valeurBrute = 0;
+    int max = obtenirValeur();
+    int min = max;
+    int som = 0;
     for (int i=0; i < nb; i++)
     {
-        valeurBrute += obtenirValeur();
+        valeurBrute = obtenirValeur();
+        if (valeurBrute > max) max = valeurBrute;
+        if (valeurBrute < min) min = valeurBrute;
+        som += valeurBrute;
     }
-    valeurBrute = valeurBrute / nb;
+    valeurBrute = (som - max - min) / (nb-2);
     return (float)(valeurBrute - offset)/scale;
+
 }
 
 /**
