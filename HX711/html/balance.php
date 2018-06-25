@@ -1,23 +1,31 @@
- <?php
+<?php
+require_once('ini/ini.php');
 
-$balanceIni = fopen('/home/pi/Capteurs_I2C/HX711/balance.ini', 'r+');
-
-//--------------------si des données  sont reçues---------------------------------------------------------
+//------------si des données  sont reçues on les enregistrent dans le fichier configuration.ini ---------
 if( !empty($_POST['envoyer'])){
-	$ligne =  $_POST['scale'] . " " . $_POST['offset']. " " . $_POST['gain'] . " " . $_POST['unite'] . " " . $_POST['precision'] . "                ";
-    fputs($balanceIni, $ligne);
+
+    $array = array();
+    $array['balance'] = array ('scale'  => $_POST['scale'],
+                               'offset' => $_POST['offset'],
+                               'gain'   => $_POST['gain'],
+			       'unite'  => $_POST['unite'],
+                               'precision' => $_POST['precision']);
+    $ini = new ini ("/home/pi/Capteurs_I2C/HX711/configuration.ini");
+    $ini->ajouter_array($array);
+    $ini->ecrire(true);
 
 }
+// -------------- sinon lecture du fichier de configuration section balance -----------------------------
 else
 {
-
-    $ligne = fgets($balanceIni);
-    list($_POST['scale'], $_POST['offset'], $_POST['gain'], $_POST['unite'], $_POST['precision']) = explode(" ", $ligne);
-
-
+   $ini  = parse_ini_file("/home/pi/Capteurs_I2C/HX711/configuration.ini", true);
+   $_POST['unite'] = $ini['balance']['unite'];
+   $_POST['gain']  = $ini['balance']['gain'];
+   $_POST['offset'] = $ini['balance']['offset'];
+   $_POST['precision'] = $ini['balance']['precision'];
+   $_POST['scale'] = $ini['balance']['scale'];
 }
 
-fclose($balanceIni);
 ?>
 
 

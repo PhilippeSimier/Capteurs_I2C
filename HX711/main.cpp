@@ -4,7 +4,7 @@
  *  @license  BSD (see license.txt)
  *  @date     15 avril 2018
  *  @brief    programme exemple balance
- *            compilation: g++ main.cpp hx711.cpp  spi.c -o main
+ *            compilation: g++ main.cpp hx711.cpp SimpleIni.cpp spi.c -o main
 */
 
 #include <iostream>
@@ -12,7 +12,7 @@
 #include <iomanip>
 
 #include "hx711.h"
-
+#include "SimpleIni.h"
 
 using namespace std;
 
@@ -20,6 +20,7 @@ int main()
 {
 
     hx711 balance;
+    SimpleIni ini;
     float xn;
     float xn_1 = 0.0;
     char  stable;
@@ -29,22 +30,18 @@ int main()
     string unite;
     int   precision = 1;
 
-    ifstream fichier("balance.ini"); //Creation du flux en lecture sur le fichier de configuration
+    // Lecture du fichier de configuration
+    ini.Load("configuration.ini");
+    scale  = ini.GetValue<float>("balance", "scale", 1.0 );
+    offset = ini.GetValue<int>("balance", "offset", 0);
+    gain   = ini.GetValue<int>("balance", "gain", 128);
+    unite  = ini.GetValue<string>("balance", "unite", "Kg");
+    precision = ini.GetValue<int>("balance", "precision", 1);
 
-    if (fichier.fail())
-    {
-        cerr << "Erreur lors de l'ouverture du fichier de configuration" << endl;
-    	balance.fixerEchelle(1.0);
-        balance.fixerOffset(0);
-        balance.configurerGain(128);
-    }
-    else
-    {
-	fichier >> scale >> offset >> gain >> unite >> precision;
-	balance.fixerEchelle(scale);
-        balance.fixerOffset(offset);
-        balance.configurerGain(gain);
-    }
+    // Configuration de la balance
+    balance.fixerEchelle(scale);
+    balance.fixerOffset(offset);
+    balance.configurerGain(gain);
 
     while(1)
     {

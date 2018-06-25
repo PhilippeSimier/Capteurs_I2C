@@ -5,14 +5,15 @@
  *  @date     6 juin 2018
  *  @brief    programme étalonnage de la balance
  *            ce programme détermine les constantes offset scale et gain et
- *            les enregistre dans le fichier balance.ini
- *            compilation: g++ etalonnage.cpp hx711.cpp  spi.c -o etalonnage
+ *            les enregistre dans le fichier configuration.ini
+ *            compilation: g++ etalonnage.cpp hx711.cpp SimpleIni.cpp  spi.c -o etalonnage
 */
 
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include "hx711.h"
+#include "SimpleIni.h"
 
 
 using namespace std;
@@ -21,6 +22,8 @@ int main()
 {
 
     hx711 balance;
+    SimpleIni ini;
+
     int x1,x2;
     int offset;
     float scale;
@@ -29,14 +32,23 @@ int main()
     string unite;
     int precision;
 
+    if(!ini.Load("configuration.ini"))
+    {
+        cout << "Impossible d'ouvrir le fichier configuration.ini !!" << endl;
+        return -1;
+    }
+
     cout << "Quelle est l'unité de mesure ? (g kg lb)" << endl;
     cin >> unite;
+    ini.SetValue<string>("balance", "unite", unite);
+
     do
     {
         cout << "Quelle est la précision d'affichage : 1 ou 2 chiffres après la virgule" << endl;
         cin >> precision;
     }
     while (precision !=1 && precision !=2);
+    ini.SetValue<int>("balance", "precision", precision);
 
     do
     {
@@ -44,10 +56,10 @@ int main()
         cin >> gain;
     }
     while (gain !=128 && gain !=64);
+    ini.SetValue<int>("balance", "gain", gain);
 
     balance.configurerGain(gain);
     int max,min,som;
-
     som = balance.obtenirValeur();
     min = som;
     max = som;
@@ -56,11 +68,13 @@ int main()
         x1 = balance.obtenirValeur();
         cout << x1 << endl;
         som += x1;
-	if (x1 > max) max = x1;
-	if (x1 < min) min = x1;
+        if (x1 > max) max = x1;
+        if (x1 < min) min = x1;
     }
     offset = (som - max - min)/ 98;
     cout << "offset : " << offset << endl;
+    ini.SetValue<int>("balance", "offset", offset);
+
     cout << "Posez un poids étalon sur le plateau et donnez sa valeur en " << unite << " : " << endl;
     cin >> poids;
     cout << "Vous avez posé un poids de " << poids << " " << unite << endl;
@@ -80,9 +94,19 @@ int main()
     x2 = (som - max - min)/98 ;
     scale = (float)(x2 - offset)/poids;
     cout << "scale : " << scale  << endl;
-    cout << endl << scale << " " << offset << " " << gain << " " << precision << endl;
-    // ecriture du fichier de configuration de la balance
-    ofstream output("balance.ini");
-    output << scale << " " << offset << " " << gain << " " << unite << " " << precision << endl;
+    ini.SetValue<float>("balance", "scale", scale);
+
+
+    if(!ini.SaveAs("configuration.ini"))
+    {
+        cout << "Impossible d'écrire dans configuration.ini." << endl;
+        return -1;
+    }
+
+    cout << "Le fichier de configuration : configuration.ini a été enregistré." << endl;
+
+    return 0;
 
 }
+
+
