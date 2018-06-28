@@ -5,8 +5,8 @@ class ini
     var $ini;
     var $filename;
 
-// le constructeur
-    public function ini ($filename, $commentaire = false) {
+// le constructeur (version php 7)
+    function __construct($filename, $commentaire = false) {
         $this->filename = $filename;
         $this->ini = (!$commentaire) ? ' ' : ';'.$commentaire;
     }
