@@ -1,11 +1,18 @@
 CXX = g++
-EXEC = etalonnage balanceJson main
+EXEC = etalonnage tarage balanceJson main
 
 all: $(EXEC)
 
 # compilation du programme etalonnage 
 etalonnage: etalonnage.cpp SimpleIni.o hx711.o
 	$(CXX) etalonnage.cpp SimpleIni.o hx711.o spi.o -o etalonnage
+
+
+# c# compilation du programme tarage
+tarage: tarage.cpp SimpleIni.o hx711.o
+	$(CXX) tarage.cpp SimpleIni.o hx711.o spi.o -o tarage
+
+
 
 # compilation du programme balanceJson
 balanceJson: balanceJson.cpp SimpleIni.o hx711.o
@@ -41,6 +48,7 @@ mrproper: clean
 install:
 	cp balanceJson /usr/lib/cgi-bin/balanceJson
 	chmod +s /usr/lib/cgi-bin/balanceJson
+	chmod 777 configuration.ini
 
 uninstall:
 	rm /usr/lib/cgi-bin/balanceJson

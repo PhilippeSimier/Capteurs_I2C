@@ -56,7 +56,7 @@ int hx711::obtenirValeur()
 
         unsigned char bufferReception[7];
 
-        usleep(100000); // attente fin de conversion
+        usleep(110000); // attente fin de conversion
         spi_transfer(&spi, bufferEmission, bufferReception, sizeof(bufferEmission));
 
 	for (int i=0; i<6; i++){
