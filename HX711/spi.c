@@ -18,7 +18,7 @@
 #include <sys/ioctl.h>
 #include <linux/ioctl.h>
 #include <linux/spi/spidev.h>
-
+#include <sys/file.h>
 #include "spi.h"
 
 static int _spi_error(struct spi_handle *spi, int code, int c_errno, const char *fmt, ...) {
@@ -58,6 +58,11 @@ int spi_open_advanced(spi_t *spi, const char *path, unsigned int mode, uint32_t 
     /* Open device */
     if ((spi->fd = open(path, O_RDWR)) < 0)
         return _spi_error(spi, SPI_ERROR_OPEN, errno, "Opening SPI device \"%s\"", path);
+    // acquire shared lock
+    if (flock(spi->fd, LOCK_EX) == -1) {
+    	return _spi_error(spi, SPI_ERROR_OPEN, errno, "Locking SPI device \"%s\"", path);
+    }
+
 
     /* Set mode, bit order, extra flags */
     data8 = mode | ((bit_order == LSB_FIRST) ? SPI_LSB_FIRST : 0) | extra_flags;

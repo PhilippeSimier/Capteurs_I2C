@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+
 enum spi_error_code {
     SPI_ERROR_ARG           = -1, /* Invalid arguments */
     SPI_ERROR_OPEN          = -2, /* Opening SPI device */

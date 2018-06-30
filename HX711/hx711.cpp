@@ -41,6 +41,7 @@ hx711::hx711(float _scale)
 hx711::~hx711()
 {
     spi_close(&spi);
+
 }
 
 
@@ -90,6 +91,7 @@ float hx711::obtenirPoids(int nb)
     int max = obtenirValeur();
     int min = max;
     int som = 0;
+
     for (int i=0; i < nb; i++)
     {
         valeurBrute = obtenirValeur();
@@ -97,6 +99,7 @@ float hx711::obtenirPoids(int nb)
         if (valeurBrute < min) min = valeurBrute;
         som += valeurBrute;
     }
+
     valeurBrute = (som - max - min) / (nb-2);
     return (float)(valeurBrute - offset)/scale;
 
