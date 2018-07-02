@@ -48,6 +48,7 @@ mrproper: clean
 install:
 	cp balanceJson /usr/lib/cgi-bin/balanceJson
 	chmod +s /usr/lib/cgi-bin/balanceJson
+	chmod +s /home/pi/Capteurs_I2C/HX711/tarage
 	chmod 777 configuration.ini
 
 uninstall:
