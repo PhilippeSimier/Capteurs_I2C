@@ -1,4 +1,6 @@
 <?php
+// https://www.mt.com/mt_ext_files/Editorial/Generic/4/Operator_Manual_IND425_Editorial-Generic_1102076714093_files/22011482A.pdf
+
 require_once('ini/ini.php');
 
 //------------si des données  sont reçues on les enregistrent dans le fichier configuration.ini ---------
@@ -90,11 +92,11 @@ else
 			    	$.getJSON("/cgi-bin/balanceJson", affiche); // affichage des données quand la page est dispo
 				setInterval(requete_ajax, 1200);  // appel de la fonction requete_ajax toutes les 10 secondes
 
-				$("#tarage").click(function(){
+				$("#zero").click(function(){
 					
-					if (confirm("Confirmer le tarage de la balance ?")) { 
+					if (confirm("Confirmez-vous la correction de zéro ?")) { 
 						enable = false;
-						$('#Weight').text("Tarage");
+						$('#Weight').text("RAZ");
 						$.getJSON("/cgi-bin/tarageCGI", function(data){
 							console.log(data);
 							if(data.success == true){
@@ -108,10 +110,30 @@ else
 							
 						});
 					}
-					
-					
-					
 			   });
+			   
+			   $("#calibrage").click(function(){
+					var poids = prompt('Donnez la valeur du poids étalon','poids');
+					enable = false;
+					$('#Weight').text("Calibrage");
+					console.log(poids);
+					$.post("/cgi-bin/scaleCGI",
+					{
+					valeur: poids,
+					},
+					function(data, status){
+						if(data.success == true){
+							enable = true;
+							$('input[name=scale]').val(data.scale);
+							$('input[name=scale]').css("backgroundColor", "#00ff00");
+							}
+							else{
+								window.alert(data.error);
+							}
+					});
+					
+				});	
+			   
 			});
 		</script>
 
@@ -147,7 +169,8 @@ else
                 <h1 class="h1"><span id="Weight"></span></h1>
             </div>
 			<div class="popin">
-			<button class="btn btn-primary" value="tarage" name="tarage" id="tarage"> Tarage</button>
+			<button class="btn btn-primary" value="zero" name="zero" id="zero">  Remise à zéro </button>
+			<button class="btn btn-primary" value="calibrage" name="calibrage" id="calibrage"> Calibrage </button>
 			</div>
 	    </div>
 		
@@ -185,7 +208,7 @@ else
 					</div>
 
 
-					<button type="submit" class="btn btn-primary" value="Valider" name="envoyer" > Valider</button>
+					<button type="submit" class="btn btn-primary" value="Valider" name="envoyer" > Appliquer</button>
 				</form>	
 		
 			</div>
