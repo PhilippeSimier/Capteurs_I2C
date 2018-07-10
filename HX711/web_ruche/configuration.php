@@ -6,10 +6,8 @@ if( !empty($_POST['envoyer'])){
 
     //  lecture du fichier de configuration
     $array  = parse_ini_file("/home/pi/Capteurs_I2C/HX711/configuration.ini", true);
-    //  Modification des valeurs pour la section [balance]
-    $array['ruche'] = array ('id'  => $_POST['ruche_id'],
-                             'altitude' => $_POST['ruche_altitude'],
-                            );
+    //  Modification des valeurs pour la section [ruche]
+ 
 	//  Modification des valeurs pour la section [BDlocale]
 	$array['BDlocale'] = array ('host'  => $_POST['BDlocale_host'],
                                 'user' => $_POST['BDlocale_user'],
@@ -33,10 +31,7 @@ if( !empty($_POST['envoyer'])){
 else
 {
    $ini  = parse_ini_file("/home/pi/Capteurs_I2C/HX711/configuration.ini", true);
-   
-   $_POST['ruche_id'] = $ini['ruche']['id'];
-   $_POST['ruche_altitude']  = $ini['ruche']['altitude'];
-   
+     
    $_POST['BDlocale_host'] = $ini['BDlocale']['host'];
    $_POST['BDlocale_user'] = $ini['BDlocale']['user'];
    $_POST['BDlocale_passwd'] = $ini['BDlocale']['passwd'];
@@ -85,47 +80,42 @@ else
 </head>
 <body>
 <div class="container" style="padding-top: 35px;">
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-		 <a class="navbar-brand" href="index.html">Accueil</a>
-		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="index.html">Accueil</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
-		  </button>
-
-		  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-			<ul class="navbar-nav mr-auto">
-			  <li class="nav-item active">
-				<a class="nav-link" href="configuration.php">Configuration<span class="sr-only">(current)</span></a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="balance.php">Balance</a>
-			  </li>
-			  <li class="nav-item">
-				<a class="nav-link" href="capteurs.php">Capteurs</a>
-			  </li>
-			</ul>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
 			
-      </div>
+		  
+			    <!-- Dropdown -->
+			<li class="nav-item dropdown">
+				  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+					Configuration
+				  </a>
+				  <div class="dropdown-menu">
+					<a class="dropdown-item" href="ruche.php">Ruche</a>
+					<a class="dropdown-item" href="configuration.php">Bases de données</a>
+					<a class="dropdown-item" href="balance.php">Balance</a>
+				  </div>
+			</li>
+		  
+		  
+			<li class="nav-item">
+				<a class="nav-link" href="apropos.html">A propos</a>
+			</li>
+          
+        </ul>
+        
+		</div>
     </nav>
+
 		<form class="form-horizontal" method="post" action="<?php echo $_SERVER['SCRIPT_NAME'] ?>" name="configuration" >
 		<div class="row">
-			<div class="col-md-4 col-sm-4 col-xs-12">
-				<div class="popin">
-				<h2>Ruche</h2>
-					
-						<div class="form-group">
-							<label for="scale">Identificateur : </label>
-							<input type="int"  name="ruche_id" size="22" <?php echo 'value="' . $_POST['ruche_id'] . '"'; ?> />
-						</div>
 
-						<div class="form-group">
-							<label for="offset">Altitude : </label>
-							<input id="offset" type="int"  name="ruche_altitude" size="22" <?php echo 'value="' . $_POST['ruche_altitude'] . '"'; ?> />
-						</div>
 			
-				</div>
-			</div>
-			
-			<div class="col-md-4 col-sm-4 col-xs-12">
+			<div class="col-md-6 col-sm-6 col-xs-12">
 				<div class="popin">
 				<h2>Bdd locale</h2>
 					
@@ -152,7 +142,7 @@ else
 				</div>
 			</div>	
 				
-			<div class="col-md-4 col-sm-4 col-xs-12">
+			<div class="col-md-6 col-sm-6 col-xs-12">
 				<div class="popin">
 				<h2>Bdd distante</h2>
 					
