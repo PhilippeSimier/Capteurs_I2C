@@ -1,11 +1,12 @@
 <?php
 require_once('ini/ini.php');
+require_once('definition.inc.php');
 
 //------------si des données  sont reçues on les enregistrent dans le fichier configuration.ini ---------
 if( !empty($_POST['envoyer'])){
 
     //  lecture du fichier de configuration
-    $array  = parse_ini_file("/home/pi/Capteurs_I2C/HX711/configuration.ini", true);
+    $array  = parse_ini_file(CONFIGURATION, true);
     //  Modification des valeurs pour la section [ruche]
     $array['ruche'] = array ('id'  => $_POST['ruche_id'],
                              'altitude' => $_POST['ruche_altitude'],
@@ -14,7 +15,7 @@ if( !empty($_POST['envoyer'])){
                             );
 					   
     //  Ecriture du fichier de configuration modifié
-    $ini = new ini ("/home/pi/Capteurs_I2C/HX711/configuration.ini");
+    $ini = new ini (CONFIGURATION);
     $ini->ajouter_array($array);
     $ini->ecrire(true);
 
@@ -23,7 +24,7 @@ if( !empty($_POST['envoyer'])){
 // -------------- sinon lecture du fichier de configuration  -----------------------------
 else
 {
-   $ini  = parse_ini_file("/home/pi/Capteurs_I2C/HX711/configuration.ini", true);
+   $ini  = parse_ini_file(CONFIGURATION, true);
    
    $_POST['ruche_id'] = $ini['ruche']['id'];
    $_POST['ruche_altitude']  = $ini['ruche']['altitude'];
@@ -71,23 +72,19 @@ else
 		
 		<script>
 		
-		$(function () {
-    /*****************  options de placement et de zoom **************/
-    /*****************  creation et affichage de la map **************/
-	
-	var	map = new GMaps({
-		div: '#map-canvas',
-		lat: <?php echo  $_POST['ruche_latitude']; ?> , 
-		lng: <?php echo  $_POST['ruche_longitude']; ?> ,
-		zoom : 13 ,
-		mapType : 'terrain',
-		click: function(e){
+		
+		
+	$(function () {
+    
+	function position(e){
             console.log(e.latLng.lat().toFixed(6));
 		    console.log(e.latLng.lng().toFixed(6));
 		    map.removeMarkers();
 		    map.addMarker({
                 lat: e.latLng.lat(),
                 lng: e.latLng.lng(),
+				draggable: true,
+				//icon: ruche,
                 title: 'Nouvelle position'
 			});
 			$('input[name=ruche_latitude]').val(e.latLng.lat().toFixed(6));
@@ -106,19 +103,36 @@ else
 			}
 			});
         }
+	
+	
+	
+	
+    /*****************  creation et affichage de la map **************/
+	
+	var	map = new GMaps({
+		div: '#map-canvas',
+		lat: <?php echo  $_POST['ruche_latitude']; ?> , 
+		lng: <?php echo  $_POST['ruche_longitude']; ?> ,
+		zoom : 13 ,
+		mapType : 'terrain',
+		//click: position
 	});
 	
-
+    var ruche = new google.maps.MarkerImage('images/map_ruche.png');
 	
 	/************  placement d'une puce au milieu de la map ********/
 	map.addMarker({
         lat: <?php echo  $_POST['ruche_latitude']; ?>, 
         lng: <?php echo  $_POST['ruche_longitude']; ?>,
-        title: 'Ruche',
+        title: <?php echo '"Ruche ' . $_POST['ruche_id'] . '"'; ?>,
+		draggable: true,
+		dragend : position,
+		//icon: ruche,
         infoWindow: {
-          content: '<p> <?php echo "Ruche " . $_POST['ruche_id'] . "<br />Coordonnées GPS : </br> Lat : " . $_POST['ruche_latitude'] . "<br /> Lng : " . $_POST['ruche_longitude']; ?></p>' 
+          content: '<p> <?php echo "<b>Ruche " . $_POST['ruche_id'] . "</b><br />Coordonnées GPS : </br> Lat : " . $_POST['ruche_latitude'] . "<br /> Lng : " . $_POST['ruche_longitude']; ?></p>' 
 		  
         }
+		
     });
 	
 
@@ -140,6 +154,9 @@ else
                 lat: latlng.lat(),
                 lng: latlng.lng(),
 				title: mon_adresse,
+				draggable: true,
+				dragend : position,
+				//icon: ruche,
 				infoWindow: {
 					content: '<p>' + results["0"].formatted_address + '<br />Coordonnées GPS : ' + latlng.lat().toFixed(6) + ' , ' + latlng.lng().toFixed(6) + '</p>'
 				}
@@ -208,76 +225,47 @@ else
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" href="index.html">Accueil</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-			
-		  
-			    <!-- Dropdown -->
-			<li class="nav-item dropdown">
-				  <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-					Configuration
-				  </a>
-				  <div class="dropdown-menu">
-					<a class="dropdown-item" href="ruche.php">Ruche</a>
-					<a class="dropdown-item" href="configuration.php">Bases de données</a>
-					<a class="dropdown-item" href="balance.php">Balance</a>
-				  </div>
-			</li>
-		  
-		  
-			<li class="nav-item">
-				<a class="nav-link" href="apropos.html">A propos</a>
-			</li>
-          
-        </ul>
-        
-		</div>
-    </nav>
+<?php require_once 'menu.php'; ?>
 
 <div class="container" style="padding-top: 65px;">
     
 
 		
 		<div class="row">
-			<div class="col-md-6 col-sm-12 col-xs-12">
+			<div class="col-md-3 col-sm-12 col-xs-12">
 				<div class="popin">
 					<form class="form-horizontal" method="post" action="<?php echo $_SERVER['SCRIPT_NAME'] ?>" name="configuration" >
 						<h2>Ruche</h2>
 						
 							<div class="form-group">
-								<label for="ruche_id">Identificateur : </label>
-								<input type="int"  name="ruche_id" size="22" <?php echo 'value="' . $_POST['ruche_id'] . '"'; ?> />
+								<label for="ruche_id">Identifiant : </label>
+								<input type="int"  name="ruche_id" class="form-control" <?php echo 'value="' . $_POST['ruche_id'] . '"'; ?> />
 							</div>
 
 							<div class="form-group">
 								<label for="latitude">Latitude : </label>
-								<input id="latitude" type="int"  name="ruche_latitude" size="22" <?php echo 'value="' . $_POST['ruche_latitude'] . '"'; ?> />
+								<input id="latitude" type="int"  name="ruche_latitude" class="form-control" <?php echo 'value="' . $_POST['ruche_latitude'] . '"'; ?> />
 							</div>
 							
 							<div class="form-group">
 								<label for="longitude">Longitude : </label>
-								<input id="longitude" type="int"  name="ruche_longitude" size="22" <?php echo 'value="' . $_POST['ruche_longitude'] . '"'; ?> />
+								<input id="longitude" type="int"  name="ruche_longitude" class="form-control" <?php echo 'value="' . $_POST['ruche_longitude'] . '"'; ?> />
 							</div>
 							
 							<div class="form-group">
 								<label for="altitude">Altitude : </label>
-								<input id="altitude" type="int"  name="ruche_altitude" size="22" <?php echo 'value="' . $_POST['ruche_altitude'] . '"'; ?> />
+								<input id="altitude" type="int"  name="ruche_altitude" class="form-control" <?php echo 'value="' . $_POST['ruche_altitude'] . '"'; ?> />
 							</div>
 							<button type="submit" class="btn btn-primary" value="Valider" name="envoyer" > Appliquer</button>
 					</form>
 				</div>
 			</div>
 			<!-- Localisation géographique -->
-			<div class="col-md-6 col-sm-12 col-xs-12">	
+			<div class="col-md-9 col-sm-12 col-xs-12">	
 				<div class="popin">
 					<form method="post" id="formulaire" style="margin-bottom: 6px">
 						<div class="form-group">
-						<input type="text" id ="mon_adresse"  value="" placeholder="Adresse" style="width: 100%;" required/>
+						<input type="text" id ="mon_adresse"  value="" placeholder="Adresse" class="form-control" required/>
 						</div>
 						<input type="submit" class="btn" value="Positionner" />
 					</form>
