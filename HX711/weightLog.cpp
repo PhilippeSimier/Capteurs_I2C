@@ -37,7 +37,7 @@ int main() {
 
 // Lecture du fichier de configuration
 
-    ini.Load("configuration.ini");
+    ini.Load("/home/pi/Capteurs_I2C/HX711/configuration.ini");
 
     connexion_locale["hostName"] = (sql::SQLString)ini.GetValue<string>("BDlocale", "host", "127.0.0.1");
     connexion_locale["userName"] = (sql::SQLString)ini.GetValue<string>("BDlocale", "user", "ruche");
