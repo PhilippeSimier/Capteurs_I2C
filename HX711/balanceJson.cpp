@@ -29,31 +29,30 @@ int main()
     hx711   balance;
     SimpleIni ini;
 
-    float   scale;
-    int     offset;
-    int     gain;
     string  unite;
-    int     precision = 1;
-    float   weight;
-
-    // Lecture du fichier de configuration
-    ini.Load("/home/pi/Capteurs_I2C/HX711/configuration.ini");
-    scale  = ini.GetValue<float>("balance", "scale", 1.0 );
-    offset = ini.GetValue<int>("balance", "offset", 0);
-    gain   = ini.GetValue<int>("balance", "gain", 128);
-    unite  = ini.GetValue<string>("balance", "unite", "Kg");
-    precision = ini.GetValue<int>("balance", "precision", 1);
-
-    // Configuration de la balance
-    balance.fixerEchelle(scale);
-    balance.fixerOffset(offset);
-    balance.configurerGain(gain);
-
-    // Mesure du poids
-    weight = balance.obtenirPoids();
+    int     precision;
 
     cout << "Content-type: application/json" << endl << endl;
     cout << "{" << endl;
-    cout << "\"Weight\":\"" << fixed << setprecision (precision) << weight << " " << unite << "\""<< endl;
+
+    // Lecture du fichier de configuration
+    if(!ini.Load("/home/pi/Capteurs_I2C/HX711/configuration.ini"))
+    {
+        cout << "\"success\": false, " << endl;
+        cout << "\"error\":\"Impossible d'ouvrir le fichier configuration.ini\"" << endl;
+	cout << "}" << endl;
+        return -1;
+    }
+
+    precision = ini.GetValue<int>("balance", "precision", 1);
+
+    // Configuration de la balance
+    balance.fixerEchelle( ini.GetValue<float>("balance", "scale", 1.0 ));
+    balance.fixerOffset( ini.GetValue<int>("balance", "offset", 0));
+    balance.configurerGain( ini.GetValue<int>("balance", "gain", 128));
+
+    cout << "\"success\": true ," << endl;
+    cout << "\"Weight\": \"" << fixed << setprecision (precision) <<  balance.obtenirPoids() << "\","<< endl;
+    cout <<  "\"unite\": " << "\"" << ini.GetValue<string>("balance", "unite", "Kg") << "\"" << endl;
     cout << "}" << endl;
 }

@@ -72,7 +72,7 @@ else
 		<script type="text/javascript">
 			var  enable = true;
 			function affiche( data ) {               // fonction pour afficher les données reçues
-				//console.log(data);               // affichage de data dans la console
+				console.log(data);               // affichage de data dans la console
 				if (enable){
 					$('#Weight').text(data.Weight);
 				}
