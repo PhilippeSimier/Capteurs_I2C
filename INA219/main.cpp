@@ -33,6 +33,7 @@ if (!capteur.obtenirErreur()){
 
     float en = 0.0; // l'energie en J (Ws)
     int t = 2;  // période d'échantillonage (2s)
+    float courant;
 
     capteur.fixerCalibration_16V();
 
@@ -41,12 +42,12 @@ if (!capteur.obtenirErreur()){
 
         cout << " Tension bus   : " << fixed << setprecision (3) << capteur.obtenirTension_V()  << " V" << endl;
         cout << " Tension shunt : " << fixed << setprecision (3) << capteur.obtenirTensionShunt_mV() << " mV" << endl;
-        cout << " Courant bus   : " << fixed << setprecision (3) << capteur.obtenirCourant_A() << " A" << endl;
+        cout << " Courant bus   : " << fixed << setprecision (3) << courant << " A" << endl;
         cout << " Puissance bus : " << fixed << setprecision (3) << capteur.obtenirPuissance_W() << " W" << endl;
         cout << " Batterie SOC  : " << fixed << setprecision (0) << capteur.obtenirBatterieSOC() << " %" << endl;
 	en += capteur.obtenirPuissance_W() * t;
 	cout << " Energie       : " << fixed << setprecision (3) << en / 3.6 << " mWh" << endl;
-	sleep(t);
+	courant = capteur.obtenirCourantMoyen_A(100);
         system("clear");
     }
 }

@@ -129,16 +129,15 @@ float ina219::obtenirCourant_A(){
 
 }
 /*!
-    @brief  calcul la moyenne du courant sur n echantillons prélevés toutes les secondes
+    @brief  calcul du courant moyen sur n echantillons prélevés toutes les 10ms
 */
 float ina219::obtenirCourantMoyen_A(int nb){
   float som = 0.0;
-  int i; 
+  int i;
   for(i=0; i < nb; i++){
      som +=  ina219::obtenirCourant_A();
-     usleep(1000*1000);
+     usleep(1000*10);
     }
-  cout << i << " : " << fixed << setprecision (3) << som << endl;
   return som / i;
 }
 

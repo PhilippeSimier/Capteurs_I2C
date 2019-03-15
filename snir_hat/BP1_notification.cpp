@@ -25,7 +25,7 @@ void envoyer()
     CURL *hnd = curl_easy_init();
 
     curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "GET");
-    curl_easy_setopt(hnd, CURLOPT_URL, "https://maker.ifttt.com/trigger/BP1_pressed/with/key/bj9LiLkl3fvaV4jVx-JdUL");
+    curl_easy_setopt(hnd, CURLOPT_URL, "https://maker.ifttt.com/trigger/BP_1/with/key/bj9LiLkl3fvaV4jVx-JdUL");
 
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Cache-Control: no-cache");
