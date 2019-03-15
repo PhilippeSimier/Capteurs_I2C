@@ -77,8 +77,6 @@ void ina219::fixerCalibration_16V(){
     config  = BVOLTAGERANGE_16V | GAIN_8 | BADCRES_12BIT | SADCRES_12BIT_128S | MODE_SANDBVOLT_CONTINUOUS;
     config = ((config & 0x00FF) << 8) | ((config & 0xFF00) >> 8);  // inversion msb lsb
     deviceI2C->WriteReg16(REG_CONFIG, config);
-
-
 }
 
 /*!
@@ -125,7 +123,7 @@ float ina219::obtenirCourant_A(){
     deviceI2C->WriteReg16(REG_CALIBRATION , rc);  // écriture du registre de calibration
     data = deviceI2C->ReadReg16(REG_CURRENT);
     data = ((data & 0x00FF) << 8) | ((data & 0xFF00) >> 8); // inversion msb lsb
-    return (float)data * 100E-6;   // 100 micro Ampere par bit
+    return (float)data * 99E-6;   // 100 micro Ampere par bit
 
 }
 /*!

@@ -40,13 +40,16 @@ if (!capteur.obtenirErreur()){
     cout << "Capteur INA219" << endl;
     while(1){
 
-        cout << " Tension bus   : " << fixed << setprecision (3) << capteur.obtenirTension_V()  << " V" << endl;
-        cout << " Tension shunt : " << fixed << setprecision (3) << capteur.obtenirTensionShunt_mV() << " mV" << endl;
-        cout << " Courant bus   : " << fixed << setprecision (3) << courant << " A" << endl;
-        cout << " Puissance bus : " << fixed << setprecision (3) << capteur.obtenirPuissance_W() << " W" << endl;
+        cout << " Tension bus   : " << fixed << setprecision (2) << capteur.obtenirTension_V()  << " V" << endl;
+        cout << " Tension shunt : " << fixed << setprecision (2) << capteur.obtenirTensionShunt_mV() << " mV" << endl;
+        if (courant > 1.0)
+            cout << " Courant bus   : " << fixed << setprecision (2) << courant << " A" << endl;
+        else
+	    cout << " Courant bus   : " << fixed << setprecision (2) << courant * 1000  << " mA" << endl;
+        cout << " Puissance bus : " << fixed << setprecision (2) << capteur.obtenirPuissance_W() << " W" << endl;
         cout << " Batterie SOC  : " << fixed << setprecision (0) << capteur.obtenirBatterieSOC() << " %" << endl;
 	en += capteur.obtenirPuissance_W() * t;
-	cout << " Energie       : " << fixed << setprecision (3) << en / 3.6 << " mWh" << endl;
+	cout << " Energie       : " << fixed << setprecision (2) << en / 3.6 << " mWh" << endl;
 	courant = capteur.obtenirCourantMoyen_A(100);
         system("clear");
     }
