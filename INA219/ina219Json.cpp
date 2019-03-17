@@ -33,7 +33,7 @@ int main()
 
     if (!capteur->obtenirErreur()){
     	float u = capteur->obtenirTension_V();
-    	float i = capteur->obtenirCourant_A();
+    	float i = capteur->obtenirCourantMoyen_A(1000);
     	float p = u*i;
     	float soc = capteur->obtenirBatterieSOC();
 

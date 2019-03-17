@@ -32,25 +32,26 @@ int main()
 if (!capteur.obtenirErreur()){
 
     float en = 0.0; // l'energie en J (Ws)
-    int t = 2;  // période d'échantillonage (2s)
-    float courant;
+    int t = 10;  // période d'échantillonage (10s)
+    float courant = 0;
+    float tension = 0;
 
     capteur.fixerCalibration_16V();
 
-    cout << "Capteur INA219" << endl;
     while(1){
 
-        cout << " Tension bus   : " << fixed << setprecision (2) << capteur.obtenirTension_V()  << " V" << endl;
+        cout << " Tension bus   : " << fixed << setprecision (2) << tension  << " V" << endl;
         cout << " Tension shunt : " << fixed << setprecision (2) << capteur.obtenirTensionShunt_mV() << " mV" << endl;
         if (courant > 1.0)
             cout << " Courant bus   : " << fixed << setprecision (2) << courant << " A" << endl;
         else
 	    cout << " Courant bus   : " << fixed << setprecision (2) << courant * 1000  << " mA" << endl;
-        cout << " Puissance bus : " << fixed << setprecision (2) << capteur.obtenirPuissance_W() << " W" << endl;
+        cout << " Puissance bus : " << fixed << setprecision (2) << courant * tension << " W" << endl;
         cout << " Batterie SOC  : " << fixed << setprecision (0) << capteur.obtenirBatterieSOC() << " %" << endl;
-	en += capteur.obtenirPuissance_W() * t;
 	cout << " Energie       : " << fixed << setprecision (2) << en / 3.6 << " mWh" << endl;
-	courant = capteur.obtenirCourantMoyen_A(100);
+	courant = capteur.obtenirCourantMoyen_A(t * 100); // 1000 * 1/100s
+        tension = capteur.obtenirTension_V();
+        en += courant * tension * t; // energie en Joule (Ws)
         system("clear");
     }
 }
