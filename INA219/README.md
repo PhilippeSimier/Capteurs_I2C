@@ -23,10 +23,10 @@ Le bus I2C permet de transferer les valeures mesurées. (tension, courant puissa
 
 Deux jumper A0 et A1 permettent de choisir une adresse sur le bus i2C. Suivant la position des jumpers, 4 adresses I2C  sont possibles:
 
-**0x40** Offset = binary 00000 (par défaut)
-**0x41** Offset = binary 00001 (pont A0)
-**0x44** Offset = binary 00100 (pont A1)
-**0x45** Offset = binary 00101 (pont A0 et A1)
+ - **0x40** Offset = binary 00000 (par défaut)
+ - **0x41** Offset = binary 00001 (pont A0)
+ - **0x44** Offset = binary 00100 (pont A1)
+ - **0x45** Offset = binary 00101 (pont A0 et A1)
 
 ![INA219](/INA219/images/INA219.png)
 
