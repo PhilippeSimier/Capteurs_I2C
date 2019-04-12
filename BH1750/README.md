@@ -16,7 +16,7 @@ L’éclairement lumineux est la grandeur définie par la photométrie
 l’éclairement lumineux correspond à un **flux lumineux reçu** par unité de surface. Son unité dans le système international d’unités est le **lux** :  
 1 lux (lx) correspond à un flux lumineux de 1 lumen (lm) couvrant uniformément 1 mètre carré (m^2) : 1 lx = 1 lm /m^2.
 
-![répartition spectrale](/lumi2.jpg)
+![répartition spectrale](/BH1750/lumi2.jpg)
 
 *Remarque :* Compte tenu des caractéristiques de la vision photopique chez les êtres humains, il n’y a pas de facteur de conversion unique entre le lux (lumen par mètre carré) et le watt par mètre carré, mais des facteurs de conversion différents pour chaque longueur d’onde. Par exemple, pour une couleur vert-jaune, un éclairement énergétique de 1 W/m-2 correspond à 683 lux, tandis que pour du rouge ou du bleu, il s’agit de moins de 50 lux. Il est donc impossible de faire une conversion lux vers énergie sans connaître la répartition spectrale de la lumière.
 
