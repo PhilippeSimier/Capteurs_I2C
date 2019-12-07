@@ -12,7 +12,7 @@
               sélectionner l'interface I²C. Son adresse sur le bus est 0x77 ou 0x76
               en fonction du niveau de tension appliquée sur la broche SDO.
 
-    \version    1.0 - First release
+    \version    2.0 - First release
 */
 
 
@@ -51,7 +51,7 @@
 #define CHIPID        0xD0
 #define VERSION       0xD1
 #define SOFTRESET     0xE0
-#define BME280_RESET                  0xB6
+#define BME280_RESET  0xB6
 #define CAL26         0xE1
 #define CONTROLHUMID  0xF2
 #define CONTROL       0xF4
@@ -108,6 +108,8 @@ typedef struct
   int16_t  dig_H4;
   int16_t  dig_H5;
   int8_t   dig_H6;
+
+  int32_t  t_fine;
 } bme280_calib_data;
 
 
@@ -125,21 +127,20 @@ public:
 
     // méthodes pour lire la température le pression et l'humidité
 
-    int32_t getTemperatureCalibration();
-    float   obtenirTemperatureEnC();
-    float   obtenirTemperatureEnF();
-    float   obtenirPression();
-    float   obtenirHumidite();
+    double   obtenirTemperatureEnC();
+    double   obtenirTemperatureEnF();
+    double   obtenirPression();
+    double   obtenirHumidite();
 
     // methode pour obtenir la pression au niveau de la mer
-    void    donnerAltitude(float h);
-    float   obtenirPression0();
+    void     donnerAltitude(double h);
+    double   obtenirPression0();
 
     // méthode pour obtenir la valeur du point de rosée
-    float   obtenirPointDeRosee();
+    double   obtenirPointDeRosee();
 
     // methode pour obtenir la version
-    void    version();
+    void     version();
 
 
 private:
@@ -148,10 +149,10 @@ private:
     i2c *deviceI2C;                   // file descriptor
     bme280_calib_data cal;           // calibration
     bme280_raw_data raw;             // les registres
-    float h;                         // différence d'altitude du capteur avec le niveau de la mer en m
-    bool  error;
-    void readCalibrationData();
-    void getRawData();
+    double h;                         // différence d'altitude du capteur avec le niveau de la mer en m
+    bool   error;
+    void   readCalibrationData();
+    void   getRawData();
 };
 
 #endif // BME280_H_INCLUDED

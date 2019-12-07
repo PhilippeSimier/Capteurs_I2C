@@ -11,7 +11,7 @@
               sélectionner l'interface I²C. Son adresse sur le bus est 0x77 ou 0x76
               en fonction du niveau de tension appliquée sur la broche SDO.
 
-    \version    1.0 - First release
+    \version    2.0 - First release decembre 2019
 */
 
 #include "bme280.h"
@@ -101,110 +101,149 @@ void bme280::getRawData() {
   raw.humidity = (raw.humidity | raw.hlsb);
 }
 
-int32_t bme280::getTemperatureCalibration()
+
+
+double bme280::obtenirTemperatureEnC()
 {
-  getRawData();
+    double var1;
+    double var2;
+    double temperature;
+    double temperature_min = -40;
+    double temperature_max = 85;
 
-  int32_t var1  = ((((raw.temperature>>3) - ((int32_t)cal.dig_T1 <<1))) * ((int32_t)cal.dig_T2)) >> 11;
+    getRawData();
+    var1 = ((double)raw.temperature) / 16384.0 - ((double)cal.dig_T1) / 1024.0;
+    var1 = var1 * ((double)cal.dig_T2);
+    var2 = (((double)raw.temperature) / 131072.0 - ((double)cal.dig_T1) / 8192.0);
+    var2 = (var2 * var2) * ((double)cal.dig_T3);
+    cal.t_fine = (int32_t)(var1 + var2);
+    temperature = (var1 + var2) / 5120.0;
+    if (temperature < temperature_min)
+    {
+        temperature = temperature_min;
+    }
+    else if (temperature > temperature_max)
+    {
+        temperature = temperature_max;
+    }
 
-  int32_t var2  = (((((raw.temperature>>4) - ((int32_t)cal.dig_T1)) * ((raw.temperature>>4) - ((int32_t)cal.dig_T1))) >> 12) * ((int32_t)cal.dig_T3)) >> 14;
-
-  return var1 + var2;
+    return temperature;
 }
 
-float bme280::obtenirTemperatureEnC()
+double bme280::obtenirTemperatureEnF()
 {
-  int32_t t_fine = getTemperatureCalibration();
-  float T  = (t_fine * 5 + 128) >> 8;
-  return T/100;
-}
-
-float bme280::obtenirTemperatureEnF()
-{
-	float output = obtenirTemperatureEnC();
+	double output = obtenirTemperatureEnC();
 	output = (output * 9) / 5 + 32;
 	return output;
 }
 
 
-
-
 // retourne la pression en hPa
-// Le capteur retourne la pression en Pa sur unsigned 32 bit integer avec le format Q24.8  (24 bits pour la partie entière et 8 bits pour la partie fractionnaire).
+// Le capteur retourne la pression en Pa sur unsigned 32 bit integer avec le format Q24.8
+// (24 bits pour la partie entière et 8 bits pour la partie fractionnaire).
 // 24674867 represente 24674867/256 = 96386.2 Pa ou 24674867/25600 963.862 hPa
 
-float bme280::obtenirPression()
+double bme280::obtenirPression()
 {
-  int32_t t_fine = getTemperatureCalibration();
-  int64_t var1, var2, p;
+    double var1;
+    double var2;
+    double var3;
+    double pressure;
+    double pressure_min = 30000.0;
+    double pressure_max = 110000.0;
 
-  var1 = ((int64_t)t_fine) - 128000;
-  var2 = var1 * var1 * (int64_t)cal.dig_P6;
-  var2 = var2 + ((var1*(int64_t)cal.dig_P5)<<17);
-  var2 = var2 + (((int64_t)cal.dig_P4)<<35);
-  var1 = ((var1 * var1 * (int64_t)cal.dig_P3)>>8) + ((var1 * (int64_t)cal.dig_P2)<<12);
-  var1 = (((((int64_t)1)<<47)+var1))*((int64_t)cal.dig_P1)>>33;
+    getRawData();
+    var1 = ((double)cal.t_fine / 2.0) - 64000.0;
+    var2 = var1 * var1 * ((double)cal.dig_P6) / 32768.0;
+    var2 = var2 + var1 * ((double)cal.dig_P5) * 2.0;
+    var2 = (var2 / 4.0) + (((double)cal.dig_P4) * 65536.0);
+    var3 = ((double)cal.dig_P3) * var1 * var1 / 524288.0;
+    var1 = (var3 + ((double)cal.dig_P2) * var1) / 524288.0;
+    var1 = (1.0 + var1 / 32768.0) * ((double)cal.dig_P1);
 
-  if (var1 == 0) {
-    return 0;  // exception provoquée par division par zéro
-  }
-  p = 1048576 - raw.pressure;
-  p = (((p<<31) - var2)*3125) / var1;
-  var1 = (((int64_t)cal.dig_P9) * (p>>13) * (p>>13)) >> 25;
-  var2 = (((int64_t)cal.dig_P8) * p) >> 19;
+    /* avoid exception caused by division by zero */
+    if (var1)
+    {
+        pressure = 1048576.0 - (double) raw.pressure;
+        pressure = (pressure - (var2 / 4096.0)) * 6250.0 / var1;
+        var1 = ((double)cal.dig_P9) * pressure * pressure / 2147483648.0;
+        var2 = pressure * ((double)cal.dig_P8) / 32768.0;
+        pressure = pressure + (var1 + var2 + ((double)cal.dig_P7)) / 16.0;
+        if (pressure < pressure_min)
+        {
+            pressure = pressure_min;
+        }
+        else if (pressure > pressure_max)
+        {
+            pressure = pressure_max;
+        }
+    }
+    else /* Invalid case */
+    {
+        pressure = pressure_min;
+    }
 
-  p = ((p + var1 + var2) >> 8) + (((int64_t)cal.dig_P7)<<4);
-  return (float)p/25600;
+    return pressure / 100.0;
 
 }
 
 // retourne le taux d'humidité relative en %
 
-float bme280::obtenirHumidite()
+double bme280::obtenirHumidite()
 {
-  int32_t v_x1_u32r;
-  int32_t t_fine = getTemperatureCalibration();
+    double humidity;
+    double humidity_min = 0.0;
+    double humidity_max = 100.0;
+    double var1;
+    double var2;
+    double var3;
+    double var4;
+    double var5;
+    double var6;
 
+    var1 = ((double)cal.t_fine) - 76800.0;
+    var2 = (((double)cal.dig_H4) * 64.0 + (((double)cal.dig_H5) / 16384.0) * var1);
+    var3 = raw.humidity - var2;
+    var4 = ((double)cal.dig_H2) / 65536.0;
+    var5 = (1.0 + (((double)cal.dig_H3) / 67108864.0) * var1);
+    var6 = 1.0 + (((double)cal.dig_H6) / 67108864.0) * var1 * var5;
+    var6 = var3 * var4 * (var5 * var6);
+    humidity = var6 * (1.0 - ((double)cal.dig_H1) * var6 / 524288.0);
+    if (humidity > humidity_max)
+    {
+        humidity = humidity_max;
+    }
+    else if (humidity < humidity_min)
+    {
+        humidity = humidity_min;
+    }
 
-  v_x1_u32r = (t_fine - ((int32_t)76800));
-
-  v_x1_u32r = (((((raw.humidity << 14) - (((int32_t)cal.dig_H4) << 20) - (((int32_t)cal.dig_H5) * v_x1_u32r)) + ((int32_t)16384)) >> 15) *
-              (((((((v_x1_u32r * ((int32_t)cal.dig_H6)) >> 10) *
-              (((v_x1_u32r * ((int32_t)cal.dig_H3)) >> 11) + ((int32_t)32768))) >> 10) +
-              ((int32_t)2097152)) * ((int32_t)cal.dig_H2) + 8192) >> 14));
-
-  v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *
-              ((int32_t)cal.dig_H1)) >> 4));
-
-  v_x1_u32r = (v_x1_u32r < 0) ? 0 : v_x1_u32r;
-  v_x1_u32r = (v_x1_u32r > 419430400) ? 419430400 : v_x1_u32r;
-  float h = (v_x1_u32r>>12);
-  return  h / 1024.0;
+    return humidity;
 }
 
 // retourne la pression avec réduction au niveau de la mer
 // Selon l'atmosphère standard internationale (ISA) ou atmosphère normalisée
 // (appelée aussi QNH en aviation) qui ne tient pas compte de la température réelle.
 
-float bme280::obtenirPression0(){
-    float P = obtenirPression();
+double bme280::obtenirPression0(){
+    double P = obtenirPression();
     return P * ( pow(1.0 -(0.0065 * h/(273.15+15)), 5.255));
 }
 
 // h = différence d'altitude du capteur avec P (mètres),
 // négatif pour les élévations, positif pour les dépressions (la Mer Morte par exemple)
-void bme280::donnerAltitude(float altitude){
-	this->h = altitude * -1;
+void bme280::donnerAltitude(double altitude){
+	this->h = altitude * -1.0;
 }
 
 // retourne la valeur du point de rosée
-float bme280::obtenirPointDeRosee(){
-    float ai = 7.45;
-    float bi = 235.0;
-    float z1, z2, z3, es, e, tau;
+double bme280::obtenirPointDeRosee(){
+    double ai = 7.45;
+    double bi = 235.0;
+    double z1, z2, z3, es, e, tau;
 
-    float t = obtenirTemperatureEnC();
-    float hum = obtenirHumidite();
+    double t = obtenirTemperatureEnC();
+    double hum = obtenirHumidite();
 
     z1=(ai*t)/(bi+t);
     es = 6.1 *  exp(z1 * 2.3025851);
@@ -217,9 +256,10 @@ float bme280::obtenirPointDeRosee(){
     return tau;
 }
 
+
 // retourne la version de la classe
 void  bme280::version(){
 
-    cout << "\nBME280 PSR Version 1.3\n" << endl;
+    cout << "\nBME280 PSR Version 2.0\n" << endl;
 
 }
