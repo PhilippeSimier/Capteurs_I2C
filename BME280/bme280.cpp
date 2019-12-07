@@ -45,7 +45,12 @@ bme280::~bme280()
 
 bool bme280::obtenirErreur(){
 	return error;
-    }
+}
+
+// Méthode pour obtenir le Chip ID (0x60 pour le BME280)
+unsigned int bme280::obtenirChipID(){
+    return (unsigned int)deviceI2C->ReadReg8(CHIPID);
+}
 
 void bme280::readCalibrationData() {
   cal.dig_T1 = (uint16_t)deviceI2C->ReadReg16(DIG_T1);

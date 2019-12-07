@@ -13,8 +13,8 @@ int main()
     char adresse = 0x77;    // l'adresse du composant BME280
     bme280 capteur(adresse);
     if (!capteur.obtenirErreur()){
-
     	cout << "Capteur BME 280 présent sur le bus I2C" << endl;
+        cout <<  hex << capteur.obtenirChipID() << endl;
         capteur.donnerAltitude(62);
 
         while(1){

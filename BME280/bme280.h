@@ -125,6 +125,9 @@ public:
     // méthode pour vérifier la présence du composant sur le bus I2C
     bool obtenirErreur();
 
+    // Méthode pour obtenir le Chip ID (0x60 pour le BME280)
+    unsigned int obtenirChipID();
+
     // méthodes pour lire la température le pression et l'humidité
 
     double   obtenirTemperatureEnC();
