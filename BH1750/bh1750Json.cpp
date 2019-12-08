@@ -8,7 +8,7 @@
     \brief    Programme exemple mise en oeuvre du bh1750
     \details  Renvoie la valeur de l'éclairement  mesurée par
               le capteur bh1750 au format JSON
-              Les différentes valeures sont envoyées sur la sortie standard.
+              Les différentes valeurs sont envoyées sur la sortie standard.
     Compilation  : g++ bh1750Json.cpp bh1750.cpp i2c.cpp -o bh1750Json
     Installation : sudo chown root bh1750Json
                    sudo chmod +s bh1750Json
@@ -29,6 +29,10 @@ int main()
 
     capteur = new bh1750();   // déclaration d'un capteur de type bh1750 à l'adresse par défaut 0x23
     capteur->configurer(BH1750_ONE_TIME_HIGH_RES_MODE_2);
+    if (capteur->obtenirLuminosite_Lux() > 27000){
+        capteur->configurer(BH1750_ONE_TIME_HIGH_RES_MODE);
+    }
+
     float level = capteur->obtenirLuminosite_Lux();
 
     cout << "Content-type: application/json" << endl << endl;

@@ -7,7 +7,7 @@
 
 
     \brief   Programme exemple mise en oeuvre du bme280
-    \details Renvoie les valeurs mesurées paar le capteur BME280 au format JSON
+    \details Renvoie les valeurs mesurées par le capteur BME280 au format JSON
 
 
     Compilation : g++ bme280Json.cpp bme280.cpp i2c.cpp -o bme280Json
@@ -15,7 +15,7 @@
                   sudo chmod +s bme280Json
                   sudo mv bme280Json /usr/lib/cgi-bin/bme280Json
 
-    \version	v1.0 - First release
+    \version	v2.0 - Second release
 */
 
 #include <iostream>
