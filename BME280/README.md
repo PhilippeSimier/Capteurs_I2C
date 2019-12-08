@@ -11,6 +11,10 @@ Les valeurs numériques sont transférées sur le bus **I2C** ou  le bus **SPI**
 
 En fonction du niveau de tension appliquée sur la broche SDO,  l'adresse sur le bus  I2C est **0x77** ou **0x76** .  SD0=0  configure l’adresse 0x76, tandis que  SD0=1 configure l’adresse  0x77.
  
+# Diagramme de classe
+![cablage BME280](/BME280/images/bme280_Class_diagram.png)
+
+
 # Câblage 
 Avec les branchements suivants, SD0=1 donc l’adresse du capteur sur le bus I2C sera 0x77
  ![cablage BME280](/BME280/images/schema-BME280.png)
@@ -56,7 +60,7 @@ pi@raspberry:~ $ sudo i2cdetect -y 1
 60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 70: -- -- -- -- -- -- -- 77
 ```
-la valeur de l'adresse 77 doit s'afficher si le câblage est correct.
+la valeur de l'adresse 77 ou 76 doit s'afficher si le câblage est correct.
 
 #### Cloner le dépot
 
@@ -75,6 +79,7 @@ pi@pi3PSR:~/Capteurs_I2C/BME280 $ ./main
 
 # Changelog
 
+ **08/12/2019 : ** Suite à la découverte d'un bug lors de la mesure de température négative,  refonte complète de la classe Bme280 . Version 2.0 
  **21/04/2018 : ** Ajout du README . 
 
 > **Notes :**
