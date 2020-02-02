@@ -80,7 +80,7 @@ class ina219
 
     public:
     // le constructeur
-    ina219(int i2cAddress=ADRESSE_I2C_DEFAUT, float _quantum=3.991);
+    ina219(int i2cAddress=ADRESSE_I2C_DEFAUT, float _quantum=3.991, int i2cBus=I2C_DEFAULT_BUS);
     // le destructeur
     ~ina219();
     bool obtenirErreur();

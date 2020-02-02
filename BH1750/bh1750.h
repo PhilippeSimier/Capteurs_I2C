@@ -41,7 +41,7 @@ class bh1750
 {
     public:
     // le constructeur
-    bh1750(int i2cAddress=ADRESSE_I2C_DEFAUT);
+    bh1750(int i2cAddress=ADRESSE_I2C_DEFAUT, int i2cBus=I2C_DEFAULT_BUS);
     // le destructeur
     ~bh1750();
     // méthode pour lire la valeur de l'éclairement

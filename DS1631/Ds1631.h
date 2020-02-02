@@ -10,7 +10,7 @@ class Ds1631
 {
     public:
 
-    Ds1631(int i2cAddress=0x48);
+    Ds1631(int i2cAddress=0x48, int i2cBus=I2C_DEFAULT_BUS);
     float getTemperature();			   // Donne la temperature en °C
     void  afficher(std::ostream &flux);            // Methode pour afficher la temperature en °C
     float getThigh();				   // donne le seuil haut du thermostat

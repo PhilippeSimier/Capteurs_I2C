@@ -20,9 +20,9 @@
 using namespace std;
 
 
-bme280::bme280(int i2cAddress)  	// Le constructeur
+bme280::bme280(int i2cAddress, int i2cBus)  	// Le constructeur
 {
-    deviceI2C = new i2c(i2cAddress);
+    deviceI2C = new i2c(i2cAddress, i2cBus);
     if (!deviceI2C->getError()){
 
   	readCalibrationData();
