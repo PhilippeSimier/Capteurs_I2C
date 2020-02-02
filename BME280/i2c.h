@@ -72,7 +72,7 @@ class i2c
     public:
 
         // le constructeur
-	i2c(int adresseI2C, int idBusI2C=I2C_DEFAULT_BUS);
+        i2c(int adresseI2C, int idBusI2C=I2C_DEFAULT_BUS);
         //idBusI2C = 0 pour les raspberry version 1
         //idBusI2C = 1 pour les raspberry version 2, 3 et 4
 
