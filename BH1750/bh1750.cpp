@@ -18,9 +18,9 @@ using namespace std;
     @brief  constructor
 */
 
-bh1750::bh1750(int i2cAddress)
+bh1750::bh1750(int i2cAddress, int i2cBus)
 {
-    deviceI2C = new i2c(i2cAddress);
+    deviceI2C = new i2c(i2cAddress, i2cBus);
     resolution = 1.0;
 
 }

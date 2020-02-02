@@ -31,9 +31,9 @@ using namespace std;
     @note   These calculations assume a 0.1 ohm resistor is present
 */
 
-ina219::ina219(int i2cAddress, float  _quantum)
+ina219::ina219(int i2cAddress, float  _quantum, int i2cBus)
 {
-    deviceI2C = new i2c(i2cAddress);
+    deviceI2C = new i2c(i2cAddress, i2cBus);
     if (!deviceI2C->getError()){
     	deviceI2C->WriteReg16(REG_CONFIG, 0x0080);   // reset
 

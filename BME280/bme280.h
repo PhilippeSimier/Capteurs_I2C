@@ -118,7 +118,7 @@ class bme280
 
 public:
     // le constructeur
-    bme280(int i2cAddress=ADRESSE_I2C_DEFAUT);
+    bme280(int i2cAddress=ADRESSE_I2C_DEFAUT, int i2cBus=I2C_DEFAULT_BUS);
     // le destructeur
     ~bme280();
 

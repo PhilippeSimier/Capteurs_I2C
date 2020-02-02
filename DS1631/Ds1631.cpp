@@ -4,10 +4,10 @@
 using namespace std;
 
 
-Ds1631::Ds1631(int i2cAddress)  	// Le constructeur
+Ds1631::Ds1631(int i2cAddress, int i2cBus)  	// Le constructeur
 {
 
-    deviceI2C = new i2c(i2cAddress);
+    deviceI2C = new i2c(i2cAddress, i2cBus);
 
     m_config = 8+4+1; 			// conversion sur 12 bits / one shot
     deviceI2C->WriteReg8(0xAC, m_config);
