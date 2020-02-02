@@ -13,6 +13,7 @@
 #include <iostream>
 
 
+#define I2C_DEFAULT_BUS 1
 
 // I2C definitions
 
@@ -71,9 +72,9 @@ class i2c
     public:
 
         // le constructeur
-	i2c(int adresseI2C, int idBusI2C=1);
+	i2c(int adresseI2C, int idBusI2C=I2C_DEFAULT_BUS);
         //idBusI2C = 0 pour les raspberry version 1
-        //idBusI2C = 1 pour les raspberry version 2 et 3
+        //idBusI2C = 1 pour les raspberry version 2, 3 et 4
 
 	bool getError();
 
